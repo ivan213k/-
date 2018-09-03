@@ -29,6 +29,6 @@ namespace Управление_заказами.Models.DataBase
 
         public string ReturnEventId { get; set; }
 
-        public List<Equipment> Equipments { get; set; }
+        public List<EquipmentFromOrder> Equipments { get; set; }
     }
 }

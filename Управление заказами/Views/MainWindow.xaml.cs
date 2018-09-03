@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Управление_заказами.Models.DataBase;
 
 namespace Управление_заказами
 {
@@ -10,6 +11,14 @@ namespace Управление_заказами
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+            using (AppDbContext db = new AppDbContext())
+            {
+                
+            }
         }
     }
 }

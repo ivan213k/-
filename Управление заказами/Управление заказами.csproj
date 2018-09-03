@@ -173,6 +173,9 @@
     <Compile Include="Models\Core\OrderManager.cs" />
     <Compile Include="Models\DataBase\AppDbContext.cs" />
     <Compile Include="Models\DataBase\Equipment.cs" />
+    <Compile Include="Models\DataBase\EquipmentFromOrder.cs" />
+    <Compile Include="Models\DataBase\EquipmentInRent.cs" />
+    <Compile Include="Models\DataBase\EquipmentInStock.cs" />
     <Compile Include="Models\DataBase\Order.cs" />
     <Compile Include="Models\DataBase\OrderStatus.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
