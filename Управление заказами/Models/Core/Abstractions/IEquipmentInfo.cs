@@ -6,10 +6,10 @@ namespace Управление_заказами.Models.Core.Abstractions
 {
     interface IEquipmentInfo
     {
-        List<Equipment> GetEquipments();
+        List<EquipmentInStock> GetEquipments();
 
-        int GetAvalibleCount(int equiomentId);
+        int GetAvalibleCount(string equiomentName);
 
-        int GetAvalibleCount(int equipmentId, DateTime startDate, DateTime endDate);
+        int GetAvalibleCount(string equipmentName, DateTime startDate, DateTime endDate);
     }
 }

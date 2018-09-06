@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Управление_заказами.Models.Core.Abstractions;
@@ -170,6 +171,16 @@ namespace Управление_заказами.Models.Core
                 db.SaveChanges();
             }
            
+        }
+
+        public List<Order> GetActiveOrders()
+        {
+            using (AppDbContext db = new AppDbContext())
+            {
+                return (from order in db.OrdersHistory.Include(e => e.Equipments)
+                    where order.Status == OrderStatus.Open
+                    select order).ToList();
+            }
         }
     }
 }

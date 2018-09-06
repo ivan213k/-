@@ -1,4 +1,5 @@
-﻿using Управление_заказами.Models.DataBase;
+﻿using System.Collections.Generic;
+using Управление_заказами.Models.DataBase;
 
 namespace Управление_заказами.Models.Core.Abstractions
 {
@@ -13,5 +14,8 @@ namespace Управление_заказами.Models.Core.Abstractions
         void CancelOrder(int orderId);
 
         void UpdateOrder(int oldOrderId, Order newOrder);
+
+        List<Order> GetActiveOrders();
+
     }
 }
