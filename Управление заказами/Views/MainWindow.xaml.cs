@@ -19,7 +19,7 @@ namespace Управление_заказами
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            //IOrderManager manager = new OrderManager();
+            IOrderManager manager = new OrderManager();
             //manager.CreateOrder(new Order()
             //{
             //    Equipments = new List<EquipmentFromOrder>()
@@ -32,14 +32,14 @@ namespace Управление_заказами
             //            StartDate = new DateTime(2018,09,10,16,30,0),
             //            EndDate = new DateTime(2018,09,15,16,30,0),
             //        },
-            //        //new EquipmentFromOrder()
-            //        //{
-            //        //Category = "Дополнительное оборудование",
-            //        //Count = 69,
-            //        //Name = "Конус дорожный",
-            //        //StartDate = DateTime.Now,
-            //        //EndDate = DateTime.Now.AddDays(2)
-            //        //}
+            //        new EquipmentFromOrder()
+            //        {
+            //        Category = "Дополнительное оборудование",
+            //        Count = 69,
+            //        Name = "Конус дорожный",
+            //        StartDate =  new DateTime(2018,09,10,16,30,0),
+            //        EndDate = new DateTime(2018,09,15,16,30,0),
+            //        }
             //    },
             //    Adress = "Popova",
             //    CreateDate = new DateTime(2018, 09, 10, 16, 30, 0),
@@ -50,6 +50,7 @@ namespace Управление_заказами
             //    MobilePhone = "380",
             //    Note = "Note"
             //});
+            manager.CancelOrder(6);
         }
     }
 }

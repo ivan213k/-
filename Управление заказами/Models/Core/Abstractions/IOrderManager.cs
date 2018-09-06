@@ -6,10 +6,12 @@ namespace Управление_заказами.Models.Core.Abstractions
     {
         void CreateOrder(Order order);
 
-        void CloseOrder(Order order);
+        void CloseOrder(int order);
 
-        void CancelOrder(Order order);
+        void CloseOrderPartially(Order order);
 
-        void UpdateOrder(Order order);
+        void CancelOrder(int orderId);
+
+        void UpdateOrder(int oldOrderId, Order newOrder);
     }
 }
