@@ -1,0 +1,162 @@
+﻿<Window x:Class="Управление_заказами.Views.CheckEquipmentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        xmlns:local="clr-namespace:Управление_заказами.Views"
+        mc:Ignorable="d"
+        Title="Проверка наличия оборудования" Height="600" Width="1100" fw:AcrylicWindow.Enabled="True">
+    <Window.Resources>
+        <Style BasedOn="{StaticResource ButtonRevealStyle}" TargetType="Button">
+
+        </Style>
+        <Style BasedOn="{StaticResource TextBoxRevealStyle}" TargetType="TextBox">
+
+        </Style>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </Window.Resources>
+    <Grid IsEnabled="{Binding IsEnabled}" fw:PointerTracker.Enabled="True">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Header="Добавление оборудования">
+                <StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="5" Text="Категория"></TextBlock>
+                        <ComboBox SelectedValue="{Binding SelectedCategory,Mode=TwoWay}" ItemsSource="{Binding Categoryes}" Margin="30 5 5 5" Width="309"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="5" Text="Оборудование"></TextBlock>
+                        <ComboBox IsTextSearchEnabled="True"  SelectedIndex="{Binding SelectedEquipmentIndex,Mode=OneWayToSource}" SelectedValue="{Binding SelectedEquipment}" ItemsSource="{Binding SelectedEquipments}" Margin="5" MinWidth="100" Width="309" Height="25"></ComboBox>
+                    </StackPanel>
+
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Top" Height="20" Margin="5,5,23,5" Text="Количество"></TextBlock>
+                        <TextBox VerticalAlignment="Top" Height="20" x:Name="txtNum" x:FieldModifier="private" Margin="5,5,0,5" Width="50" Text="{Binding Count,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TextChanged="txtNum_TextChanged" />
+                        <Button FontWeight="Bold" VerticalAlignment="Top" Height="20"  Margin="5,5,0,5" Content="˄" Width="20"  Foreground="#FFFBFBFB" />
+                        <Button FontWeight="Bold" VerticalAlignment="Top" Height="20"  Margin="0,5,0,5"  Content="˅" Width="20"  Foreground="White" />
+                        <Image Margin="5" Width="208" Height="150" Source="{Binding SelectedImage}"></Image>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="5 10" Text="Целевая дата"></TextBlock>
+                        <DatePicker  Text="{Binding Date,Mode=TwoWay}" Margin="45 5 15 5"></DatePicker>
+                        <TextBlock Margin="5 10" Text="Время"></TextBlock>
+                        <ComboBox ItemsSource="{Binding Hours}" SelectedValue="{Binding SelectedHour}" Margin="5" Width="50"></ComboBox>
+                        <TextBlock Margin="0 0 5 0" FontSize="18" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black">:</TextBlock>
+                        <ComboBox Margin="0 5" SelectedValue="{Binding CreateMinute,Mode=TwoWay}" ItemsSource="{Binding Minutes}" Width="54"></ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="5 10" Text="Дата возвращения"></TextBlock>
+                        <DatePicker Text="{Binding ReturnDate,Mode=TwoWay}" Margin="15 5"></DatePicker>
+                        <TextBlock Margin="5 10" Text="Время"></TextBlock>
+                        <ComboBox ItemsSource="{Binding Hours}" SelectedValue="{Binding SelectedReturnHour}" Margin="5" Width="51"></ComboBox>
+                        <TextBlock Margin="0 0 5 0" FontSize="18" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">:</TextBlock>
+                        <ComboBox Margin="0 5" SelectedValue="{Binding CreateMinute,Mode=TwoWay}" ItemsSource="{Binding Minutes}" Width="53"></ComboBox>
+                    </StackPanel>
+                    <Button Grid.Column="1" VerticalAlignment="Top" Command="{Binding AddEquipmentCommand}" Margin="10 0" Foreground="White" FontWeight="Bold"  Content="Добавить оборудование" ></Button>
+
+                </StackPanel>
+            </GroupBox>
+
+            <GroupBox Grid.Column="2" Header="Оборудование для проверки">
+                <Grid fw:PointerTracker.Enabled="True">
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <ListView  Margin="5,5,5,10"   SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}" Name="ListView" ItemsSource="{Binding SelectedEquipmentsForCheck}" >
+                        <ListView.InputBindings>
+                            <KeyBinding Key="Delete" Command="{Binding RemoveEquipmentCommand}">
+
+                            </KeyBinding>
+                        </ListView.InputBindings>
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Удалить" Command="{Binding RemoveEquipmentCommand}"></MenuItem>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+
+                                    <Grid.ToolTip>
+                                        <Image Width="150" Height="150" Source="{Binding ImageUrl}"></Image>
+                                    </Grid.ToolTip>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Margin="5" Text="{Binding Name}"></TextBlock>
+                                    <TextBlock Grid.Column="1" Margin="10 5 5 5"  HorizontalAlignment="Center"  Text="{Binding StringFormat=Количество {0} шт., Path=Count}"></TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                    <Button Grid.Row="1" Command="{Binding CheckCommand}" Foreground="White" FontWeight="Bold" Margin="5,5.12,4.71,-0.12" Content="Проверить наличие"></Button>
+
+                </Grid>
+
+            </GroupBox>
+        </Grid>
+
+        <Grid Grid.Row="1" fw:PointerTracker.Enabled="True">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"></RowDefinition>
+            </Grid.RowDefinitions>
+            <DataGrid Style="{StaticResource DatagridStyle}" IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding Results}">
+                <DataGrid.RowStyle>
+                    <Style TargetType="DataGridRow">
+                        <Setter Property="ToolTip">
+                            <Setter.Value>
+                                <Image Width="150" Height="150" Source="{Binding ImageUrl}" />
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </DataGrid.RowStyle>
+                <DataGrid.CellStyle>
+                    <Style TargetType="DataGridCell">
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Status}" Value="Не хватает">
+                                <Setter Property="Foreground" Value="Red"/>
+                                <Setter Property="BorderBrush" Value="Red"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Status}" Value="ОК">
+                                <Setter Property="Foreground" Value="Green"/>
+                                <Setter Property="BorderBrush" Value="Green"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </DataGrid.CellStyle>
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Название оборудования" Binding="{Binding EquipmentName}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Необходимое количество" Binding="{Binding RequestCount}" ></DataGridTextColumn>
+                    <DataGridTextColumn Header="Остаток на складе" Binding="{Binding AvalibleCount}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Доступно в диапазоне указанных дат" Binding="{Binding AvalibleCountAfterRent}">
+
+                    </DataGridTextColumn>
+                    <DataGridTextColumn Header="Результат" Binding="{Binding Status}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Общее количество" Binding="{Binding TotalCount}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+            <Button Command="{Binding GoToCreateOrderCommand}" Grid.Row="1"  Grid.Column="1" Margin="5" Foreground="White" Content="Перейти к созданию заказа" ></Button>
+            <StackPanel Visibility="{Binding IsDeterminate,Converter={StaticResource BoolToVisibilityConverter}}"  Grid.Row="2">
+                <TextBlock Margin="10 0 0 5" Text="Подключение к базе данных"></TextBlock>
+                <ProgressBar Foreground="Blue"  IsIndeterminate="{Binding IsDeterminate}"  Height="20"></ProgressBar>
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+</Window>
