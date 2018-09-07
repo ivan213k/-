@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Управление_заказами.Models.Core.Abstractions;
 using Управление_заказами.Models.DataBase;
@@ -9,67 +10,80 @@ namespace Управление_заказами.Models.Core
 {
     class OrderManager : IOrderManager
     {
-        public void CreateOrder(Order order)
+        public async Task CreateOrderAsync(Order order)
         {
-            using (AppDbContext db = new AppDbContext())
+            await Task.Factory.StartNew(()=> 
             {
-                foreach (var equipment in order.Equipments)
+                using (AppDbContext db = new AppDbContext())
                 {
-                    TakeEquipment(equipment,db);
-                    AddEqipmentInRent(equipment,db);
+                    foreach (var equipment in order.Equipments)
+                    {
+                        TakeEquipment(equipment, db);
+                        AddEqipmentInRent(equipment, db);
+                    }
+
+                    db.OrdersHistory.Add(order);
+                    db.OrdersHistory.Include(o => o.Equipments);
+                    db.SaveChanges();
                 }
-
-                db.OrdersHistory.Add(order);
-                db.OrdersHistory.Include(o=> o.Equipments);
-                db.SaveChanges();
-            }
-
+            });
         }
 
-        public void CloseOrder(int orderId)
+        public async Task CloseOrderAsync(int orderId)
         {
-            using (AppDbContext db = new AppDbContext())
+            await Task.Factory.StartNew(() =>
             {
-                Order closingOrder = (from order in db.OrdersHistory.Include(e => e.Equipments)
-                    where order.Id == orderId
-                    select order).Single();
-                foreach (var equipment in closingOrder.Equipments)
+                using (AppDbContext db = new AppDbContext())
                 {
-                    RemoveEquipmentFromRent(equipment, db);
-                }
+                    Order closingOrder = (from order in db.OrdersHistory.Include(e => e.Equipments)
+                                          where order.Id == orderId
+                                          select order).Single();
+                    foreach (var equipment in closingOrder.Equipments)
+                    {
+                        RemoveEquipmentFromRent(equipment, db);
+                    }
 
-                closingOrder.Status = OrderStatus.Closed;
-                db.SaveChanges();
-            }
+                    closingOrder.Status = OrderStatus.Closed;
+                    db.SaveChanges();
+                }
+            });
+            
         }
 
-        public void CloseOrderPartially(Order order)
+        public async Task CloseOrderPartiallyAsync(Order order)
         {
-            using (AppDbContext db = new AppDbContext())
+            await Task.Factory.StartNew(() =>
             {
-                foreach (var equipment in order.Equipments)
+                using (AppDbContext db = new AppDbContext())
                 {
-                    RemoveEquipmentFromRent(equipment,db);
+                    foreach (var equipment in order.Equipments)
+                    {
+                        RemoveEquipmentFromRent(equipment, db);
+                    }
+                    db.SaveChanges();
                 }
-                db.SaveChanges();
-            }
+            });  
         }
 
-        public void CancelOrder(int orderId)
+        public async Task CancelOrderAsync(int orderId)
         {
-            using (AppDbContext db = new AppDbContext())
+            await Task.Factory.StartNew(() =>
             {
-                Order closingOrder = (from order in db.OrdersHistory.Include(e=>e.Equipments)
-                    where order.Id == orderId
-                    select order).Single();
-                foreach (var equipment in closingOrder.Equipments)
+                using (AppDbContext db = new AppDbContext())
                 {
-                    RemoveEquipmentFromRent(equipment,db);
-                }
+                    Order closingOrder = (from order in db.OrdersHistory.Include(e => e.Equipments)
+                                          where order.Id == orderId
+                                          select order).Single();
+                    foreach (var equipment in closingOrder.Equipments)
+                    {
+                        RemoveEquipmentFromRent(equipment, db);
+                    }
 
-                closingOrder.Status = OrderStatus.Canceled;
-                db.SaveChanges();
-            }
+                    closingOrder.Status = OrderStatus.Canceled;
+                    db.SaveChanges();
+                }
+            });
+            
         }
 
         private void RemoveEquipmentFromRent(EquipmentFromOrder equipment, AppDbContext db)
@@ -155,32 +169,37 @@ namespace Управление_заказами.Models.Core
             }
         }
 
-        public void UpdateOrder(int oldOrderId, Order newOrder)
+        public async Task UpdateOrderAsync(int oldOrderId, Order newOrder)
         {
-            using (AppDbContext db = new AppDbContext())
+            await Task.Factory.StartNew(()=> 
             {
-                Order oldOrder = (from order in db.OrdersHistory.Include(e=>e.Equipments)
-                    where order.Id == oldOrderId
-                    select order).Single();
-                db.OrdersHistory.Remove(oldOrder);
-                foreach (var equipment in oldOrder.Equipments)
+                using (AppDbContext db = new AppDbContext())
                 {
-                    RemoveEquipmentFromRent(equipment,db);
+                    Order oldOrder = (from order in db.OrdersHistory.Include(e => e.Equipments)
+                                      where order.Id == oldOrderId
+                                      select order).Single();
+                    db.OrdersHistory.Remove(oldOrder);
+                    foreach (var equipment in oldOrder.Equipments)
+                    {
+                        RemoveEquipmentFromRent(equipment, db);
+                    }
+                    CreateOrder(newOrder);
+                    db.SaveChanges();
                 }
-                CreateOrder(newOrder);
-                db.SaveChanges();
-            }
-           
+            });    
         }
 
-        public List<Order> GetActiveOrders()
+        public async Task<List<Order>> GetActiveOrdersAsync()
         {
-            using (AppDbContext db = new AppDbContext())
+            return await Task.Factory.StartNew(()=> 
             {
-                return (from order in db.OrdersHistory.Include(e => e.Equipments)
-                    where order.Status == OrderStatus.Open
-                    select order).ToList();
-            }
+                using (AppDbContext db = new AppDbContext())
+                {
+                    return (from order in db.OrdersHistory.Include(e => e.Equipments)
+                            where order.Status == OrderStatus.Open
+                            select order).ToList();
+                }
+            }); 
         }
     }
 }

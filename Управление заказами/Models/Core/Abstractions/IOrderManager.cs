@@ -1,21 +1,22 @@
 ﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Управление_заказами.Models.DataBase;
 
 namespace Управление_заказами.Models.Core.Abstractions
 {
     interface IOrderManager
     {
-        void CreateOrder(Order order);
+        Task CreateOrderAsync(Order order);
 
-        void CloseOrder(int order);
+        Task CloseOrderAsync(int order);
 
-        void CloseOrderPartially(Order order);
+        Task CloseOrderPartiallyAsync(Order order);
 
-        void CancelOrder(int orderId);
+        Task CancelOrderAsync(int orderId);
 
-        void UpdateOrder(int oldOrderId, Order newOrder);
+        Task UpdateOrderAsync(int oldOrderId, Order newOrder);
 
-        List<Order> GetActiveOrders();
+        Task<List<Order>> GetActiveOrdersAsync();
 
     }
 }

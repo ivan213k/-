@@ -1,15 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Управление_заказами.Models.DataBase;
 
 namespace Управление_заказами.Models.Core.Abstractions
 {
     interface IEquipmentInfo
     {
-        List<EquipmentInStock> GetEquipments();
+        Task<List<EquipmentInStock>> GetEquipmentsAsync();
 
-        int GetAvalibleCount(string equiomentName);
+        Task<int> GetAvalibleCountAsync(string equiomentName);
 
-        int GetAvalibleCount(string equipmentName, DateTime startDate, DateTime endDate);
+        Task<int> GetAvalibleCountAsync(string equipmentName, DateTime startDate, DateTime endDate);
     }
 }
