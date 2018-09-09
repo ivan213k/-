@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         xmlns:local="clr-namespace:Управление_заказами.Views"
+        xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
         mc:Ignorable="d"
         Title="Проверка наличия оборудования" Height="600" Width="1100" fw:AcrylicWindow.Enabled="True">
     <Window.Resources>
@@ -16,6 +17,9 @@
         </Style>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
     </Window.Resources>
+    <Window.DataContext>
+        <viewModels:CheckEquipmentViewModel/>
+    </Window.DataContext>
     <Grid IsEnabled="{Binding IsEnabled}" fw:PointerTracker.Enabled="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -27,53 +31,56 @@
                 <ColumnDefinition Width="auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <GroupBox Header="Добавление оборудования">
+            <GroupBox Margin="5" Header="Добавление оборудования">
                 <StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="5" Text="Категория"></TextBlock>
-                        <ComboBox SelectedValue="{Binding SelectedCategory,Mode=TwoWay}" ItemsSource="{Binding Categoryes}" Margin="30 5 5 5" Width="309"/>
+                        <ComboBox SelectedValue="{Binding SelectedCategory,Mode=TwoWay}" ItemsSource="{Binding Categoryes}" Margin="30 5 5 5" Width="323"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="5" Text="Оборудование"></TextBlock>
-                        <ComboBox IsTextSearchEnabled="True"  SelectedIndex="{Binding SelectedEquipmentIndex,Mode=OneWayToSource}" SelectedValue="{Binding SelectedEquipment}" ItemsSource="{Binding SelectedEquipments}" Margin="5" MinWidth="100" Width="309" Height="25"></ComboBox>
+                        <ComboBox IsTextSearchEnabled="True"  SelectedIndex="{Binding SelectedEquipmentIndex,Mode=OneWayToSource}" SelectedValue="{Binding SelectedEquipment}" ItemsSource="{Binding SelectedEquipments}" Margin="5" MinWidth="100" Width="321" Height="25"></ComboBox>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Top" Height="20" Margin="5,5,23,5" Text="Количество"></TextBlock>
-                        <TextBox VerticalAlignment="Top" Height="20" x:Name="txtNum" x:FieldModifier="private" Margin="5,5,0,5" Width="50" Text="{Binding Count,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TextChanged="txtNum_TextChanged" />
-                        <Button FontWeight="Bold" VerticalAlignment="Top" Height="20"  Margin="5,5,0,5" Content="˄" Width="20"  Foreground="#FFFBFBFB" />
-                        <Button FontWeight="Bold" VerticalAlignment="Top" Height="20"  Margin="0,5,0,5"  Content="˅" Width="20"  Foreground="White" />
-                        <Image Margin="5" Width="208" Height="150" Source="{Binding SelectedImage}"></Image>
+                        <TextBox TextChanged="txtNum_TextChanged" Name="txtNum" VerticalAlignment="Top" Height="20" Margin="5,5,0,5" Width="50" Text="{Binding Count,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"  />
+                        <Button Click="cmdUp_Click" FontWeight="Bold" VerticalAlignment="Top" Height="20"  Margin="5,5,0,5" Content="˄" Width="20"  Foreground="#FFFBFBFB" />
+                        <Button Click="cmdDown_Click"  FontWeight="Bold" VerticalAlignment="Top" Height="20"  Margin="0,5,0,5"  Content="˅" Width="20"  Foreground="White" />
+                        <Image Stretch="Fill"  Margin="5" Width="208" Height="150" 
+                               Source="{Binding SelectedImage}">
+                            
+                        </Image>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="5 10" Text="Целевая дата"></TextBlock>
-                        <DatePicker  Text="{Binding Date,Mode=TwoWay}" Margin="45 5 15 5"></DatePicker>
+                        <DatePicker  Text="{Binding StartDate,Mode=TwoWay}" Margin="45 5 15 5"></DatePicker>
                         <TextBlock Margin="5 10" Text="Время"></TextBlock>
-                        <ComboBox ItemsSource="{Binding Hours}" SelectedValue="{Binding SelectedHour}" Margin="5" Width="50"></ComboBox>
-                        <TextBlock Margin="0 0 5 0" FontSize="18" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="Black">:</TextBlock>
-                        <ComboBox Margin="0 5" SelectedValue="{Binding CreateMinute,Mode=TwoWay}" ItemsSource="{Binding Minutes}" Width="54"></ComboBox>
+                        <ComboBox ItemsSource="{Binding Hours}" SelectedValue="{Binding StartHour,Mode=TwoWay}"  Margin="5" Width="50"></ComboBox>
+                        <TextBlock Margin="0 0 5 0" FontSize="18" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">:</TextBlock>
+                        <ComboBox Margin="0 5" SelectedValue="{Binding StartMinute,Mode=TwoWay}" ItemsSource="{Binding Minutes}" Width="54"></ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="5 10" Text="Дата возвращения"></TextBlock>
-                        <DatePicker Text="{Binding ReturnDate,Mode=TwoWay}" Margin="15 5"></DatePicker>
+                        <DatePicker Text="{Binding EndDate,Mode=TwoWay}" Margin="15 5"></DatePicker>
                         <TextBlock Margin="5 10" Text="Время"></TextBlock>
-                        <ComboBox ItemsSource="{Binding Hours}" SelectedValue="{Binding SelectedReturnHour}" Margin="5" Width="51"></ComboBox>
+                        <ComboBox ItemsSource="{Binding Hours}" SelectedValue="{Binding EndHour,Mode=TwoWay}" Margin="5" Width="51"></ComboBox>
                         <TextBlock Margin="0 0 5 0" FontSize="18" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">:</TextBlock>
-                        <ComboBox Margin="0 5" SelectedValue="{Binding CreateMinute,Mode=TwoWay}" ItemsSource="{Binding Minutes}" Width="53"></ComboBox>
+                        <ComboBox Margin="0 5" SelectedValue="{Binding EndMinute,Mode=TwoWay}" ItemsSource="{Binding Minutes}" Width="53"></ComboBox>
                     </StackPanel>
                     <Button Grid.Column="1" VerticalAlignment="Top" Command="{Binding AddEquipmentCommand}" Margin="10 0" Foreground="White" FontWeight="Bold"  Content="Добавить оборудование" ></Button>
 
                 </StackPanel>
             </GroupBox>
 
-            <GroupBox Grid.Column="2" Header="Оборудование для проверки">
+            <GroupBox Margin="5"  Grid.Column="2" Header="Оборудование для проверки">
                 <Grid fw:PointerTracker.Enabled="True">
                     <Grid.RowDefinitions>
                         <RowDefinition/>
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
-                    <ListView  Margin="5,5,5,10"   SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}" Name="ListView" ItemsSource="{Binding SelectedEquipmentsForCheck}" >
+                    <ListView SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}" Name="ListView" ItemsSource="{Binding SelectedEquipmentsForCheck}" >
                         <ListView.InputBindings>
                             <KeyBinding Key="Delete" Command="{Binding RemoveEquipmentCommand}">
 
@@ -81,13 +88,14 @@
                         </ListView.InputBindings>
                         <ListView.ContextMenu>
                             <ContextMenu>
-                                <MenuItem Header="Удалить" Command="{Binding RemoveEquipmentCommand}"></MenuItem>
+                                <MenuItem  Header="Удалить" Command="{Binding RemoveEquipmentCommand}"></MenuItem>
                             </ContextMenu>
                         </ListView.ContextMenu>
                         <ListView.ItemTemplate>
                             <DataTemplate>
+                               
                                 <Grid>
-
+                                    
                                     <Grid.ToolTip>
                                         <Image Width="150" Height="150" Source="{Binding ImageUrl}"></Image>
                                     </Grid.ToolTip>
@@ -115,7 +123,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"></RowDefinition>
             </Grid.RowDefinitions>
-            <DataGrid Style="{StaticResource DatagridStyle}" IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding Results}">
+            <DataGrid Style="{StaticResource DatagridStyle}" IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding CheckResult}">
                 <DataGrid.RowStyle>
                     <Style TargetType="DataGridRow">
                         <Setter Property="ToolTip">
@@ -129,11 +137,11 @@
                     <Style TargetType="DataGridCell">
                         <Setter Property="FontWeight" Value="Bold" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Status}" Value="Не хватает">
+                            <DataTrigger Binding="{Binding IsEnough}" Value="false">
                                 <Setter Property="Foreground" Value="Red"/>
                                 <Setter Property="BorderBrush" Value="Red"/>
                             </DataTrigger>
-                            <DataTrigger Binding="{Binding Status}" Value="ОК">
+                            <DataTrigger Binding="{Binding IsEnough}" Value="true">
                                 <Setter Property="Foreground" Value="Green"/>
                                 <Setter Property="BorderBrush" Value="Green"/>
                             </DataTrigger>
@@ -141,20 +149,20 @@
                     </Style>
                 </DataGrid.CellStyle>
                 <DataGrid.Columns>
-                    <DataGridTextColumn Header="Название оборудования" Binding="{Binding EquipmentName}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Необходимое количество" Binding="{Binding RequestCount}" ></DataGridTextColumn>
-                    <DataGridTextColumn Header="Остаток на складе" Binding="{Binding AvalibleCount}"></DataGridTextColumn>
-                    <DataGridTextColumn Header="Доступно в диапазоне указанных дат" Binding="{Binding AvalibleCountAfterRent}">
+                    <DataGridTextColumn Header="Название оборудования" Binding="{Binding  Name}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Необходимое количество" Binding="{Binding NeedCount}" ></DataGridTextColumn>
+                    <DataGridTextColumn Header="Остаток на складе" Binding="{Binding Balance}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Доступно в диапазоне указанных дат" Binding="{Binding AvalibleInSelectedDateRange}">
 
                     </DataGridTextColumn>
-                    <DataGridTextColumn Header="Результат" Binding="{Binding Status}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Результат" Binding="{Binding Result}"></DataGridTextColumn>
                     <DataGridTextColumn Header="Общее количество" Binding="{Binding TotalCount}"></DataGridTextColumn>
                 </DataGrid.Columns>
             </DataGrid>
             <Button Command="{Binding GoToCreateOrderCommand}" Grid.Row="1"  Grid.Column="1" Margin="5" Foreground="White" Content="Перейти к созданию заказа" ></Button>
             <StackPanel Visibility="{Binding IsDeterminate,Converter={StaticResource BoolToVisibilityConverter}}"  Grid.Row="2">
                 <TextBlock Margin="10 0 0 5" Text="Подключение к базе данных"></TextBlock>
-                <ProgressBar Foreground="Blue"  IsIndeterminate="{Binding IsDeterminate}"  Height="20"></ProgressBar>
+                <ProgressBar Foreground="Blue" IsIndeterminate="{Binding IsDeterminate}"  Height="20"></ProgressBar>
             </StackPanel>
         </Grid>
     </Grid>

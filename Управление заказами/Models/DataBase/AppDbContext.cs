@@ -30,7 +30,6 @@ namespace Управление_заказами.Models.DataBase
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             var builder = new ConfigurationBuilder();
-            builder.SetBasePath(Directory.GetCurrentDirectory());
             builder.AddJsonFile("appsettings.json");
             var config = builder.Build();
             optionsBuilder.UseSqlServer(config.GetConnectionString("LocalConnection"));

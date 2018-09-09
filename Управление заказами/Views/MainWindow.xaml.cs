@@ -50,7 +50,7 @@ namespace Управление_заказами
             //    MobilePhone = "380",
             //    Note = "Note"
             //});
-            manager.CancelOrder(6);
+            //manager.CancelOrder(6);
         }
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,14 +15,13 @@ using System.Windows.Shapes;
 namespace Управление_заказами.Views
 {
     /// <summary>
-    /// Interaction logic for CheckEquipmentWindow.xaml
+    /// Interaction logic for CreateOrderWindow.xaml
     /// </summary>
-    public partial class CheckEquipmentWindow : Window
+    public partial class CreateOrderWindow : Window
     {
-        public CheckEquipmentWindow()
+        public CreateOrderWindow()
         {
             InitializeComponent();
-
             txtNum.Text = _numValue.ToString();
         }
         private int _numValue = 1;

@@ -183,7 +183,7 @@ namespace Управление_заказами.Models.Core
                     {
                         RemoveEquipmentFromRent(equipment, db);
                     }
-                    CreateOrder(newOrder);
+                    CreateOrderAsync(newOrder);
                     db.SaveChanges();
                 }
             });    

@@ -1,11 +1,8 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Управление_заказами.Models.DataBase
 {
-    abstract class Equipment
+     class Equipment
     {
         [Key]
         public int Id { get; set; }
