@@ -176,7 +176,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ViewModels\CloseOrderViewModel.cs" />
+    <Compile Include="ViewModels\Converters\CloseOrderTypeConverter.cs" />
+    <Compile Include="ViewModels\ReturnOrderViewModel.cs" />
+    <Compile Include="Views\CloseOrderWindow.xaml.cs">
+      <DependentUpon>CloseOrderWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ConfirmationWindow.xaml.cs">
+      <DependentUpon>ConfirmationWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ReturnOrdersWindow.xaml.cs">
+      <DependentUpon>ReturnOrdersWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="Views\CheckEquipmentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CloseOrderWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConfirmationWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -228,6 +248,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\ReturnOrdersWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\StylesDictionary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -260,7 +284,9 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\parallax.bmp" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

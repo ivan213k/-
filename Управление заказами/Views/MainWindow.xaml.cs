@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
-using Управление_заказами.Models.Core;
-using Управление_заказами.Models.Core.Abstractions;
-using Управление_заказами.Models.DataBase;
+﻿using System.Windows;
+using Управление_заказами.Views;
 
 namespace Управление_заказами
 {
@@ -17,40 +13,42 @@ namespace Управление_заказами
             InitializeComponent();
         }
 
-        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        private void CheckEquipmentButton_OnClick(object sender, RoutedEventArgs e)
         {
-            IOrderManager manager = new OrderManager();
-            //manager.CreateOrder(new Order()
-            //{
-            //    Equipments = new List<EquipmentFromOrder>()
-            //    {
-            //        new EquipmentFromOrder()
-            //        {
-            //            Category = "Стулья",
-            //            Count = 112,
-            //            Name = "Стул ISO",
-            //            StartDate = new DateTime(2018,09,10,16,30,0),
-            //            EndDate = new DateTime(2018,09,15,16,30,0),
-            //        },
-            //        new EquipmentFromOrder()
-            //        {
-            //        Category = "Дополнительное оборудование",
-            //        Count = 69,
-            //        Name = "Конус дорожный",
-            //        StartDate =  new DateTime(2018,09,10,16,30,0),
-            //        EndDate = new DateTime(2018,09,15,16,30,0),
-            //        }
-            //    },
-            //    Adress = "Popova",
-            //    CreateDate = new DateTime(2018, 09, 10, 16, 30, 0),
-            //    ReturnDate = new DateTime(2018, 09, 15, 16, 30, 0),
-            //    CustomerName = "Ivan",
-            //    Manager = "Igor",
-            //    Status = OrderStatus.Open,
-            //    MobilePhone = "380",
-            //    Note = "Note"
-            //});
-            //manager.CancelOrder(6);
+            CheckEquipmentWindow window = new CheckEquipmentWindow();
+            window.Show();
+        }
+
+        private void CreateOrderButton_OnClick(object sender, RoutedEventArgs e)
+        {
+           CreateOrderWindow window = new CreateOrderWindow();
+           window.Show();
+        }
+
+        private void ReturOrdertButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            ReturnOrdersWindow window = new ReturnOrdersWindow();
+            window.Show();
+        }
+
+        private void EditOrderButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void HistoryButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void AvalibleEquipmentButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        private void RegisterUserButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Linq;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Windows.Input;
 using Управление_заказами.Models.Core;
 using Управление_заказами.Models.Core.Abstractions;
 using Управление_заказами.Models.DataBase;

@@ -157,6 +157,7 @@ namespace Управление_заказами.ViewModels
         {
             SelectedEquipmentsForOrder.Add(new EquipmentInStock()
             {
+                Category = SelectedCategory,
                 Name = SelectedEquipment,
                 Count = int.Parse(Count),
                 ImageUrl = SelectedImage
@@ -214,9 +215,9 @@ namespace Управление_заказами.ViewModels
             {
                 equipments.Add(new EquipmentFromOrder()
                 {
-                    Category = SelectedCategory,
+                    Category = equipment.Category,
                     Count = equipment.Count,
-                    Name = SelectedEquipment,
+                    Name = equipment.Name,
                     StartDate = startDate,
                     EndDate = endDate
                 });

@@ -1,0 +1,122 @@
+﻿<Window x:Class="Управление_заказами.Views.ReturnOrdersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        xmlns:local="clr-namespace:Управление_заказами.Views"
+        xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
+        mc:Ignorable="d"
+        Title="Список возвращенного оборудования" Height="450" Width="1400" fw:AcrylicWindow.Enabled="True">
+    <Window.Resources>
+        <Style BasedOn="{StaticResource ButtonRevealStyle}" TargetType="Button">
+
+        </Style>
+        <BooleanToVisibilityConverter x:Key="BoleanToVisibilityConverter"/>
+    </Window.Resources>
+<Window.DataContext>
+    <viewModels:ReturnOrderViewModel/>
+</Window.DataContext>
+
+    <Grid  fw:PointerTracker.Enabled="True">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <fw:ParallaxView VerticalShift="200" HorizontalShift="200"
+                     Source="{Binding ElementName=list}">
+            <Image Source="../Resources/parallax.bmp" Stretch="UniformToFill"/>
+        </fw:ParallaxView>
+        <ListView Name="list" Background="#88EEEEEE" ScrollViewer.CanContentScroll="False" SelectedValue="{Binding SelectedOrder}" Margin="5" ItemsSource="{Binding ReturnOrders}">
+            <ListView.Resources>
+                <Style TargetType="ListViewItem">
+                    <Style.Triggers>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="IsSelected" Value="True"/>
+                            <Setter Property="Cursor" Value="Hand"></Setter>
+                        </Trigger>
+
+                    </Style.Triggers>
+                </Style>
+            </ListView.Resources>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Expander >
+                        <Expander.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Expander},Path=DataContext}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="100"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="White"></Setter>
+                                            <Setter Property="FontWeight" Value="DemiBold"></Setter>
+                                        </Style>
+                                    </Grid.Resources>
+                                    <TextBlock TextAlignment="Center" Text="ВОЗВРАТ" ></TextBlock>
+
+                                    <TextBlock Grid.Column="1" TextAlignment="Center" Text="Менеджер:"></TextBlock>
+                                    <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center" Text="{Binding Manager}"></TextBlock>
+                                    <TextBlock Grid.Column="2" TextAlignment="Center" Text="Адресс:"></TextBlock>
+                                    <TextBlock Grid.Column="2" TextAlignment="Center" Grid.Row="1" Text="{Binding Adress}"></TextBlock>
+                                    <TextBlock Grid.Column="3" TextAlignment="Center" Text="Мобильный телефон:"></TextBlock>
+                                    <TextBlock Grid.Column="3"  TextAlignment="Center" Grid.Row="1" Text="{Binding MobilePhone}"></TextBlock>
+
+                                    <TextBlock Grid.Column="4" TextAlignment="Center" Text="Имя:"></TextBlock>
+                                    <TextBlock Grid.Column="4"  TextAlignment="Center" Grid.Row="1" Text="{Binding CustomerName}"></TextBlock>
+
+                                    <TextBlock Grid.Column="5" TextAlignment="Center" Text="Время возврата:"></TextBlock>
+                                    <TextBlock Grid.Column="5" TextAlignment="Center" Grid.Row="1" Text="{Binding ReturnDate}"></TextBlock>
+                                    <TextBlock Grid.Column="6" TextAlignment="Center" TextWrapping="Wrap" Text="{Binding Note}"></TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </Expander.HeaderTemplate>
+                        <Grid fw:PointerTracker.Enabled="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <DataGrid Style="{StaticResource DatagridStyle}" IsReadOnly="True" Name="DataGrid" AutoGenerateColumns="False" ItemsSource="{Binding Equipments}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Category}" Header="Категория"/>
+                                    <DataGridTextColumn Binding="{Binding Name}" Header="Имя оборудования"/>
+                                    <DataGridTextColumn  Binding="{Binding Count}" Header="Количество"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                            <GroupBox Margin="5 0" fw:PointerTracker.Enabled="True" Grid.Column="1">
+                                <StackPanel>
+                                    <CheckBox Foreground="Azure" FontWeight="Bold"  Name="CheckNote" Width="250" HorizontalContentAlignment="Center" Margin="5" Content="Внести замечания"></CheckBox>
+                                    <TextBox Style="{StaticResource TextBoxRevealStyle}" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}" Text="{Binding Note,Mode=TwoWay}" Width="270" TextWrapping="Wrap" Visibility="{Binding ElementName=CheckNote,Path=IsChecked,Converter={StaticResource BoleanToVisibilityConverter}}" Margin="5" Height="50">
+
+                                    </TextBox>
+                                </StackPanel>
+
+                            </GroupBox>
+                            <Button Style="{StaticResource ButtonRevealStyle}" FontWeight="Bold" Foreground="White" DataContext="{Binding  RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}"  Command="{Binding CloseOrderCommand}" Margin="5" Grid.Column="2" Content="Закрыть заказ" Height="30" Width="100"></Button>
+                            <Button Style="{StaticResource ButtonRevealStyle}" FontWeight="Bold" Foreground="White" DataContext="{Binding  RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}"  Command="{Binding CancelOrderCommand}" Margin="5" Grid.Column="3" Content="Отменыть заказ" Height="30" Width="100"></Button>
+                        </Grid>
+
+                    </Expander>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <StackPanel Visibility="{Binding IsDeterminate,Converter={StaticResource BoleanToVisibilityConverter}}"  Grid.Row="1">
+            <TextBlock Margin="10 0" Text="Подключение к базе данных"></TextBlock>
+            <ProgressBar Foreground="Blue" Margin="0 0 0 5" IsIndeterminate="{Binding IsDeterminate}"  Height="20"></ProgressBar>
+        </StackPanel>
+    </Grid>
+</Window>

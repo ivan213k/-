@@ -4,9 +4,24 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Управление_заказами"
+        xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        <Button Click="ButtonBase_OnClick"></Button>
-    </Grid>
+        Title="Управление заказами" fluentWpf:AcrylicWindow.Enabled="True" Width="295.297" ResizeMode="CanMinimize" SizeToContent="Height" >
+    <Window.Resources>
+        <Style BasedOn="{StaticResource ButtonRevealStyle}" TargetType="Button">
+            <Setter Property="Margin" Value="5 5"></Setter>
+            <Setter Property="Foreground" Value="DarkBlue"></Setter>
+            <Setter Property="FontWeight" Value="DemiBold"></Setter>
+            <Setter Property="Foreground" Value="White"></Setter>
+        </Style>
+    </Window.Resources>
+    <StackPanel fluentWpf:PointerTracker.Enabled="True">
+        <Button Name="CheckEquipmentButton" Click="CheckEquipmentButton_OnClick" Content="Проверка наличия оборудования"></Button>
+        <Button Name="CreateOrderButton" Click="CreateOrderButton_OnClick" Content="Создать заказ"></Button>
+        <Button Name="EditOrderButton" Click="EditOrderButton_OnClick" Content="Редактировать заказ"></Button>
+        <Button Name="ReturOrdertButton" Click="ReturOrdertButton_OnClick" Content="Возврат"></Button>
+        <Button Name="HistoryButton" Click="HistoryButton_OnClick" Content="История заказов"></Button>
+        <Button Name="AvalibleEquipmentButton" Click="AvalibleEquipmentButton_OnClick" Content="Оборудования на складе"></Button>
+        <Button Name="RegisterUserButton" Click="RegisterUserButton_OnClick" Content="Регистрация персонала"></Button>
+    </StackPanel>
 </Window>

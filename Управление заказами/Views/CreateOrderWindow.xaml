@@ -8,7 +8,7 @@
         xmlns:converters="clr-namespace:Управление_заказами.ViewModels.Converters"
         xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
         mc:Ignorable="d"
-        Title="Создание заказа" ResizeMode="CanMinimize" fw:AcrylicWindow.Enabled="True" Height="683.286" Width="852.266">
+        Title="Создание заказа" SizeToContent="Height" ResizeMode="CanMinimize" fw:AcrylicWindow.Enabled="True" Width="852.266">
     <Window.Resources>
         <Style BasedOn="{StaticResource ButtonRevealStyle}" TargetType="Button">
 

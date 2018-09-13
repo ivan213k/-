@@ -59,10 +59,26 @@ namespace Управление_заказами.Models.Core
                     foreach (var equipment in order.Equipments)
                     {
                         RemoveEquipmentFromRent(equipment, db);
+                        RemoveEquipmentFromOrder(equipment, db);
                     }
                     db.SaveChanges();
                 }
             });  
+        }
+
+        private void RemoveEquipmentFromOrder(EquipmentFromOrder equipmentFromOrder, AppDbContext db)
+        {
+            var equipment = (from eq in db.EquipmentsFromOrder
+                where eq.Id == equipmentFromOrder.Id
+                select eq).Single();
+            if (equipment.Count== equipmentFromOrder.Count)
+            {
+                db.EquipmentsFromOrder.Remove(equipment);
+            }
+            else
+            {
+                equipment.Count -= equipmentFromOrder.Count;
+            }
         }
 
         public async Task CancelOrderAsync(int orderId)
