@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="История заказов" Height="450" Width="1287.4" fluentWpf:AcrylicWindow.Enabled="True">
     <Grid>
-        <WebBrowser Name="WB" Source="https://calendar.google.com">
+        <WebBrowser Loaded="WB_OnLoaded" Name="WB" Source="https://calendar.google.com">
 
         </WebBrowser> 
     </Grid>
