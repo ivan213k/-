@@ -2,8 +2,10 @@
 
 namespace Управление_заказами.Models.DataBase
 {
-     class Equipment
+    class Equipment
     {
+        private int _count;
+
         [Key]
         public int Id { get; set; }
 
@@ -11,7 +13,17 @@ namespace Управление_заказами.Models.DataBase
 
         public string Name { get; set; }
 
-        public int Count { get; set; }
+        public int Count
+        {
+            get => _count;
+            set
+            {
+                if (value >= 0)
+                {
+                    _count = value;
+                }
+            }
+        }
 
     }
 }

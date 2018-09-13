@@ -38,12 +38,14 @@ namespace Управление_заказами
 
         private void HistoryButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            OrdersHistoryWindow window = new OrdersHistoryWindow();
+            window.Show();
         }
 
         private void AvalibleEquipmentButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            EquipmentInStockWindow window = new EquipmentInStockWindow();
+            window.Show();
         }
 
         private void RegisterUserButton_OnClick(object sender, RoutedEventArgs e)

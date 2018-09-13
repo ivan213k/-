@@ -33,9 +33,9 @@ namespace Управление_заказами.Models.Core
             });
         }
 
-        public Task<int> GetAvalibleCountAsync(string equipmentName, DateTime startDate, DateTime endDate)
+        public async Task<int> GetAvalibleCountAsync(string equipmentName, DateTime startDate, DateTime endDate)
         {
-            return Task.Factory.StartNew(() =>
+            return await Task.Factory.StartNew(() =>
             {
                 using (AppDbContext db = new AppDbContext())
                 {
@@ -45,6 +45,19 @@ namespace Управление_заказами.Models.Core
                             select equipment.Count).Sum();
                 }
             });  
+        }
+
+        public async Task UpdateEquipmentsRange(List<EquipmentInStock> equipments)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                using (AppDbContext db = new AppDbContext())
+                {
+                    db.EquipmentsInStock.UpdateRange(equipments);
+                    db.SaveChanges();
+                }
+            });
+               
         }
     }
 }
