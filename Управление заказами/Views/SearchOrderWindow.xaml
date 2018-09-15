@@ -1,0 +1,141 @@
+﻿<Window x:Class="Управление_заказами.Views.SearchOrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Управление_заказами.Views"
+        xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
+        mc:Ignorable="d"
+        Title="Выбор заказа"  Name="Window" fluentWpf:PointerTracker.Enabled="True" fluentWpf:AcrylicWindow.Enabled="True" Height="450" Width="1327.647">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BoleanToVisibilityConverter" />
+    </Window.Resources>
+    <Window.DataContext>
+        <viewModels:SearchOrderViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="5">
+            <TextBlock Margin="5" Text="Поиск по заказам"></TextBlock>
+            <TextBox Height="20" VerticalAlignment="Top" Text="{Binding SearchPattern, Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}" Margin="5" Width="508"></TextBox>
+            <StackPanel Margin="10 0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Margin="10 0 10 0" Text="Фильтр по дате:" VerticalAlignment="Center"></TextBlock>
+                    <TextBlock Margin="5" VerticalAlignment="Center">От:</TextBlock>
+                    <DatePicker  SelectedDate="{Binding StartDate,Mode=TwoWay}" >
+                    </DatePicker>
+                    <TextBlock Margin="15 0" VerticalAlignment="Center">До:</TextBlock>
+                    <DatePicker  SelectedDate="{Binding EndDate, Mode=TwoWay}">
+                    </DatePicker>
+
+                </StackPanel>
+                <Button Command="{Binding Path=FilterByDateCommand}" Margin="5" Style="{StaticResource ButtonRevealStyle}" Foreground="White" FontWeight="Bold" Content="Отфильтровать по дате"></Button>
+            </StackPanel>
+
+        </StackPanel>
+        <fluentWpf:ParallaxView Grid.Row="1" VerticalShift="200" HorizontalShift="200"
+                         Source="{Binding ElementName=list}">
+            <Image Source="../Resources/parallax.bmp" Stretch="UniformToFill"/>
+        </fluentWpf:ParallaxView>
+        <ListView ScrollViewer.CanContentScroll="False" SelectedValue="{Binding Path=SelectedOrder,Mode=OneWayToSource}" Grid.Row="1" Name="list" Background="#88EEEEEE" Margin="5" ItemsSource="{Binding Orders}">
+            <ListView.InputBindings>
+                <KeyBinding Key="Delete" Command="{Binding Path=CancelOrderCommand}"></KeyBinding>
+            </ListView.InputBindings>
+            <ListView.Resources>
+                <Style TargetType="ListViewItem">
+                    <Style.Triggers>
+
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="IsSelected" Value="True"/>
+                            <Setter Property="Cursor" Value="Hand"></Setter>
+                        </Trigger>
+
+                    </Style.Triggers>
+                </Style>
+            </ListView.Resources>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Expander >
+                        <Expander.Resources>
+                            <Style TargetType="Expander">
+                                <Style.Triggers>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Background" Value="Aqua"></Setter>
+                                    </Trigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Expander.Resources>
+                        <Expander.HeaderTemplate>
+                            <DataTemplate>
+                                <Grid  DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Expander},Path=DataContext}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="220"/>
+                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="200"/>
+
+                                        <ColumnDefinition Width="150"/>
+
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition/>
+                                    </Grid.RowDefinitions>
+                                    <Grid.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Foreground" Value="DarkBlue"></Setter>
+                                            <Setter Property="FontWeight" Value="DemiBold"></Setter>
+                                        </Style>
+                                    </Grid.Resources>
+                                    <TextBlock TextAlignment="Center" Text="Менеджер:"></TextBlock>
+                                    <TextBlock Grid.Row="1" TextAlignment="Center" Text="{Binding Manager}"></TextBlock>
+                                    <TextBlock Grid.Column="1" TextAlignment="Center" Text="Адресс:"></TextBlock>
+                                    <TextBlock Grid.Column="1" TextAlignment="Center" Grid.Row="1" Text="{Binding Adress}"></TextBlock>
+                                    <TextBlock Grid.Column="2" TextAlignment="Center" Text="Мобильный телефон:"></TextBlock>
+                                    <TextBlock Grid.Column="2"  TextAlignment="Center" Grid.Row="1" Text="{Binding MobilePhone}"></TextBlock>
+
+                                    <TextBlock Grid.Column="3" TextAlignment="Center" Text="Имя:"></TextBlock>
+                                    <TextBlock Grid.Column="3"  TextAlignment="Center" Grid.Row="1" Text="{Binding CustomerName}"></TextBlock>
+
+                                    <TextBlock Grid.Column="4" TextAlignment="Center" Text="Время создания"></TextBlock>
+                                    <TextBlock Grid.Column="4" Grid.Row="1" TextAlignment="Center" Text="{Binding CreateDate}"></TextBlock>
+
+                                    <TextBlock Grid.Column="5" TextAlignment="Center" Text="Время возврата:"></TextBlock>
+                                    <TextBlock Grid.Column="5" TextAlignment="Center" Grid.Row="1" Text="{Binding ReturnDate}"></TextBlock>
+                                    <Button Command="{Binding Path=EditOrderCommand}" CommandParameter="{Binding ElementName=Window}" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}" Grid.Column="6" Style="{StaticResource ButtonRevealStyle}" FontWeight="Bold" Foreground="White" Content="Редактировать заказ"></Button>
+
+                                </Grid>
+                            </DataTemplate>
+                        </Expander.HeaderTemplate>
+                        <Grid fluentWpf:PointerTracker.Enabled="True">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <DataGrid Style="{StaticResource DatagridStyle}" IsReadOnly="True" Name="DataGrid" AutoGenerateColumns="False" ItemsSource="{Binding Equipments}">
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Binding="{Binding Category}" Header="Категория"/>
+                                    <DataGridTextColumn Binding="{Binding Name}" Header="Имя оборудования"/>
+                                    <DataGridTextColumn  Binding="{Binding Count}" Header="Количество"/>
+                                </DataGrid.Columns>
+                            </DataGrid>
+
+                        </Grid>
+
+                    </Expander>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ProgressBar Grid.Row="2" Visibility="{Binding IsDeterminate,Converter={StaticResource BoleanToVisibilityConverter}}" Foreground="Blue" Margin="0 0 0 5" IsIndeterminate="{Binding IsDeterminate}"  Height="20"></ProgressBar>
+    </Grid>
+
+</Window>

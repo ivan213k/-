@@ -30,5 +30,10 @@ namespace Управление_заказами.Models.DataBase
         public string ReturnEventId { get; set; }
 
         public List<EquipmentFromOrder> Equipments { get; set; }
+
+        public override string ToString()
+        {
+            return $"Статус: {Status} Имя: {CustomerName} Адресс: {Adress} Мобильный телефон: {MobilePhone} Время создания заказа {CreateDate} Время возврата: {ReturnDate} {Manager}";
+        }
     }
 }

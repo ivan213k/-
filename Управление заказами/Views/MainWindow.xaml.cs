@@ -33,7 +33,8 @@ namespace Управление_заказами
 
         private void EditOrderButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            SearchOrderWindow window = new SearchOrderWindow();
+            window.ShowDialog();
         }
 
         private void HistoryButton_OnClick(object sender, RoutedEventArgs e)

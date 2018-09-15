@@ -11,17 +11,21 @@ using Управление_заказами.Models.DataBase;
 
 namespace Управление_заказами.ViewModels
 {
-    class CreateOrderViewModel : BaseViewModel
+    class EditOrderViewModel : BaseViewModel
     {
         private readonly IEquipmentInfo EquipmentInfo = new EquipmentInfo();
         private readonly IOrderManager OrderManager = new OrderManager();
-        public CreateOrderViewModel()
+
+        public Order OldOrder { get; set; }
+
+        public EditOrderViewModel()
         {
-            AddEquipmentCommand = new Command(AddEquipmentToOrder, CanAddEquipmentToOrder);
-            CreateOrderCommand = new Command(CreateOrder);
+            AddEquipmentCommand = new Command(AddEquipmentToOrder,CanAddEquipmentToOrder);
+            EditOrderCommand = new Command(UpdateOrder);
             RemoveEquipmentCommand = new Command(RevoveEquipment);
             LoadEquipments();
         }
+
         async void LoadEquipments()
         {
             EnableProgressBar();
@@ -37,7 +41,7 @@ namespace Управление_заказами.ViewModels
                 equipments = value;
                 OnePropertyChanged();
                 Categoryes = (from equipment in Equipments
-                    select equipment.Category).Distinct().ToList();
+                              select equipment.Category).Distinct().ToList();
             }
         }
 
@@ -60,8 +64,8 @@ namespace Управление_заказами.ViewModels
             {
                 selectedCategory = value;
                 SelectedEquipments = (from equipments in Equipments
-                    where equipments.Category == value
-                    select equipments.Name).ToList();
+                                      where equipments.Category == value
+                                      select equipments.Name).ToList();
 
             }
         }
@@ -85,8 +89,8 @@ namespace Управление_заказами.ViewModels
             {
                 selectedEquipment = value;
                 SelectedImage = (from eq in Equipments
-                    where eq.Name == value
-                    select eq.ImageUrl).FirstOrDefault();
+                                 where eq.Name == value
+                                 select eq.ImageUrl).FirstOrDefault();
                 AddEquipmentCommand.OneExecuteChaneged();
             }
         }
@@ -94,17 +98,17 @@ namespace Управление_заказами.ViewModels
 
         public string Count { get; set; } = "1";
 
-        public string StartDate { get; set; } = DateTime.Now.ToString(new CultureInfo("uk-Ua"));
+        public string StartDate { get; set; } 
 
-        public string EndDate { get; set; } = DateTime.Now.AddDays(1).ToString(new CultureInfo("uk-Ua"));
+        public string EndDate { get; set; } 
 
-        public int StartHour { get; set; } = DateTime.Now.Hour;
+        public int StartHour { get; set; } 
 
-        public int EndHour { get; set; } = DateTime.Now.Hour;
+        public int EndHour { get; set; } 
 
-        public int StartMinute { get; set; } = DateTime.Now.Minute;
+        public int StartMinute { get; set; } 
 
-        public int EndMinute { get; set; } = DateTime.Now.Minute;
+        public int EndMinute { get; set; } 
 
         public List<int> Hours { get; set; }
             = new List<int>()
@@ -144,23 +148,76 @@ namespace Управление_заказами.ViewModels
 
         public string SelectetDeliveryType { get; set; }
 
-        #region Commands
-        public Command AddEquipmentCommand { get; set; }
+        public int SelectedDeliveryIndex { get; set; }
 
-        public ICommand CreateOrderCommand { get; set; }
 
-        public ICommand RemoveEquipmentCommand { get; set; }
+        private void RevoveEquipment(object obj)
+        {
+            if (SelectedIndex != -1)
+            {
+                SelectedEquipmentsForOrder.RemoveAt(SelectedIndex);
+                AddEquipmentCommand.OneExecuteChaneged();
+            }
+        }
 
-        #endregion
+        private async void UpdateOrder(object obj)
+        {
+            DateTime tempdate = DateTime.Parse(StartDate, new CultureInfo("uk-UA"));
+            DateTime tempReturnDate = DateTime.Parse(EndDate, new CultureInfo("uk-UA"));
+            DateTime startDate = new DateTime(tempdate.Year, tempdate.Month, tempdate.Day, StartHour, StartMinute,0);
+            DateTime returnDate = new DateTime(tempReturnDate.Year, tempReturnDate.Month, tempReturnDate.Day,
+                EndHour, EndMinute, 0);
 
-        void AddEquipmentToOrder(object parametr)
+            if (returnDate < startDate)
+            {
+                MessageBox.Show("Дата возврата не может быть ранее даты создания");
+                return;
+            }
+
+            var equipmentsForOrder = new List<EquipmentFromOrder>();
+            foreach (var equipmentInStock in SelectedEquipmentsForOrder)
+            {
+                equipmentsForOrder.Add(new EquipmentFromOrder()
+                {
+                    Category = equipmentInStock.Category,
+                    Count = equipmentInStock.Count,
+                    Name = equipmentInStock.Name,
+                    EndDate = returnDate,
+                    StartDate = startDate
+                });
+            }
+            EnableProgressBar();
+            try
+            {
+                await OrderManager.UpdateOrderAsync(OldOrder.Id, new Order()
+                {
+                    Adress = SelectetDeliveryType.Contains("Указать адрес") ? this.Adress : "Самовывоз",
+                    CustomerName = CustomerName,
+                    MobilePhone = MobilePhone,
+                    Manager = "Manager",
+                    ReturnDate = returnDate,
+                    CreateDate = startDate,
+                    Note = Note,
+                    Status = OrderStatus.Open,
+                    Equipments = equipmentsForOrder
+                });
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Не хватает оборудования. Проверьте наличие.");
+            }
+           
+            DisableProgressBar();
+        }
+
+        private void AddEquipmentToOrder(object obj)
         {
             SelectedEquipmentsForOrder.Add(new EquipmentInStock()
             {
                 Category = SelectedCategory,
                 Name = SelectedEquipment,
                 Count = int.Parse(Count),
-                ImageUrl = SelectedImage
+                ImageUrl = SelectedImage,
             });
         }
 
@@ -181,72 +238,11 @@ namespace Управление_заказами.ViewModels
             return true;
         }
 
-        async void CreateOrder(object parametr)
-        {
-            if (SelectedEquipmentsForOrder.Count == 0)
-            {
-                MessageBox.Show("Невозможно создать заказ. Оборудование для заказа не выбрано");
-                return;
-            }
-            DateTime tempdate = DateTime.Parse(StartDate, new CultureInfo("uk-UA"));
-            DateTime tempReturnDate = DateTime.Parse(EndDate, new CultureInfo("uk-UA"));
-            DateTime startDate = new DateTime(tempdate.Year, tempdate.Month, tempdate.Day, StartHour, StartMinute, 0);
-            DateTime endDate = new DateTime(tempReturnDate.Year, tempReturnDate.Month, tempReturnDate.Day, EndHour, EndMinute, 0);
+        public ICommand RemoveEquipmentCommand { get; set; }
 
-            if (endDate < startDate)
-            {
-                MessageBox.Show("Дата возврата не может быть ранее даты создания");
-                return;
-            }
+        public ICommand EditOrderCommand { get; set; }
 
-            Order order = new Order()
-            {
-                Adress = SelectetDeliveryType.Contains("Указать адрес") ? this.Adress : "Самовывоз",
-                CreateDate = startDate,
-                CustomerName = CustomerName,
-                Manager = "Manager",
-                MobilePhone = MobilePhone,
-                Note = Note,
-                ReturnDate = endDate,
-                
-            };
-            List<EquipmentFromOrder> equipments = new List<EquipmentFromOrder>();
-            foreach (var equipment in SelectedEquipmentsForOrder)
-            {
-                equipments.Add(new EquipmentFromOrder()
-                {
-                    Category = equipment.Category,
-                    Count = equipment.Count,
-                    Name = equipment.Name,
-                    StartDate = startDate,
-                    EndDate = endDate
-                });
-            }
-
-            order.Equipments = equipments;
-            try
-            {
-                EnableProgressBar();
-                await OrderManager.CreateOrderAsync(order);
-            }
-            catch (ArgumentException e)
-            {
-                MessageBox.Show("Не хватает оборудования. Проверьте наличие.");
-            }
-            
-            DisableProgressBar();
-        }
-
-
-        private void RevoveEquipment(object parametr)
-        {
-            if (SelectedIndex != -1)
-            {
-                SelectedEquipmentsForOrder.RemoveAt(SelectedIndex);
-                AddEquipmentCommand.OneExecuteChaneged();
-            }
-            
-        }
+        public Command AddEquipmentCommand { get; set; }
 
         private void DisableProgressBar()
         {

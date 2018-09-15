@@ -25,5 +25,15 @@ namespace Управление_заказами.Models.DataBase
                 EndDate = equipment.EndDate
             };
         }
+
+        public static implicit operator EquipmentInStock(EquipmentFromOrder equipment)
+        {
+            return new EquipmentInStock()
+            {
+                Name = equipment.Name,
+                Count = equipment.Count,
+                Category = equipment.Category,
+            };
+        }
     }
 }

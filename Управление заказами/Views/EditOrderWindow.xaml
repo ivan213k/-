@@ -1,0 +1,133 @@
+﻿<Window x:Class="Управление_заказами.Views.EditOrderWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Управление_заказами.Views"
+        xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        xmlns:converters="clr-namespace:Управление_заказами.ViewModels.Converters"
+        mc:Ignorable="d"
+        Title="Редактирование заказа" Name="Window" ResizeMode="CanMinimize" fluentWpf:AcrylicWindow.Enabled="True" SizeToContent="Height" Width="814.049">
+    <Window.Resources>
+        <Style BasedOn="{StaticResource ButtonRevealStyle}" TargetType="Button">
+
+        </Style>
+        <Style BasedOn="{StaticResource TextBoxRevealStyle}" TargetType="TextBox">
+            <Setter Property="FontSize" Value="14"></Setter>
+        </Style>
+        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+        <converters:DeliveryTypeConverter x:Key="DeliveryToAdressVisibilityConverter"/>
+    </Window.Resources>
+    <Grid IsEnabled="{Binding IsEnabled}" fluentWpf:PointerTracker.Enabled="True">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <GroupBox Margin="5" Header="Добавление оборудования" >
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5" Text="Категория"></TextBlock>
+                            <ComboBox ItemsSource="{Binding Categoryes}" SelectedValue="{Binding SelectedCategory,Mode=TwoWay}" Margin="30 5 5 5" Width="250"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Margin="5" Text="Оборудование"></TextBlock>
+                            <ComboBox SelectedValue="{Binding SelectedEquipment,Mode=TwoWay}" ItemsSource="{Binding SelectedEquipments}" Margin="5" MinWidth="100" Width="250" Height="25"></ComboBox>
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Height="25" VerticalAlignment="Top" Margin="5,5,23,5" Text="Количество"></TextBlock>
+                            <TextBox Height="25" VerticalAlignment="Top" x:Name="txtNum" x:FieldModifier="private" Margin="5,5,0,5" Width="50" Text="{Binding Count,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                            <Button FontWeight="Bold" Foreground="White" Height="25" VerticalAlignment="Top" x:Name="cmdUp" Click="cmdUp_Click" x:FieldModifier="private" Margin="5,5,0,5" Content="˄" Width="20" />
+                            <Button FontWeight="Bold" Foreground="White" Height="25" VerticalAlignment="Top" x:Name="cmdDown"  Click="cmdDown_Click"  x:FieldModifier="private" Margin="0,5,0,5"  Content="˅" Width="20" />
+                            <Image Source="{Binding SelectedImage}" Margin="5" Width="150" Height="150"></Image>
+                        </StackPanel>
+                        <Button Command="{Binding AddEquipmentCommand}" Foreground="White" FontWeight="Bold" Margin="5" Content="Добавить оборудование"></Button>
+                    </StackPanel>
+                </GroupBox>
+
+
+                <GroupBox Margin="5"  Header="Список оборудования" Width="429"  >
+                    <ListView  SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding SelectedEquipmentsForOrder}" Margin="10,5,7,5" MinWidth="100">
+                        <ListView.ContextMenu>
+                            <ContextMenu>
+                                <MenuItem Header="Удалить" Command="{Binding RemoveEquipmentCommand}"></MenuItem>
+                            </ContextMenu>
+                        </ListView.ContextMenu>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <!--<Grid.ToolTip>
+                                        <Image Width="150" Height="150" Source="{Binding ImageUrl}"></Image>
+                                    </Grid.ToolTip>-->
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Margin="5" Text="{Binding Name}"></TextBlock>
+                                    <TextBlock Grid.Column="1" Margin="10 5 5 5"  HorizontalAlignment="Center"  Text="{Binding StringFormat=Количество {0} шт., Path=Count}"></TextBlock>
+                                </Grid>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+
+                </GroupBox>
+            </StackPanel>
+            <GroupBox Margin="5" Header="Информация о заказе">
+                <StackPanel>
+
+                    <StackPanel Margin="0 5" Orientation="Horizontal">
+                        <TextBlock Margin="5 5 15 5" Text="Тип доставки:"></TextBlock>
+                        <ComboBox SelectedValue="{Binding SelectetDeliveryType,Mode=OneWayToSource}" SelectedIndex="{Binding SelectedDeliveryIndex,Mode=TwoWay}" Name="TypeDelivery" Width="150">
+                            <ComboBox.Items>
+                                <ComboBoxItem>Самовывоз</ComboBoxItem>
+                                <ComboBoxItem>Указать адрес</ComboBoxItem>
+                            </ComboBox.Items>
+
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Visibility="{Binding ElementName=TypeDelivery,Path=SelectedIndex,Converter={StaticResource DeliveryToAdressVisibilityConverter}}" Margin="0 5" Orientation="Horizontal">
+                        <TextBlock Margin="5 5 51 5" Text="Адресс:"></TextBlock>
+                        <TextBox Text="{Binding Adress}" Width="336"></TextBox>
+                    </StackPanel>
+
+                    <StackPanel Margin="0 5" Orientation="Horizontal">
+                        <TextBlock Margin="5 5 42 5" Text="Телефон:"></TextBlock>
+                        <TextBox Text="{Binding MobilePhone}" Width="335"></TextBox>
+                    </StackPanel>
+                    <StackPanel Margin="0 5" Orientation="Horizontal">
+                        <TextBlock Margin="5 5 65 5" Text="Имя:"></TextBlock>
+                        <TextBox Text="{Binding CustomerName}" Width="336"></TextBox>
+                    </StackPanel>
+                    <StackPanel Margin="0 5" Orientation="Horizontal">
+                        <TextBlock Margin="5 5 18 5" Text="Примечание:"></TextBlock>
+                        <TextBox TextWrapping="Wrap" Height="50" Text="{Binding Note}" Width="335"></TextBox>
+                    </StackPanel>
+                    <StackPanel   Orientation="Horizontal">
+                        <TextBlock Margin="5 5 50 5" Text="Целевая дата">
+
+                        </TextBlock>
+                        <DatePicker Text="{Binding StartDate,Mode=TwoWay}"></DatePicker>
+                        <TextBlock Margin="23 5 8 5" Text="Время"></TextBlock>
+                        <ComboBox Margin="10 0 5 0" SelectedValue="{Binding StartHour,Mode=TwoWay}" ItemsSource="{Binding Hours}" Width="54">
+
+                        </ComboBox>
+                        <TextBlock Margin="0 0 5 0" FontSize="18" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">:</TextBlock>
+                        <ComboBox SelectedValue="{Binding StartMinute,Mode=TwoWay}" ItemsSource="{Binding Minutes}" Width="54"></ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="5 10" Text="Дата возвращения"></TextBlock>
+                        <DatePicker Text="{Binding EndDate,Mode=TwoWay}" Margin="15 5"></DatePicker>
+                        <TextBlock Margin="10 10 10 0" Text="Время"></TextBlock>
+                        <ComboBox Margin="5"  ItemsSource="{Binding Hours,Mode=TwoWay}" SelectedValue="{Binding EndHour}" Width="55"></ComboBox>
+                        <TextBlock  FontSize="18" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">:</TextBlock>
+                        <ComboBox Margin="5"  SelectedValue="{Binding EndMinute,Mode=TwoWay}" ItemsSource="{Binding Minutes}"  Width="55"></ComboBox>
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox>
+
+            <Button Command="{Binding EditOrderCommand}" CommandParameter="{Binding ElementName=Window}" Grid.Column="1" Margin="5 10" Foreground="White" Content="Редактировать заказ" ></Button>
+            <StackPanel Visibility="{Binding IsDeterminate,Converter={StaticResource BoolToVisibilityConverter}}"  Grid.Row="2">
+                <ProgressBar Foreground="Blue" Margin="0 0 0 5" IsIndeterminate="{Binding IsDeterminate}"  Height="20"></ProgressBar>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>
