@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Управление_заказами"
         xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         mc:Ignorable="d"
-        Title="Управление заказами" fluentWpf:AcrylicWindow.Enabled="True" Width="295.297" ResizeMode="CanMinimize" SizeToContent="Height" >
+        Title="Управление заказами" WindowStartupLocation="CenterScreen" fluentWpf:AcrylicWindow.Enabled="True" Width="295.297" ResizeMode="CanMinimize" SizeToContent="Height" >
     <Window.Resources>
         <Style BasedOn="{StaticResource ButtonRevealStyle}" TargetType="Button">
             <Setter Property="Margin" Value="5 5"></Setter>

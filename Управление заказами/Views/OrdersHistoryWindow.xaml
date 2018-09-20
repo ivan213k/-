@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Управление_заказами.Views"
         xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         mc:Ignorable="d"
-        Title="История заказов" Height="450" Width="1287.4" fluentWpf:AcrylicWindow.Enabled="True">
+        Title="История заказов" WindowStartupLocation="CenterScreen" Height="638.06" Width="1287.4" fluentWpf:AcrylicWindow.Enabled="True">
     <Grid>
         <WebBrowser Loaded="WB_OnLoaded" Name="WB" Source="https://calendar.google.com">
 

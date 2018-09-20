@@ -40,23 +40,23 @@
     <Reference Include="FluentWPF, Version=0.3.2.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\FluentWPF.0.3.2\lib\net45\FluentWPF.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis, Version=1.35.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.1.35.1\lib\net45\Google.Apis.dll</HintPath>
+    <Reference Include="Google.Apis, Version=1.35.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.35.2\lib\net45\Google.Apis.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis.Auth, Version=1.35.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Auth.1.35.1\lib\net45\Google.Apis.Auth.dll</HintPath>
+    <Reference Include="Google.Apis.Auth, Version=1.35.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.35.2\lib\net45\Google.Apis.Auth.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.35.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Auth.1.35.1\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
+    <Reference Include="Google.Apis.Auth.PlatformServices, Version=1.35.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Auth.1.35.2\lib\net45\Google.Apis.Auth.PlatformServices.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis.Calendar.v3, Version=1.35.1.1333, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Calendar.v3.1.35.1.1333\lib\net45\Google.Apis.Calendar.v3.dll</HintPath>
+    <Reference Include="Google.Apis.Calendar.v3, Version=1.35.2.1349, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Calendar.v3.1.35.2.1349\lib\net45\Google.Apis.Calendar.v3.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis.Core, Version=1.35.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.Core.1.35.1\lib\net45\Google.Apis.Core.dll</HintPath>
+    <Reference Include="Google.Apis.Core, Version=1.35.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.Core.1.35.2\lib\net45\Google.Apis.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Google.Apis.PlatformServices, Version=1.35.1.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
-      <HintPath>..\packages\Google.Apis.1.35.1\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
+    <Reference Include="Google.Apis.PlatformServices, Version=1.35.2.0, Culture=neutral, PublicKeyToken=4b01fa6e34db77ab, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Apis.1.35.2\lib\net45\Google.Apis.PlatformServices.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore, Version=2.1.2.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.EntityFrameworkCore.2.1.2\lib\netstandard2.0\Microsoft.EntityFrameworkCore.dll</HintPath>
@@ -176,12 +176,33 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AppSettings.cs" />
+    <Compile Include="Migrations\20180916085830_AddedUsersTable.cs" />
+    <Compile Include="Migrations\20180916085830_AddedUsersTable.designer.cs">
+      <DependentUpon>20180916085830_AddedUsersTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\20180918154527_Added_Property_Google_Calendar_ColorId.cs" />
+    <Compile Include="Migrations\20180918154527_Added_Property_Google_Calendar_ColorId.designer.cs">
+      <DependentUpon>20180918154527_Added_Property_Google_Calendar_ColorId.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Core\Abstractions\IUserManager.cs" />
+    <Compile Include="Models\Core\UserManager.cs" />
+    <Compile Include="Models\DataBase\User.cs" />
+    <Compile Include="Models\DataBase\UserType.cs" />
     <Compile Include="ViewModels\CloseOrderViewModel.cs" />
+    <Compile Include="ViewModels\Converters\AccountTypeConverter.cs" />
     <Compile Include="ViewModels\Converters\CloseOrderTypeConverter.cs" />
+    <Compile Include="ViewModels\Converters\GCColorIdToSolidColorBrush.cs" />
+    <Compile Include="ViewModels\Converters\StringToSolidColorBrushConverter.cs" />
     <Compile Include="ViewModels\EditOrderViewModel.cs" />
     <Compile Include="ViewModels\EquipmentsInStockViewModel.cs" />
+    <Compile Include="ViewModels\RegistrateUserViewModel.cs" />
     <Compile Include="ViewModels\ReturnOrderViewModel.cs" />
     <Compile Include="ViewModels\SearchOrderViewModel.cs" />
+    <Compile Include="ViewModels\UsersViewModel.cs" />
+    <Compile Include="Views\AuthorizeWindow.xaml.cs">
+      <DependentUpon>AuthorizeWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\CloseOrderWindow.xaml.cs">
       <DependentUpon>CloseOrderWindow.xaml</DependentUpon>
     </Compile>
@@ -197,12 +218,22 @@
     <Compile Include="Views\OrdersHistoryWindow.xaml.cs">
       <DependentUpon>OrdersHistoryWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\RegistrateUserWindow.xaml.cs">
+      <DependentUpon>RegistrateUserWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\ReturnOrdersWindow.xaml.cs">
       <DependentUpon>ReturnOrdersWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\SearchOrderWindow.xaml.cs">
       <DependentUpon>SearchOrderWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\UsersWindow.xaml.cs">
+      <DependentUpon>UsersWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="Views\AuthorizeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\CheckEquipmentWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -275,6 +306,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\RegistrateUserWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ReturnOrdersWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -284,6 +319,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\StylesDictionary.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\UsersWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

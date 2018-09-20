@@ -212,6 +212,7 @@ namespace Управление_заказами.ViewModels
             SelectedEquipmentsForCheck.Add(new EquipmentInStock()
             {
                 Name = SelectedEquipment,
+                Category = SelectedCategory,
                 Count = int.Parse(Count),
                 ImageUrl = SelectedImage
             });

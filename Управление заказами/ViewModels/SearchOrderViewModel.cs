@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using Управление_заказами.Models.Core;
@@ -45,6 +46,8 @@ namespace Управление_заказами.ViewModels
 
         private async void CancelOrder(object obj)
         {
+            if(SelectedOrder==null) return;
+            int selectedOrderId = SelectedOrder.Id;
             var window = new ConfirmationWindow();
             window.ConfirmText.Text = "Вы действительно хотите отменить заказ ?";
             if (window.ShowDialog() != true)
@@ -52,7 +55,8 @@ namespace Управление_заказами.ViewModels
                 return;
             }
             EnableProgressBar();
-            await OrderManager.CancelOrderAsync(SelectedOrder.Id);
+            await OrderManager.CancelOrderAsync(selectedOrderId);
+            Refresh();
             DisableProgressBar();
         }
 
@@ -97,6 +101,7 @@ namespace Управление_заказами.ViewModels
                 }
             };
             window.ShowDialog();
+            (obj as Window).Close();
         }
 
         public DateTime StartDate { get; set; } = DateTime.Today;

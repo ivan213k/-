@@ -142,7 +142,7 @@ namespace Управление_заказами.ViewModels
 
         public string CustomerName { get; set; }
 
-        public string SelectetDeliveryType { get; set; }
+        public int SelectedDeliveryTypeIndex { get; set; } = 0;
 
         #region Commands
         public Command AddEquipmentCommand { get; set; }
@@ -183,6 +183,7 @@ namespace Управление_заказами.ViewModels
 
         async void CreateOrder(object parametr)
         {
+            var window = parametr as Window;
             if (SelectedEquipmentsForOrder.Count == 0)
             {
                 MessageBox.Show("Невозможно создать заказ. Оборудование для заказа не выбрано");
@@ -201,14 +202,14 @@ namespace Управление_заказами.ViewModels
 
             Order order = new Order()
             {
-                Adress = SelectetDeliveryType.Contains("Указать адрес") ? this.Adress : "Самовывоз",
+                Adress = SelectedDeliveryTypeIndex == 1 ? this.Adress : "Самовывоз",
                 CreateDate = startDate,
                 CustomerName = CustomerName,
-                Manager = "Manager",
+                Manager = AppSettings.CurrentUserName,
                 MobilePhone = MobilePhone,
                 Note = Note,
-                ReturnDate = endDate,
-                
+                ReturnDate = endDate,  
+                GoogleCalendarColorId = AppSettings.GoogleCalendarColorId
             };
             List<EquipmentFromOrder> equipments = new List<EquipmentFromOrder>();
             foreach (var equipment in SelectedEquipmentsForOrder)
@@ -228,6 +229,8 @@ namespace Управление_заказами.ViewModels
             {
                 EnableProgressBar();
                 await OrderManager.CreateOrderAsync(order);
+                window.Close();
+                MessageBox.Show("Заказ успешно создан");
             }
             catch (ArgumentException e)
             {

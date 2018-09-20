@@ -7,7 +7,7 @@
         xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
         mc:Ignorable="d"
-        Title="Выбор заказа"  Name="Window" fluentWpf:PointerTracker.Enabled="True" fluentWpf:AcrylicWindow.Enabled="True" Height="450" Width="1327.647">
+        Title="Выбор заказа"  Name="Window" WindowStartupLocation="CenterScreen" fluentWpf:PointerTracker.Enabled="True" fluentWpf:AcrylicWindow.Enabled="True" Height="450" Width="1327.647">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoleanToVisibilityConverter" />
     </Window.Resources>

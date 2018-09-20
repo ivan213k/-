@@ -26,13 +26,22 @@ namespace Управление_заказами.ViewModels
 
         public Order SelectedOrder { get; set; }
 
+
         public ReturnOrderViewModel()
         {
             CloseOrderCommand = new Command(CloseOrder);
             CancelOrderCommand = new Command(CancelOrder);
+            SetNoteCommand = new Command(SetNote);
             _orderManager = new OrderManager();
 
             LoadEquipments();
+        }
+
+        private async void SetNote(object obj)
+        {
+            EnableProgressBar();
+            await _orderManager.SetNoteAsync(SelectedOrder.Id, SelectedOrder.Note);
+            DisableProgressBar();
         }
 
         private async void LoadEquipments()
@@ -68,11 +77,14 @@ namespace Управление_заказами.ViewModels
             };
             
             window.ShowDialog();
+            LoadEquipments();
         }
 
         public ICommand CloseOrderCommand { get; set; }
 
         public ICommand CancelOrderCommand { get; set; }
+
+        public ICommand SetNoteCommand { get; set; }
 
         private void DisableProgressBar()
         {

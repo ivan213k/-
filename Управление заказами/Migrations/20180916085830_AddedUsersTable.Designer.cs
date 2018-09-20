@@ -3,14 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Управление_заказами.Models.DataBase;
 
 namespace Управление_заказами.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20180916085830_AddedUsersTable")]
+    partial class AddedUsersTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,8 +103,6 @@ namespace Управление_заказами.Migrations
                     b.Property<string>("CustomerName");
 
                     b.Property<string>("EventId");
-
-                    b.Property<string>("GoogleCalendarColorId");
 
                     b.Property<string>("Manager");
 

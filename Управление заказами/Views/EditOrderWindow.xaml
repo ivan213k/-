@@ -7,7 +7,7 @@
         xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         xmlns:converters="clr-namespace:Управление_заказами.ViewModels.Converters"
         mc:Ignorable="d"
-        Title="Редактирование заказа" Name="Window" ResizeMode="CanMinimize" fluentWpf:AcrylicWindow.Enabled="True" SizeToContent="Height" Width="814.049">
+        Title="Редактирование заказа" WindowStartupLocation="CenterScreen" Name="Window" ResizeMode="CanMinimize" fluentWpf:AcrylicWindow.Enabled="True" SizeToContent="Height" Width="814.049">
     <Window.Resources>
         <Style BasedOn="{StaticResource ButtonRevealStyle}" TargetType="Button">
 

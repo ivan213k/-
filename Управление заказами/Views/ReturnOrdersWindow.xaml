@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Управление_заказами.Views"
         xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
         mc:Ignorable="d"
-        Title="Список возвращенного оборудования" Height="450" Width="1400" fw:AcrylicWindow.Enabled="True">
+        Title="Список возвращенного оборудования" WindowStartupLocation="CenterScreen" Height="450" Width="1400" fw:AcrylicWindow.Enabled="True">
     <Window.Resources>
         <Style BasedOn="{StaticResource ButtonRevealStyle}" TargetType="Button">
 
@@ -97,12 +97,12 @@
                                     <DataGridTextColumn  Binding="{Binding Count}" Header="Количество"/>
                                 </DataGrid.Columns>
                             </DataGrid>
-                            <GroupBox Margin="5 0" fw:PointerTracker.Enabled="True" Grid.Column="1">
-                                <StackPanel>
-                                    <CheckBox Foreground="Azure" FontWeight="Bold"  Name="CheckNote" Width="250" HorizontalContentAlignment="Center" Margin="5" Content="Внести замечания"></CheckBox>
-                                    <TextBox Style="{StaticResource TextBoxRevealStyle}" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}" Text="{Binding Note,Mode=TwoWay}" Width="270" TextWrapping="Wrap" Visibility="{Binding ElementName=CheckNote,Path=IsChecked,Converter={StaticResource BoleanToVisibilityConverter}}" Margin="5" Height="50">
+                            <GroupBox Foreground="White" Header="Примечание"  Margin="5 0" fw:PointerTracker.Enabled="True" Grid.Column="1">
+                                <StackPanel  >
+                                    <TextBox Style="{StaticResource TextBoxRevealStyle}"  Text="{Binding Note,Mode=TwoWay,BindsDirectlyToSource=True, UpdateSourceTrigger=PropertyChanged}" Width="270" TextWrapping="Wrap" Margin="5" Height="50">
 
                                     </TextBox>
+                                    <Button DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}" Command="{Binding SetNoteCommand}" Foreground="White" >Сохранить примечание</Button>
                                 </StackPanel>
 
                             </GroupBox>

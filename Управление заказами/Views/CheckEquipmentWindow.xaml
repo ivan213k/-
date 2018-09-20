@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Управление_заказами.Views"
         xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
         mc:Ignorable="d"
-        Title="Проверка наличия оборудования" Height="600" Width="1100" fw:AcrylicWindow.Enabled="True">
+        Title="Проверка наличия оборудования" WindowStartupLocation="CenterScreen" Height="600" Width="1100" fw:AcrylicWindow.Enabled="True">
     <Window.Resources>
         <Style BasedOn="{StaticResource ButtonRevealStyle}" TargetType="Button">
 

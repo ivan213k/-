@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 using Управление_заказами.Models.Core;
 using Управление_заказами.Models.Core.Abstractions;
@@ -88,6 +89,8 @@ namespace Управление_заказами.ViewModels
                 EnableProgressBar();
                 await orderManager.CloseOrderAsync(Order.Id);
                 DisableProgressBar();
+                (obj as Window).Close();
+                MessageBox.Show("Заказ успешно закрыт");
             }
             else
             {
@@ -108,6 +111,8 @@ namespace Управление_заказами.ViewModels
                 }
                 await orderManager.CloseOrderPartiallyAsync(Order);
                 DisableProgressBar();
+                (obj as Window).Close();
+                MessageBox.Show("Часть заказа успешно закрыто");
             }
         }
 

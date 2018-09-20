@@ -7,7 +7,7 @@
         xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         xmlns:converters="clr-namespace:Управление_заказами.ViewModels.Converters"
         mc:Ignorable="d"
-        Title="Закрытие заказа" Height="307" Width="448" fw:AcrylicWindow.Enabled="True">
+        Title="Закрытие заказа" Name="Window" WindowStartupLocation="CenterScreen" Height="307" Width="605.58" fw:AcrylicWindow.Enabled="True">
     <Window.Resources>
         <Style BasedOn="{StaticResource ButtonRevealStyle}" TargetType="Button">
             <Setter Property="Margin" Value="5"></Setter>
@@ -47,7 +47,7 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button FontWeight="Bold" Foreground="White" Command="{Binding CloseOrderCommand}" CommandParameter="{Binding ElementName=Winow}" Content="Закрыть заказ"></Button>
+            <Button FontWeight="Bold" Foreground="White" Command="{Binding CloseOrderCommand}" CommandParameter="{Binding ElementName=Window}" Content="Закрыть заказ"></Button>
             <Button Click="Button_Click" FontWeight="Bold" Foreground="White" Grid.Column="1" Content="Отмена"></Button>
         </Grid>
         <StackPanel Visibility="{Binding IsDeterminate,Converter={StaticResource BooleanToVisibilityConverter}}"  Grid.Row="3">

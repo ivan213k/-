@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using Управление_заказами.Models.DataBase;
 using Управление_заказами.Views;
 
 namespace Управление_заказами
@@ -46,12 +47,17 @@ namespace Управление_заказами
         private void AvalibleEquipmentButton_OnClick(object sender, RoutedEventArgs e)
         {
             EquipmentInStockWindow window = new EquipmentInStockWindow();
+            if (AppSettings.AccountType != AccountType.Administrator)
+            {
+                window.DataGrid.IsReadOnly = true;
+            }
             window.Show();
         }
 
         private void RegisterUserButton_OnClick(object sender, RoutedEventArgs e)
         {
-            throw new System.NotImplementedException();
+            RegistrateUserWindow window = new RegistrateUserWindow();
+            window.ShowDialog();
         }
     }
 }

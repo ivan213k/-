@@ -194,13 +194,16 @@ namespace Управление_заказами.ViewModels
                     Adress = SelectetDeliveryType.Contains("Указать адрес") ? this.Adress : "Самовывоз",
                     CustomerName = CustomerName,
                     MobilePhone = MobilePhone,
-                    Manager = "Manager",
+                    Manager = AppSettings.CurrentUserName,
                     ReturnDate = returnDate,
                     CreateDate = startDate,
                     Note = Note,
                     Status = OrderStatus.Open,
-                    Equipments = equipmentsForOrder
+                    Equipments = equipmentsForOrder,
+                    GoogleCalendarColorId = AppSettings.GoogleCalendarColorId
                 });
+                (obj as Window).Close();
+                MessageBox.Show("Заказ успешно обновлено");
             }
             catch (Exception e)
             {

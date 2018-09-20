@@ -1,0 +1,76 @@
+﻿<Window x:Class="Управление_заказами.Views.UsersWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Управление_заказами.Views"
+        xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
+        xmlns:converters="clr-namespace:Управление_заказами.ViewModels.Converters"
+        mc:Ignorable="d"
+        Title="Все пользователи" WindowStartupLocation="CenterScreen" fluentWpf:AcrylicWindow.Enabled="True" Height="252" Width="370">
+    <Window.DataContext>
+        <viewModels:UsersViewModel/>
+    </Window.DataContext>
+    <Window.Resources>
+        <converters:AccountTypeConverter x:Key="AccountTypeConverter"/>
+        <converters:GCColorIdToSolidColorBrush x:Key="ColorIdToSolidColorBrush"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DataGrid SelectedValue="{Binding Path=SelectedUser,Mode=OneWayToSource}" IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding Path=Users}"
+                  Style="{StaticResource DatagridStyle}">
+            <DataGrid.InputBindings>
+                <KeyBinding Key="Delete" Command="{Binding Path=RemoveUserCommand}"></KeyBinding>
+            </DataGrid.InputBindings>
+            <DataGrid.Resources>
+                <ContextMenu DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window} , Path=DataContext}" x:Key="RowMenu">
+                    <MenuItem Header="Удалить пользователя" Command="{Binding Path=RemoveUserCommand}"/>
+                </ContextMenu>
+            </DataGrid.Resources>
+            <DataGrid.RowStyle>
+
+                <Style TargetType="DataGridRow">
+                    <Setter Property="ContextMenu" Value="{StaticResource RowMenu}">
+
+                    </Setter>
+                </Style>
+            </DataGrid.RowStyle>
+            <DataGrid.CellStyle>
+                <Style TargetType="DataGridCell">
+                    <Style.Triggers>
+                        <DataTrigger>
+
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.CellStyle>
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Имя" Binding="{Binding Name}"></DataGridTextColumn>
+
+                <DataGridTextColumn Header="Пароль" Binding="{Binding Password}"></DataGridTextColumn>
+                <DataGridTextColumn Header="Уровень доступа"
+                                    Binding="{Binding AccountType,Converter={StaticResource AccountTypeConverter}}">
+                </DataGridTextColumn>
+
+
+
+                <DataGridTemplateColumn Header="Цвет" Width="70">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Background="{Binding Path=GoogleCalendarColorId,Converter={StaticResource ColorIdToSolidColorBrush}}">
+                               
+                            </TextBlock>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+
+            </DataGrid.Columns>
+        </DataGrid>
+        <ProgressBar Grid.Row="1" Visibility="{Binding IsDeterminate,Converter={StaticResource BooleanToVisibilityConverter}}" Foreground="Blue" Margin="0 0 0 5" IsIndeterminate="{Binding IsDeterminate}"  Height="20"></ProgressBar>
+    </Grid>
+</Window>

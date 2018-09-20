@@ -9,10 +9,12 @@ using Управление_заказами.Models.DataBase;
 namespace Управление_заказами.Models.Core
 {
     class OrderManager : IOrderManager
-    {
+    {   
+        private readonly GoogleCalendar Calendar = new GoogleCalendar();
+
         public async Task CreateOrderAsync(Order order)
         {
-            await Task.Factory.StartNew(()=> 
+            await Task.Factory.StartNew(async()=> 
             {
                 using (AppDbContext db = new AppDbContext())
                 {
@@ -22,6 +24,8 @@ namespace Управление_заказами.Models.Core
                         AddEqipmentInRent(equipment, db);
                     }
 
+                    order.EventId = await Calendar.AddEvent(order);
+                    order.ReturnEventId = await Calendar.AddReturnEvent(order);
                     db.OrdersHistory.Add(order);
                     db.OrdersHistory.Include(o => o.Equipments);
                     db.SaveChanges();
@@ -187,7 +191,7 @@ namespace Управление_заказами.Models.Core
 
         public async Task UpdateOrderAsync(int oldOrderId, Order newOrder)
         {
-            await Task.Factory.StartNew(()=> 
+            await Task.Factory.StartNew(async()=> 
             {
                 using (AppDbContext db = new AppDbContext())
                 {
@@ -199,7 +203,18 @@ namespace Управление_заказами.Models.Core
                     {
                         RemoveEquipmentFromRent(equipment, db);
                     }
-                    CreateOrderAsync(newOrder);
+
+                    db.SaveChanges();
+                    foreach (var equipment in newOrder.Equipments)
+                    {
+                        TakeEquipment(equipment, db);
+                        AddEqipmentInRent(equipment, db);
+                    }
+
+                    newOrder.EventId = await Calendar.UpdateEvent(oldOrder,newOrder);
+                    newOrder.ReturnEventId = await Calendar.UpdateReturnEvent(oldOrder,newOrder);
+                    db.OrdersHistory.Add(newOrder);
+                    db.OrdersHistory.Include(o => o.Equipments);
                     db.SaveChanges();
                 }
             });    
@@ -216,6 +231,21 @@ namespace Управление_заказами.Models.Core
                             select order).ToList();
                 }
             }); 
+        }
+
+        public async Task SetNoteAsync(int orderId, string note)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                using (AppDbContext db = new AppDbContext())
+                {
+                    var order = (from _order in db.OrdersHistory
+                        where _order.Id == orderId
+                        select _order).Single();
+                    order.Note = note;
+                    db.SaveChanges();
+                }
+            });
         }
     }
 }

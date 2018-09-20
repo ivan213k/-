@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Управление_заказами.Views"
         xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         mc:Ignorable="d"
-        Title="Окно подтверждения" fluentWpf:AcrylicWindow.Enabled="True" ResizeMode="NoResize" Height="154.249"
+        Title="Окно подтверждения" WindowStartupLocation="CenterScreen" fluentWpf:AcrylicWindow.Enabled="True" ResizeMode="NoResize" Height="154.249"
         Width="397.167">
     <Window.Resources>
         <Style TargetType="Button" BasedOn="{StaticResource ButtonRevealStyle}">

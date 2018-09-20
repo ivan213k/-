@@ -13,6 +13,8 @@ namespace Управление_заказами.Models.DataBase
         
         public DbSet<EquipmentFromOrder> EquipmentsFromOrder { get; set; }
 
+        public DbSet<User> Users { get; set; }
+
         public AppDbContext()
         {
             Database.EnsureCreated();

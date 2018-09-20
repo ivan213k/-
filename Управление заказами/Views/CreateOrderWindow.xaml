@@ -8,7 +8,7 @@
         xmlns:converters="clr-namespace:Управление_заказами.ViewModels.Converters"
         xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
         mc:Ignorable="d"
-        Title="Создание заказа" SizeToContent="Height" ResizeMode="CanMinimize" fw:AcrylicWindow.Enabled="True" Width="852.266">
+        Title="Создание заказа" WindowStartupLocation="CenterScreen" Name="Window" SizeToContent="Height" ResizeMode="CanMinimize" fw:AcrylicWindow.Enabled="True" Width="852.266">
     <Window.Resources>
         <Style BasedOn="{StaticResource ButtonRevealStyle}" TargetType="Button">
 
@@ -84,7 +84,7 @@
 
                     <StackPanel Margin="0 5" Orientation="Horizontal">
                         <TextBlock Margin="5 5 15 5" Text="Тип доставки:"></TextBlock>
-                        <ComboBox SelectedValue="{Binding SelectetDeliveryType,Mode=OneWayToSource}" SelectedIndex="0" Name="TypeDelivery" Width="150">
+                        <ComboBox SelectedIndex="{Binding SelectedDeliveryTypeIndex,Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Name="TypeDelivery" Width="150">
                             <ComboBox.Items>
                                 <ComboBoxItem>Самовывоз</ComboBoxItem>
                                 <ComboBoxItem>Указать адрес</ComboBoxItem>
@@ -115,7 +115,7 @@
 
                         </TextBlock>
                         <DatePicker Text="{Binding StartDate,Mode=TwoWay}"></DatePicker>
-                        <TextBlock Margin="23 5 10 5" Text="Время"></TextBlock>
+                        <TextBlock Margin="25 5 10 5" Text="Время"></TextBlock>
                         <ComboBox Margin="5"  SelectedValue="{Binding StartHour,Mode=TwoWay}" ItemsSource="{Binding Hours}" Width="55">
 
                         </ComboBox>

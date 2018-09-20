@@ -29,6 +29,8 @@ namespace Управление_заказами.Models.DataBase
 
         public string ReturnEventId { get; set; }
 
+        public string GoogleCalendarColorId { get; set; }
+
         public List<EquipmentFromOrder> Equipments { get; set; }
 
         public override string ToString()

@@ -7,7 +7,7 @@
         xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
         mc:Ignorable="d"
-        Title="Оборудования на складе" fluentWpf:AcrylicWindow.Enabled="True" Height="450" Width="983">
+        Title="Оборудования на складе" WindowStartupLocation="CenterScreen" fluentWpf:AcrylicWindow.Enabled="True" Height="450" Width="983">
     <Window.DataContext>
         <viewModels:EquipmentsInStockViewModel/>
     </Window.DataContext>

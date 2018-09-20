@@ -18,5 +18,6 @@ namespace Управление_заказами.Models.Core.Abstractions
 
         Task<List<Order>> GetActiveOrdersAsync();
 
+        Task SetNoteAsync(int orderId, string note);
     }
 }
