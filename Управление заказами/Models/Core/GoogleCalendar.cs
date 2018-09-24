@@ -54,17 +54,8 @@ namespace Управление_заказами.Models.Core
         public async Task<string> UpdateEvent(Order oldOrder, Order newOrder)
         {
             var service = await GetService();
-            try
-            {
-                var events = service.Events.List("primary").Execute();
-               await service.Events.Delete("primary", oldOrder.EventId).ExecuteAsync();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
             
+            await service.Events.Delete("primary", oldOrder.EventId).ExecuteAsync();
             Event startEvent = CreateEvent(newOrder, newOrder.GoogleCalendarColorId);
             return (await service.Events.Insert(startEvent, "primary").ExecuteAsync()).Id;
         }
