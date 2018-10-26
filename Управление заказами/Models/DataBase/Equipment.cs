@@ -25,5 +25,7 @@ namespace Управление_заказами.Models.DataBase
             }
         }
 
+        //public decimal ReplacmentCost { get; set; }
+
     }
 }

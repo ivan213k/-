@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Globalization;
 using System.Linq;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Input;
 using Управление_заказами.Models.Core;
 using Управление_заказами.Models.Core.Abstractions;
@@ -66,7 +68,7 @@ namespace Управление_заказами.ViewModels
                 SelectedEquipments = (from equipments in Equipments
                                       where equipments.Category == value
                                       select equipments.Name).ToList();
-
+                OnePropertyChanged();
             }
         }
 
@@ -92,11 +94,28 @@ namespace Управление_заказами.ViewModels
                                  where eq.Name == value
                                  select eq.ImageUrl).FirstOrDefault();
                 AddEquipmentCommand.OneExecuteChaneged();
+                OnePropertyChanged();
             }
         }
 
 
-        public string Count { get; set; } = "1";
+        private string count = "1";
+        public string Count
+        {
+            get => count;
+            set
+            {
+                if (!int.TryParse(value, out int result)) return;
+                count = value;
+                OnePropertyChanged();
+                if (SelectedEquipmentForOrder != null && SelectedEquipment == SelectedEquipmentForOrder.Name && SelectedEquipmentForOrder.Count != int.Parse(value))
+                {
+                    SelectedEquipmentForOrder.Count = int.Parse(value);
+                    ICollectionView view = CollectionViewSource.GetDefaultView(SelectedEquipmentsForOrder);
+                    view.Refresh();
+                }
+            }
+        }
 
         public string StartDate { get; set; } 
 
@@ -123,8 +142,6 @@ namespace Управление_заказами.ViewModels
                 31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59
             };
 
-        public int SelectedIndex { get; set; }
-
         string selectedImage;
         public string SelectedImage
         {
@@ -137,6 +154,25 @@ namespace Управление_заказами.ViewModels
         }
 
         public ObservableCollection<EquipmentInStock> SelectedEquipmentsForOrder { get; set; } = new ObservableCollection<EquipmentInStock>();
+
+        private EquipmentInStock selectedEquipmentForOrder;
+        public EquipmentInStock SelectedEquipmentForOrder
+        {
+            get => selectedEquipmentForOrder;
+            set
+            {
+                selectedEquipmentForOrder = value;
+                OnePropertyChanged();
+
+                if (value != null)
+                {
+                    Count = value.Count.ToString();
+                    SelectedCategory = value.Category;
+                    SelectedEquipment = value.Name;
+
+                }
+            }
+        }
 
         public string Adress { get; set; }
 
@@ -153,9 +189,9 @@ namespace Управление_заказами.ViewModels
 
         private void RevoveEquipment(object obj)
         {
-            if (SelectedIndex != -1)
+            if (SelectedEquipmentForOrder != null)
             {
-                SelectedEquipmentsForOrder.RemoveAt(SelectedIndex);
+                SelectedEquipmentsForOrder.Remove(SelectedEquipmentForOrder);
                 AddEquipmentCommand.OneExecuteChaneged();
             }
         }

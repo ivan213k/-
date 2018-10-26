@@ -45,7 +45,7 @@
 
 
                 <GroupBox Margin="5"  Header="Список оборудования" Width="429"  >
-                    <ListView  SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding SelectedEquipmentsForOrder}" Margin="10,5,7,5" MinWidth="100">
+                    <ListView  SelectedValue="{Binding SelectedEquipmentForOrder}" ItemsSource="{Binding SelectedEquipmentsForOrder}" Margin="10,5,7,5" MinWidth="100">
                         <ListView.ContextMenu>
                             <ContextMenu>
                                 <MenuItem Header="Удалить" Command="{Binding RemoveEquipmentCommand}"></MenuItem>

@@ -7,6 +7,9 @@ using Управление_заказами.Models.Core;
 using Управление_заказами.Models.Core.Abstractions;
 using Управление_заказами.Models.DataBase;
 using Управление_заказами.Views;
+using System.Collections.Specialized;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace Управление_заказами.ViewModels
 {
@@ -35,6 +38,12 @@ namespace Управление_заказами.ViewModels
             GoToCreateOrderCommand = new Command(GoToCreateOrder,CanGoToCreateOrder);
             EquipmentInfo = new EquipmentInfo();
             LoadEquipments();
+            SelectedEquipmentsForCheck.CollectionChanged += SelectedEquipmentsForCheck_CollectionChanged;
+        }
+
+        private void SelectedEquipmentsForCheck_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            Check(null);
         }
 
         async void LoadEquipments()
@@ -90,6 +99,7 @@ namespace Управление_заказами.ViewModels
                 SelectedEquipments = (from equipments in Equipments
                                       where equipments.Category == value
                                       select equipments.Name).ToList();
+                OnePropertyChanged();
             }
         }
 
@@ -103,6 +113,7 @@ namespace Управление_заказами.ViewModels
                                  where eq.Name == value
                                  select eq.ImageUrl).FirstOrDefault();
                 AddEquipmentCommand.OneExecuteChaneged();
+                OnePropertyChanged();
             }
         }
 
@@ -127,19 +138,91 @@ namespace Управление_заказами.ViewModels
             }
         }
 
-        public string Count { get; set; } = "1";
+        private string count = "1";
 
-        public string StartDate { get; set; } = DateTime.Now.ToString(new CultureInfo("uk-Ua"));
+        public string Count
+        {
+            get => count;
+            set
+            {
+                if(!int.TryParse(value,out int result)) return;
+                count = value;
+                OnePropertyChanged();
+                if (SelectedEquipmentForCheck!=null && SelectedEquipment == SelectedEquipmentForCheck.Name && SelectedEquipmentForCheck.Count!=int.Parse(value))
+                {
+                    SelectedEquipmentForCheck.Count = int.Parse(value);
+                    ICollectionView view = CollectionViewSource.GetDefaultView(SelectedEquipmentsForCheck);
+                    view.Refresh();
+                    Check(null);
+                }
+            }
+        }
 
-        public string EndDate { get; set; } = DateTime.Now.AddDays(1).ToString(new CultureInfo("uk-Ua"));
+        private string startDate = DateTime.Now.ToString(new CultureInfo("uk-Ua"));
+        public string StartDate
+        {
+            get => startDate;
+            set
+            {
+                startDate = value;
+                Check(null);
+            }
+        } 
 
-        public int StartHour { get; set; } = DateTime.Now.Hour;
+        string endDate = DateTime.Now.AddDays(1).ToString(new CultureInfo("uk-Ua"));
+        public string EndDate
+        {
+            get => endDate;
+            set
+            {
+                endDate = value;
+                Check(null);
+            }
+        } 
 
-        public int EndHour { get; set; } = DateTime.Now.Hour;
+        int startHour = DateTime.Now.Hour;
+        public int StartHour
+        {
+            get => startHour;
+            set
+            {
+                startHour = value;
+                Check(null);
+            }
+        }
 
-        public int StartMinute { get; set; } = DateTime.Now.Minute;
+        int endHour = DateTime.Now.Hour;
+        public int EndHour
+        {
+            get => endHour;
+            set
+            {
+                endHour = value;
+                Check(null);
+            }
+        }
 
-        public int EndMinute { get; set; } = DateTime.Now.Minute;
+        private int startMinute = DateTime.Now.Minute;
+        public int StartMinute
+        {
+            get => startMinute;
+            set
+            {
+                startMinute = value;
+                Check(null);
+            }
+        }
+
+        int endMinute = DateTime.Now.Minute;
+        public int EndMinute
+        {
+            get => endMinute;
+            set
+            {
+                endMinute = value;
+                Check(null);
+            }
+        }  
 
         public List<int> Hours { get; set; }
             = new List<int>()
@@ -166,7 +249,24 @@ namespace Управление_заказами.ViewModels
             }
         }
 
-        public int SelectedIndex { get; set; }
+        private EquipmentInStock selectedEquipmentForCheck;
+        public EquipmentInStock SelectedEquipmentForCheck
+        {
+            get => selectedEquipmentForCheck;
+            set
+            {
+                selectedEquipmentForCheck = value;
+                OnePropertyChanged();
+
+                if (value != null)
+                {
+                    Count = value.Count.ToString();
+                    SelectedCategory = value.Category;
+                    SelectedEquipment = value.Name;
+
+                }
+            }
+        }
 
         bool isEnabled;
         public bool IsEnabled
@@ -313,8 +413,12 @@ namespace Управление_заказами.ViewModels
 
         void RemoveEquipment(object parametr)
         {
-            if (SelectedIndex != -1)
-                SelectedEquipmentsForCheck.RemoveAt(SelectedIndex);
+            if (SelectedEquipmentForCheck != null)
+            {
+                SelectedEquipmentsForCheck.Remove(SelectedEquipmentForCheck);
+                AddEquipmentCommand.OneExecuteChaneged();
+            }
+
         }
     }
 }

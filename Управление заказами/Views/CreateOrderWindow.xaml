@@ -50,7 +50,7 @@
                 </StackPanel>
             </GroupBox>
             <GroupBox MinHeight="150"  Margin="5"  Header="Список оборудования" Width="450"  >
-                <ListView   SelectedIndex="{Binding SelectedIndex}" ItemsSource="{Binding SelectedEquipmentsForOrder}">
+                <ListView   SelectedValue="{Binding SelectedEquipmentForOrder}" ItemsSource="{Binding SelectedEquipmentsForOrder}">
                     <ListView.InputBindings>
                         <KeyBinding Key="Delete" Command="{Binding RemoveEquipmentCommand}">
 

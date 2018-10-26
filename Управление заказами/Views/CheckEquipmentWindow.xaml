@@ -20,7 +20,7 @@
     <Window.DataContext>
         <viewModels:CheckEquipmentViewModel/>
     </Window.DataContext>
-    <Grid IsEnabled="{Binding IsEnabled}" fw:PointerTracker.Enabled="True">
+    <Grid fw:PointerTracker.Enabled="True">
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
             <RowDefinition/>
@@ -39,7 +39,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="5" Text="Оборудование"></TextBlock>
-                        <ComboBox IsTextSearchEnabled="True"  SelectedIndex="{Binding SelectedEquipmentIndex,Mode=OneWayToSource}" SelectedValue="{Binding SelectedEquipment}" ItemsSource="{Binding SelectedEquipments}" Margin="5" MinWidth="100" Width="321" Height="25"></ComboBox>
+                        <ComboBox IsTextSearchEnabled="True"  SelectedIndex="{Binding SelectedEquipmentIndex,Mode=OneWayToSource}" SelectedValue="{Binding SelectedEquipment,Mode=TwoWay}" ItemsSource="{Binding SelectedEquipments}" Margin="5" MinWidth="100" Width="321" Height="25"></ComboBox>
                     </StackPanel>
 
                     <StackPanel Orientation="Horizontal">
@@ -80,7 +80,7 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
 
-                    <ListView SelectedIndex="{Binding SelectedIndex,Mode=TwoWay}" Name="ListView" ItemsSource="{Binding SelectedEquipmentsForCheck}" >
+                    <ListView SelectedValue="{Binding SelectedEquipmentForCheck,Mode=TwoWay}" Name="ListView" ItemsSource="{Binding SelectedEquipmentsForCheck}" >
                         <ListView.InputBindings>
                             <KeyBinding Key="Delete" Command="{Binding RemoveEquipmentCommand}">
 
