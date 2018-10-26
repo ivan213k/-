@@ -40,6 +40,7 @@
                 <DataGridTextColumn Header="Категория" Binding="{Binding Category,Mode=TwoWay}"/>
                 <DataGridTextColumn Header="Название оборудования" Binding="{Binding Name,Mode=TwoWay}"/>
                 <DataGridTextColumn Header="Количество" Binding="{Binding TotalCount,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Восстановительная стоимость" Binding="{Binding ReplacmentCost,UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
                 <DataGridTextColumn Width="200" Header="Примечание" Binding="{Binding Note,Mode=TwoWay}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>

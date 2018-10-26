@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Управление_заказами.Migrations
 {
-    public partial class InitialMigration : Migration
+    public partial class InitialMg : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -58,11 +58,28 @@ namespace Управление_заказами.Migrations
                     Status = table.Column<int>(nullable: false),
                     Note = table.Column<string>(nullable: true),
                     EventId = table.Column<string>(nullable: true),
-                    ReturnEventId = table.Column<string>(nullable: true)
+                    ReturnEventId = table.Column<string>(nullable: true),
+                    GoogleCalendarColorId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrdersHistory", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true),
+                    GoogleCalendarColorId = table.Column<string>(nullable: true),
+                    AccountType = table.Column<int>(nullable: false),
+                    Password = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -74,6 +91,8 @@ namespace Управление_заказами.Migrations
                     Category = table.Column<string>(nullable: true),
                     Name = table.Column<string>(nullable: true),
                     Count = table.Column<int>(nullable: false),
+                    StartDate = table.Column<DateTime>(nullable: false),
+                    EndDate = table.Column<DateTime>(nullable: false),
                     EquipmentFromOrderKey = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
@@ -103,6 +122,9 @@ namespace Управление_заказами.Migrations
 
             migrationBuilder.DropTable(
                 name: "EquipmentsInStock");
+
+            migrationBuilder.DropTable(
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "OrdersHistory");

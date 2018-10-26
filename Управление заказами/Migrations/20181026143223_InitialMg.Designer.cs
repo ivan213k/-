@@ -10,8 +10,8 @@ using Управление_заказами.Models.DataBase;
 namespace Управление_заказами.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20180904170603_AddedDateProperty")]
-    partial class AddedDateProperty
+    [Migration("20181026143223_InitialMg")]
+    partial class InitialMg
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -104,6 +104,8 @@ namespace Управление_заказами.Migrations
 
                     b.Property<string>("EventId");
 
+                    b.Property<string>("GoogleCalendarColorId");
+
                     b.Property<string>("Manager");
 
                     b.Property<string>("MobilePhone");
@@ -119,6 +121,25 @@ namespace Управление_заказами.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("OrdersHistory");
+                });
+
+            modelBuilder.Entity("Управление_заказами.Models.DataBase.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AccountType");
+
+                    b.Property<string>("GoogleCalendarColorId");
+
+                    b.Property<string>("Name");
+
+                    b.Property<string>("Password");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("Управление_заказами.Models.DataBase.EquipmentFromOrder", b =>

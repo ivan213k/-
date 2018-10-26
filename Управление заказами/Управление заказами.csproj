@@ -180,14 +180,15 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AppSettings.cs" />
-    <Compile Include="Migrations\20180916085830_AddedUsersTable.cs" />
-    <Compile Include="Migrations\20180916085830_AddedUsersTable.designer.cs">
-      <DependentUpon>20180916085830_AddedUsersTable.cs</DependentUpon>
+    <Compile Include="Migrations\20181026143223_InitialMg.cs" />
+    <Compile Include="Migrations\20181026143223_InitialMg.designer.cs">
+      <DependentUpon>20181026143223_InitialMg.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\20180918154527_Added_Property_Google_Calendar_ColorId.cs" />
-    <Compile Include="Migrations\20180918154527_Added_Property_Google_Calendar_ColorId.designer.cs">
-      <DependentUpon>20180918154527_Added_Property_Google_Calendar_ColorId.cs</DependentUpon>
+    <Compile Include="Migrations\20181026143453_AddedReplacmentCostProperty.cs" />
+    <Compile Include="Migrations\20181026143453_AddedReplacmentCostProperty.designer.cs">
+      <DependentUpon>20181026143453_AddedReplacmentCostProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
     <Compile Include="Models\Core\Abstractions\IUserManager.cs" />
     <Compile Include="Models\Core\UserManager.cs" />
     <Compile Include="Models\DataBase\User.cs" />
@@ -269,15 +270,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Migrations\20180903174954_InitialMigration.cs" />
-    <Compile Include="Migrations\20180903174954_InitialMigration.designer.cs">
-      <DependentUpon>20180903174954_InitialMigration.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\20180904170603_AddedDateProperty.cs" />
-    <Compile Include="Migrations\20180904170603_AddedDateProperty.designer.cs">
-      <DependentUpon>20180904170603_AddedDateProperty.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
     <Compile Include="Models\Core\Abstractions\IEquipmentInfo.cs" />
     <Compile Include="Models\Core\Abstractions\IOrderManager.cs" />
     <Compile Include="Models\Core\EquipmentInfo.cs" />

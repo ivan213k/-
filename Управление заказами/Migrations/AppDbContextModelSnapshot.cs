@@ -35,6 +35,8 @@ namespace Управление_заказами.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<decimal>("ReplacmentCost");
+
                     b.Property<DateTime>("StartDate");
 
                     b.HasKey("Id");
@@ -58,6 +60,8 @@ namespace Управление_заказами.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<decimal>("ReplacmentCost");
+
                     b.Property<DateTime>("StartDate");
 
                     b.HasKey("Id");
@@ -80,6 +84,8 @@ namespace Управление_заказами.Migrations
                     b.Property<string>("Name");
 
                     b.Property<string>("Note");
+
+                    b.Property<decimal>("ReplacmentCost");
 
                     b.Property<int>("TotalCount");
 

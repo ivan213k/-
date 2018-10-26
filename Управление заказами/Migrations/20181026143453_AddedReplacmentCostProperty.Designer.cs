@@ -10,8 +10,8 @@ using Управление_заказами.Models.DataBase;
 namespace Управление_заказами.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20180918154527_Added_Property_Google_Calendar_ColorId")]
-    partial class Added_Property_Google_Calendar_ColorId
+    [Migration("20181026143453_AddedReplacmentCostProperty")]
+    partial class AddedReplacmentCostProperty
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,6 +37,8 @@ namespace Управление_заказами.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<decimal>("ReplacmentCost");
+
                     b.Property<DateTime>("StartDate");
 
                     b.HasKey("Id");
@@ -60,6 +62,8 @@ namespace Управление_заказами.Migrations
 
                     b.Property<string>("Name");
 
+                    b.Property<decimal>("ReplacmentCost");
+
                     b.Property<DateTime>("StartDate");
 
                     b.HasKey("Id");
@@ -82,6 +86,8 @@ namespace Управление_заказами.Migrations
                     b.Property<string>("Name");
 
                     b.Property<string>("Note");
+
+                    b.Property<decimal>("ReplacmentCost");
 
                     b.Property<int>("TotalCount");
 
