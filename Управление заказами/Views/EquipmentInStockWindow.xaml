@@ -29,17 +29,25 @@
         <StackPanel>
             <Button Command="{Binding AddEquipmentCommand}" Margin="5" Content="Добавить новое оборудование"></Button>
         </StackPanel>
-   
+
         <DataGrid Grid.Row="1" CanUserDeleteRows="False" CanUserAddRows="False" Name="DataGrid" CellEditEnding="DataGrid_CellEditEnding" Style="{StaticResource DatagridStyle}"
-                  AutoGenerateColumns="False" ItemsSource="{Binding Equipments,Mode=TwoWay}">
+                  AutoGenerateColumns="False" SelectedValue="{Binding SelectedEquipment}" ItemsSource="{Binding Equipments,Mode=TwoWay}">
+            <DataGrid.Resources>
+                <ContextMenu  x:Key="RowMenu" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}">
+                    <MenuItem Header="Удалить оборудование" Command="{Binding DeleteEquipmentCommand}"/>
+                </ContextMenu>
+            </DataGrid.Resources>
             <DataGrid.RowStyle>
+
                 <Style TargetType="DataGridRow">
                     <Setter Property="ToolTip">
                         <Setter.Value>
                             <Image Width="150" Height="150" Stretch="UniformToFill" Source="{Binding ImageUrl}" />
                         </Setter.Value>
                     </Setter>
+                    <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
                 </Style>
+
             </DataGrid.RowStyle>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Категория" Binding="{Binding Category,Mode=TwoWay}"/>
@@ -48,6 +56,11 @@
                 <DataGridTextColumn Header="Восстановительная стоимость" Binding="{Binding ReplacmentCost,UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
                 <DataGridTextColumn Width="200" Header="Примечание" Binding="{Binding Note,Mode=TwoWay}"></DataGridTextColumn>
             </DataGrid.Columns>
+            <!--<DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Удалить оборудование" Command="{Binding DeleteEquipmentCommand}"></MenuItem>
+                </ContextMenu>
+            </DataGrid.ContextMenu>-->
         </DataGrid>
         <StackPanel Visibility="{Binding IsDeterminate,Converter={StaticResource BoleanToVisibilityConverter}}"  Grid.Row="3">
             <TextBlock Margin="10 0" Text="Подключение к базе данных"></TextBlock>

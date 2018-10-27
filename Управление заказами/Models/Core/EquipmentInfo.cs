@@ -79,5 +79,17 @@ namespace Управление_заказами.Models.Core
                 }
             });
         }
+
+        public async Task DeleteEquipment(EquipmentInStock equipment)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                using (AppDbContext db = new AppDbContext())
+                {
+                    db.EquipmentsInStock.Remove(equipment);
+                    db.SaveChanges();
+                }
+            });
+        }
     }
 }

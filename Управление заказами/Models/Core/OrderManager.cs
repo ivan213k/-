@@ -130,7 +130,9 @@ namespace Управление_заказами.Models.Core
         {
             var equipmentInStock = (from equipment in db.EquipmentsInStock
                                                    where equipment.Name == name
-                                    select equipment).Single();
+                                    select equipment).SingleOrDefault();
+
+            if (equipmentInStock!=null)
             equipmentInStock.Count += count;
         }
 

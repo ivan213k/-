@@ -17,7 +17,25 @@ namespace Управление_заказами.ViewModels
             EquipmentInfo = new EquipmentInfo();
             SaveChangesCommand = new Command(SaveChanges);
             AddEquipmentCommand = new Command(AddEquipment);
-            Refresh();
+            DeleteEquipmentCommand = new Command(DeleteEquipment);
+           Refresh();
+        }
+
+        private async void DeleteEquipment(object obj)
+        {
+            if (SelectedEquipment!=null)
+            {
+                ConfirmationWindow window = new ConfirmationWindow();
+                window.ConfirmText.Text = $"Вы действительно хотите удалить \"{SelectedEquipment.Name}\" {SelectedEquipment.Count} шт. ?";
+                
+                if (window.ShowDialog() == true)
+                {
+                    EnableProgressBar();
+                    await EquipmentInfo.DeleteEquipment(SelectedEquipment);
+                    DisableProgressBar();
+                    Refresh();
+                }
+            }
         }
 
         private void AddEquipment(object obj)
@@ -45,9 +63,13 @@ namespace Управление_заказами.ViewModels
             }
         }
 
+        public EquipmentInStock SelectedEquipment { get; set; }
+
         public ICommand SaveChangesCommand { get; set; }
 
         public ICommand AddEquipmentCommand { get; set; }
+
+        public ICommand DeleteEquipmentCommand { get; set; }
 
         async void SaveChanges(object parametr)
         {

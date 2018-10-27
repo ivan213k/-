@@ -16,5 +16,7 @@ namespace Управление_заказами.Models.Core.Abstractions
         Task UpdateEquipmentsRange(List<EquipmentInStock> equipments);
 
         Task AddEquipment(EquipmentInStock equipment);
+
+        Task DeleteEquipment(EquipmentInStock equipment);
     }
 }
