@@ -4,6 +4,7 @@ using System.Windows.Input;
 using Управление_заказами.Models.Core;
 using Управление_заказами.Models.Core.Abstractions;
 using Управление_заказами.Models.DataBase;
+using Управление_заказами.Views;
 
 namespace Управление_заказами.ViewModels
 {
@@ -15,6 +16,14 @@ namespace Управление_заказами.ViewModels
         {
             EquipmentInfo = new EquipmentInfo();
             SaveChangesCommand = new Command(SaveChanges);
+            AddEquipmentCommand = new Command(AddEquipment);
+            Refresh();
+        }
+
+        private void AddEquipment(object obj)
+        {
+            AddEquipmentWindow window = new AddEquipmentWindow();
+            window.ShowDialog();
             Refresh();
         }
 
@@ -37,6 +46,8 @@ namespace Управление_заказами.ViewModels
         }
 
         public ICommand SaveChangesCommand { get; set; }
+
+        public ICommand AddEquipmentCommand { get; set; }
 
         async void SaveChanges(object parametr)
         {

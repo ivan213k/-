@@ -59,5 +59,25 @@ namespace Управление_заказами.Models.Core
             });
                
         }
+
+        public async Task AddEquipment(EquipmentInStock equipment)
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                using (AppDbContext db = new AppDbContext())
+                {
+                    var equipmentInStock = (from _equipment in db.EquipmentsInStock
+                        where _equipment.Name == equipment.Name
+                        select _equipment).SingleOrDefault();
+                    if (equipmentInStock != null)
+                    {
+                        throw new ArgumentException("Such equipment already exists");
+                    }
+
+                    db.EquipmentsInStock.Add(equipment);
+                    db.SaveChanges();
+                }
+            });
+        }
     }
 }

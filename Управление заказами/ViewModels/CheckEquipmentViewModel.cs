@@ -284,9 +284,10 @@ namespace Управление_заказами.ViewModels
         private string _selectedEquipment;
         private List<EquipmentInStock> _equipments;
 
-        bool isDeterminate;
+        
         private List<AvailabilityEquipment> _checkResult;
 
+        bool isDeterminate;
         public bool IsDeterminate
         {
             get => isDeterminate;

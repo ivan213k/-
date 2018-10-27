@@ -21,11 +21,16 @@
     </Window.Resources>
     <Grid fluentWpf:PointerTracker.Enabled="True">
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition/>
             <RowDefinition Height="auto"/>
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
-        <DataGrid CanUserDeleteRows="False" Name="DataGrid" CellEditEnding="DataGrid_CellEditEnding" Style="{StaticResource DatagridStyle}"
+        <StackPanel>
+            <Button Command="{Binding AddEquipmentCommand}" Margin="5" Content="Добавить новое оборудование"></Button>
+        </StackPanel>
+   
+        <DataGrid Grid.Row="1" CanUserDeleteRows="False" CanUserAddRows="False" Name="DataGrid" CellEditEnding="DataGrid_CellEditEnding" Style="{StaticResource DatagridStyle}"
                   AutoGenerateColumns="False" ItemsSource="{Binding Equipments,Mode=TwoWay}">
             <DataGrid.RowStyle>
                 <Style TargetType="DataGridRow">
@@ -44,10 +49,10 @@
                 <DataGridTextColumn Width="200" Header="Примечание" Binding="{Binding Note,Mode=TwoWay}"></DataGridTextColumn>
             </DataGrid.Columns>
         </DataGrid>
-        <StackPanel Visibility="{Binding IsDeterminate,Converter={StaticResource BoleanToVisibilityConverter}}"  Grid.Row="2">
+        <StackPanel Visibility="{Binding IsDeterminate,Converter={StaticResource BoleanToVisibilityConverter}}"  Grid.Row="3">
             <TextBlock Margin="10 0" Text="Подключение к базе данных"></TextBlock>
             <ProgressBar Foreground="Blue" Margin="0 0 0 5" IsIndeterminate="{Binding IsDeterminate}"  Height="20"></ProgressBar>
         </StackPanel>
-        <Button Command="{Binding SaveChangesCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" Visibility="Collapsed" Name="SaveChanges" Grid.Row="1" Content="Cохранить изминения" ></Button>
+        <Button Command="{Binding SaveChangesCommand}" CommandParameter="{Binding RelativeSource={RelativeSource Mode=Self}}" Visibility="Collapsed" Name="SaveChanges" Grid.Row="2" Content="Cохранить изминения" ></Button>
     </Grid>
 </Window>

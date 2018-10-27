@@ -1,0 +1,77 @@
+﻿<Window x:Class="Управление_заказами.Views.AddEquipmentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:Управление_заказами.Views"
+        mc:Ignorable="d"
+        xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        xmlns:viewmodels="clr-namespace:Управление_заказами.ViewModels"
+        Title="Добавление оборудования" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize" fw:AcrylicWindow.Enabled="True" SizeToContent="Height" Width="515.288" fw:PointerTracker.Enabled="True">
+    <Window.Resources>
+        <Style TargetType="TextBox" BasedOn="{StaticResource TextBoxRevealStyle}">
+            <Setter Property="Margin" Value="5"></Setter>
+        </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="Margin" Value="5"></Setter>
+            <Setter Property="TextAlignment" Value="Center"></Setter>
+        </Style>
+    </Window.Resources>
+    <Window.DataContext>
+        <viewmodels:AddEquipmentViewModel/>
+    </Window.DataContext>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Категория:"/>
+            <ComboBox Margin="5" Grid.Column="1" IsTextSearchEnabled="True" IsEditable="True" ItemsSource="{Binding Categories}" Text="{Binding SelectedCategory,Mode=OneWayToSource}">
+                <ComboBox.Triggers>
+                    <EventTrigger RoutedEvent="TextBoxBase.TextChanged">
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <BooleanAnimationUsingKeyFrames Storyboard.TargetProperty="IsDropDownOpen">
+                                    <DiscreteBooleanKeyFrame Value="True" KeyTime="0:0:0"/>
+                                </BooleanAnimationUsingKeyFrames>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </ComboBox.Triggers>
+            </ComboBox>
+
+            <TextBlock Grid.Row="1" Text="Имя оборудования:"/>
+            <TextBox Text="{Binding EquipmentName}" Grid.Row="1" Grid.Column="1" ></TextBox>
+
+
+            <TextBlock Grid.Row="2" Text="Количество:"/>
+            <xctk:IntegerUpDown Value="{Binding Count}" TextAlignment="Left" Minimum="0" Grid.Row="2" Grid.Column="1" Margin="5" Width="70" HorizontalAlignment="Left" DisplayDefaultValueOnEmptyText="True" DefaultValue="1"></xctk:IntegerUpDown>
+
+            <TextBlock Grid.Row="3" Text="Восстановительная стоимость:"/>
+            <xctk:DecimalUpDown Value="{Binding ReplacmentCost}" Minimum="0" Grid.Row="3" Grid.Column="1" Margin="5" Width="70" TextAlignment="Left" HorizontalAlignment="Left" DefaultValue="0" DisplayDefaultValueOnEmptyText="True" ></xctk:DecimalUpDown>
+
+            <TextBlock Grid.Row="4" Text="Ссылка на изображение:"/>
+            <TextBox Text="{Binding ImageUrl,Mode=OneWayToSource,UpdateSourceTrigger=PropertyChanged}" Grid.Row="4" Grid.Column="1" ></TextBox>
+            <Image MaxHeight="120" Source="{Binding ImageUrl}" Grid.Row="5"  Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+        </Grid>
+        <Button Command="{Binding AddEquipmentCommand}" Foreground="White" FontWeight="Bold" Grid.Row="1" Style="{StaticResource ButtonRevealStyle}" Margin="5" Content="Добавить оборудование"></Button>
+        <StackPanel Visibility="{Binding IsDeterminate,Converter={StaticResource BooleanToVisibilityConverter}}"  Grid.Row="2">
+            <ProgressBar Foreground="Blue" Margin="0 0 0 5" IsIndeterminate="{Binding IsDeterminate}"  Height="20"></ProgressBar>
+        </StackPanel>
+    </Grid>
+</Window>

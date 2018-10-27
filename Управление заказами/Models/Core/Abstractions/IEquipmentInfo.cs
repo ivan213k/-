@@ -14,5 +14,7 @@ namespace Управление_заказами.Models.Core.Abstractions
         Task<int> GetAvalibleCountAsync(string equipmentName, DateTime startDate, DateTime endDate);
 
         Task UpdateEquipmentsRange(List<EquipmentInStock> equipments);
+
+        Task AddEquipment(EquipmentInStock equipment);
     }
 }
