@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Управление_заказами.Models.Core;
@@ -18,16 +19,16 @@ namespace Управление_заказами.ViewModels
             SaveChangesCommand = new Command(SaveChanges);
             AddEquipmentCommand = new Command(AddEquipment);
             DeleteEquipmentCommand = new Command(DeleteEquipment);
-           Refresh();
+            Refresh();
         }
 
         private async void DeleteEquipment(object obj)
         {
-            if (SelectedEquipment!=null)
+            if (SelectedEquipment != null)
             {
                 ConfirmationWindow window = new ConfirmationWindow();
                 window.ConfirmText.Text = $"Вы действительно хотите удалить \"{SelectedEquipment.Name}\" {SelectedEquipment.Count} шт. ?";
-                
+
                 if (window.ShowDialog() == true)
                 {
                     EnableProgressBar();
@@ -49,17 +50,41 @@ namespace Управление_заказами.ViewModels
         {
             EnableProgressBar();
             Equipments = await EquipmentInfo.GetEquipmentsAsync();
+            Categories = (from equipment in equipments
+                          select equipment.Category).Distinct().ToList();
             DisableProgressBar();
         }
 
         List<EquipmentInStock> equipments;
         public List<EquipmentInStock> Equipments
         {
-            get => equipments;
+            get { return equipments; }
             set
             {
                 equipments = value;
                 OnePropertyChanged();
+            }
+        }
+
+        public List<string> Categories
+        {
+            get => _categories;
+            set
+            {
+                _categories = value;
+                OnePropertyChanged();
+            }
+        }
+
+        public string SelectedCategory
+        {
+            get => _selectedCategory;
+            set
+            {
+                _selectedCategory = value;
+                Equipments = (from equipment in Equipments
+                    where equipment.Category == value
+                    select equipment).ToList();
             }
         }
 
@@ -80,6 +105,7 @@ namespace Управление_заказами.ViewModels
             button.Visibility = System.Windows.Visibility.Collapsed;
         }
 
+        #region HelpMembers
         private void DisableProgressBar()
         {
             IsEnabled = true;
@@ -105,6 +131,8 @@ namespace Управление_заказами.ViewModels
         }
 
         bool isDeterminate;
+        private List<string> _categories;
+        private string _selectedCategory;
 
         public bool IsDeterminate
         {
@@ -115,5 +143,6 @@ namespace Управление_заказами.ViewModels
                 OnePropertyChanged();
             }
         }
+        #endregion
     }
 }

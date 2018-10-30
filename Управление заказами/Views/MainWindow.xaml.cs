@@ -49,7 +49,7 @@ namespace Управление_заказами
             EquipmentInStockWindow window = new EquipmentInStockWindow();
             if (AppSettings.AccountType != AccountType.Administrator)
             {
-                window.DataGrid.IsReadOnly = true;
+                //window.DataGrid.IsReadOnly = true;
             }
             window.Show();
         }
