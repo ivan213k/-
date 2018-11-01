@@ -47,10 +47,6 @@ namespace Управление_заказами
         private void AvalibleEquipmentButton_OnClick(object sender, RoutedEventArgs e)
         {
             EquipmentInStockWindow window = new EquipmentInStockWindow();
-            if (AppSettings.AccountType != AccountType.Administrator)
-            {
-                //window.DataGrid.IsReadOnly = true;
-            }
             window.Show();
         }
 

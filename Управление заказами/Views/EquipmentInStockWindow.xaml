@@ -7,7 +7,7 @@
         xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
         mc:Ignorable="d"
-        Title="Оборудования на складе" WindowStartupLocation="CenterScreen" fluentWpf:AcrylicWindow.Enabled="True" Height="450" Width="983">
+        Title="Оборудования на складе" WindowStartupLocation="CenterScreen" fluentWpf:AcrylicWindow.Enabled="True" Height="600" Width="1100">
     <Window.DataContext>
         <viewModels:EquipmentsInStockViewModel/>
     </Window.DataContext>
@@ -29,50 +29,50 @@
         <StackPanel>
             <Button Command="{Binding AddEquipmentCommand}" Margin="5" Content="Добавить новое оборудование"></Button>
         </StackPanel>
-        <!--<DataGrid Grid.Row="1" CanUserDeleteRows="False" CanUserAddRows="False" Name="DataGrid" CellEditEnding="DataGrid_CellEditEnding" Style="{StaticResource DatagridStyle}"
-                  AutoGenerateColumns="False" SelectedValue="{Binding SelectedEquipment}" ItemsSource="{Binding Equipments,Mode=TwoWay}">
-            <DataGrid.Resources>
-                <ContextMenu  x:Key="RowMenu" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}">
-                    <MenuItem Header="Удалить оборудование" Command="{Binding DeleteEquipmentCommand}"/>
-                </ContextMenu>
-            </DataGrid.Resources>
-            <DataGrid.RowStyle>
+        <ScrollViewer PreviewMouseWheel="UIElement_OnPreviewMouseWheel" Grid.Row="1">
+            <ListView  ItemsSource="{Binding Equipments}" Grid.Row="1">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                    </Style>
+                </ListView.ItemContainerStyle>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Expander Foreground="DarkBlue" FontWeight="Bold" Header="{Binding Category}">
+                            <DataGrid Margin="25 0 0 0" FontWeight="Normal" CanUserDeleteRows="False" CanUserAddRows="False" Name="DataGrid" CellEditEnding="DataGrid_CellEditEnding" 
+                                  AutoGenerateColumns="False" SelectedValue="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext.SelectedEquipment}" Style="{StaticResource DatagridStyle}" ItemsSource="{Binding Path=Equipments,Mode=TwoWay}">
+                                <DataGrid.Resources>
+                                    <ContextMenu  x:Key="RowMenu" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}">
+                                        <MenuItem Header="Удалить оборудование" Command="{Binding DeleteEquipmentCommand}"/>
+                                    </ContextMenu>
+                                </DataGrid.Resources>
+                                <DataGrid.RowStyle>
 
-                <Style TargetType="DataGridRow">
-                    <Setter Property="ToolTip">
-                        <Setter.Value>
-                            <Image Width="150" Height="150" Stretch="UniformToFill" Source="{Binding ImageUrl}" />
-                        </Setter.Value>
-                    </Setter>
-                    <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
-                </Style>
+                                    <Style TargetType="DataGridRow">
+                                        <Setter Property="ToolTip">
+                                            <Setter.Value>
+                                                <Image Width="150" Height="150" Stretch="UniformToFill" Source="{Binding ImageUrl}" />
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
+                                    </Style>
 
-            </DataGrid.RowStyle>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Категория" Binding="{Binding Category,Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Название оборудования" Binding="{Binding Name,Mode=TwoWay}"/>
-                <DataGridTextColumn Header="Количество" Binding="{Binding TotalCount,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="Восстановительная стоимость" Binding="{Binding ReplacmentCost,UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
-                <DataGridTextColumn Width="200" Header="Примечание" Binding="{Binding Note,Mode=TwoWay}"></DataGridTextColumn>
-            </DataGrid.Columns>
-            <DataGrid.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Удалить оборудование" Command="{Binding DeleteEquipmentCommand}"></MenuItem>
-                </ContextMenu>
-            </DataGrid.ContextMenu>
-        </DataGrid>-->
+                                </DataGrid.RowStyle>
 
-        <ListBox SelectedValue="{Binding SelectedCategory}" ItemsSource="{Binding Categories}" Grid.Row="1">
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Expander Header="{Binding}">
-                     <DataGrid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}" ItemsSource="{Binding Path=Equipments}">
-
-                     </DataGrid>
-                    </Expander>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                                <DataGrid.Columns>
+                                    <DataGridTextColumn Header="Категория" Binding="{Binding Category,Mode=TwoWay}"/>
+                                    <DataGridTextColumn Header="Название оборудования" Binding="{Binding Name,Mode=TwoWay}"/>
+                                    <DataGridTextColumn Header="Количество" Binding="{Binding TotalCount,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                                    <DataGridTextColumn Header="Восстановительная стоимость" Binding="{Binding ReplacmentCost,UpdateSourceTrigger=PropertyChanged}"></DataGridTextColumn>
+                                    <DataGridTextColumn Width="200" Header="Примечание" Binding="{Binding Note,Mode=TwoWay}"></DataGridTextColumn>
+                                </DataGrid.Columns>
+                            </DataGrid>
+                        </Expander>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </ScrollViewer>
+       
         <StackPanel Visibility="{Binding IsDeterminate,Converter={StaticResource BoleanToVisibilityConverter}}"  Grid.Row="3">
             <TextBlock Margin="10 0" Text="Подключение к базе данных"></TextBlock>
             <ProgressBar Foreground="Blue" Margin="0 0 0 5" IsIndeterminate="{Binding IsDeterminate}"  Height="20"></ProgressBar>

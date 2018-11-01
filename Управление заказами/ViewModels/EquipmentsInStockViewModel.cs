@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -11,6 +12,13 @@ namespace Управление_заказами.ViewModels
 {
     class EquipmentsInStockViewModel : BaseViewModel
     {
+        public class HierarchicalEquipment
+        {
+            public string Category { get; set; }
+
+            public List<EquipmentInStock> Equipments { get; set; }
+        }
+
         private readonly IEquipmentInfo EquipmentInfo;
 
         public EquipmentsInStockViewModel()
@@ -49,44 +57,35 @@ namespace Управление_заказами.ViewModels
         async void Refresh()
         {
             EnableProgressBar();
-            Equipments = await EquipmentInfo.GetEquipmentsAsync();
-            Categories = (from equipment in equipments
+            Equipments = new ObservableCollection<HierarchicalEquipment>();
+
+            var equipments  = await EquipmentInfo.GetEquipmentsAsync();
+            var categories = (from equipment in equipments
                           select equipment.Category).Distinct().ToList();
+            foreach (var category in categories)
+            {
+                Equipments.Add(new HierarchicalEquipment()
+                {
+                    Category = category,
+                    Equipments = (from equipmentInStock in equipments
+                                 where equipmentInStock.Category == category
+                                       select equipmentInStock).ToList(),
+                });
+            }
             DisableProgressBar();
         }
 
-        List<EquipmentInStock> equipments;
-        public List<EquipmentInStock> Equipments
+        public ObservableCollection<HierarchicalEquipment> Equipments
         {
-            get { return equipments; }
+            get => _equipments;
             set
             {
-                equipments = value;
+                _equipments = value; 
                 OnePropertyChanged();
             }
         }
 
-        public List<string> Categories
-        {
-            get => _categories;
-            set
-            {
-                _categories = value;
-                OnePropertyChanged();
-            }
-        }
 
-        public string SelectedCategory
-        {
-            get => _selectedCategory;
-            set
-            {
-                _selectedCategory = value;
-                Equipments = (from equipment in Equipments
-                    where equipment.Category == value
-                    select equipment).ToList();
-            }
-        }
 
         public EquipmentInStock SelectedEquipment { get; set; }
 
@@ -100,7 +99,12 @@ namespace Управление_заказами.ViewModels
         {
             Button button = parametr as Button;
             EnableProgressBar();
-            await EquipmentInfo.UpdateEquipmentsRange(Equipments);
+            List<EquipmentInStock> equipmentsInStocks = new List<EquipmentInStock>();
+            foreach (var hierarchicalEquipment in Equipments)
+            {
+                equipmentsInStocks.AddRange(hierarchicalEquipment.Equipments);
+            }
+            await EquipmentInfo.UpdateEquipmentsRange(equipmentsInStocks);
             DisableProgressBar();
             button.Visibility = System.Windows.Visibility.Collapsed;
         }
@@ -133,6 +137,7 @@ namespace Управление_заказами.ViewModels
         bool isDeterminate;
         private List<string> _categories;
         private string _selectedCategory;
+        private ObservableCollection<HierarchicalEquipment> _equipments;
 
         public bool IsDeterminate
         {
