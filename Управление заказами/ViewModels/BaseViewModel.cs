@@ -12,5 +12,40 @@ namespace Управление_заказами.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propName));
         }
+
+             
+        bool isDeterminate;
+        public bool IsDeterminate
+        {
+            get => isDeterminate;
+            set
+            {
+                isDeterminate = value;
+                OnePropertyChanged();
+            }
+        }
+
+        bool isEnabled;
+        public bool IsEnabled
+        {
+            get => isEnabled;
+            set
+            {
+                isEnabled = value;
+                OnePropertyChanged();
+            }
+        }
+
+        protected void DisableProgressBar()
+        {
+            IsEnabled = true;
+            IsDeterminate = false;
+        }
+
+        protected void EnableProgressBar()
+        {
+            IsEnabled = false;
+            IsDeterminate = true;
+        }
     }
 }

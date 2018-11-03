@@ -46,26 +46,19 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Top" Height="20" Margin="5,5,23,5" Text="Количество"></TextBlock>
                         <xctk:IntegerUpDown Height="20" DisplayDefaultValueOnEmptyText="True" DefaultValue="1" Width="70" Value="{Binding Count,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Minimum="0" TextAlignment="Left" Margin="5" VerticalAlignment="Top"/>
+                        
                         <Image Stretch="Fill"  Margin="5" Width="208" Height="150" 
                                Source="{Binding SelectedImage}">
                             
                         </Image>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="5 10" Text="Целевая дата"></TextBlock>
-                        <DatePicker  Text="{Binding StartDate,Mode=TwoWay}" Margin="45 5 15 5"></DatePicker>
-                        <TextBlock Margin="5 10" Text="Время"></TextBlock>
-                        <ComboBox ItemsSource="{Binding Hours}" SelectedValue="{Binding StartHour,Mode=TwoWay}"  Margin="5" Width="50"></ComboBox>
-                        <TextBlock Margin="0 0 5 0" FontSize="18" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">:</TextBlock>
-                        <ComboBox Margin="0 5" SelectedValue="{Binding StartMinute,Mode=TwoWay}" ItemsSource="{Binding Minutes}" Width="54"></ComboBox>
+                        <TextBlock Margin="5 10" Text="Целевая дата:"></TextBlock>
+                        <xctk:DateTimePicker Style="{StaticResource DateTimePickerTime}"  Margin="35 5" Value="{Binding StartDate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="5 10" Text="Дата возвращения"></TextBlock>
-                        <DatePicker Text="{Binding EndDate,Mode=TwoWay}" Margin="15 5"></DatePicker>
-                        <TextBlock Margin="5 10" Text="Время"></TextBlock>
-                        <ComboBox ItemsSource="{Binding Hours}" SelectedValue="{Binding EndHour,Mode=TwoWay}" Margin="5" Width="51"></ComboBox>
-                        <TextBlock Margin="0 0 5 0" FontSize="18" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">:</TextBlock>
-                        <ComboBox Margin="0 5" SelectedValue="{Binding EndMinute,Mode=TwoWay}" ItemsSource="{Binding Minutes}" Width="53"></ComboBox>
+                        <TextBlock Margin="5 10" Text="Дата возвращения:"></TextBlock>
+                        <xctk:DateTimePicker Margin="5" Style="{StaticResource DateTimePickerTime}" Value="{Binding EndDate, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                     </StackPanel>
                     <Button Grid.Column="1" VerticalAlignment="Top" Command="{Binding AddEquipmentCommand}" Margin="10 0" Foreground="White" FontWeight="Bold"  Content="Добавить оборудование" ></Button>
 

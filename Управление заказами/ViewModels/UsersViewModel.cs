@@ -56,26 +56,5 @@ namespace Управление_заказами.ViewModels
 
         public User SelectedUser { get; set; }
 
-        private void DisableProgressBar()
-        {
-            IsEnabled = true;
-            IsDeterminate = false;
-        }
-
-        private void EnableProgressBar()
-        {
-            IsEnabled = false;
-            IsDeterminate = true;
-        }
-
-        #region Help Property
-        bool isEnabled = true;
-        public bool IsEnabled { get => isEnabled; set { isEnabled = value; OnePropertyChanged(); } }
-
-        bool isDeterminate;
-        public bool IsDeterminate { get => isDeterminate; set { isDeterminate = value; OnePropertyChanged(); } }
-        #endregion
-
-
     }
 }

@@ -11,8 +11,6 @@ namespace Управление_заказами.ViewModels
     class CloseOrderViewModel : BaseViewModel
     {
         private readonly IOrderManager orderManager = new OrderManager();
-        private bool _isDeterminate;
-        private bool _isEnabled;
         private List<CloseEquipmentModel> _equipments;
         private Order _order;
 
@@ -118,36 +116,6 @@ namespace Управление_заказами.ViewModels
 
         public ICommand CloseOrderCommand { get; set; }
 
-
-        public bool IsDeterminate
-        {
-            get => _isDeterminate;
-            set
-            {
-                _isDeterminate = value;
-                OnePropertyChanged();
-            }
-        }
-
-        public bool IsEnabled
-        {
-            get => _isEnabled;
-            set
-            {
-                _isEnabled = value;
-                OnePropertyChanged();
-            }
-        }
-
-        private void EnableProgressBar()
-        {
-            IsEnabled = false;
-            IsDeterminate = true;
-        }
-        private void DisableProgressBar()
-        {
-            IsEnabled = true;
-            IsDeterminate = false;
-        }
+        
     }
 }

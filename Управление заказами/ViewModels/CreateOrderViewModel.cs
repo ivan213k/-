@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Globalization;
 using System.Linq;
 using System.Windows;
 using System.Windows.Data;
@@ -112,31 +111,9 @@ namespace Управление_заказами.ViewModels
             }
         }
 
+        public DateTime StartDate { get; set; } = DateTime.Now;
 
-        public string StartDate { get; set; } = DateTime.Now.ToString(new CultureInfo("uk-Ua"));
-
-        public string EndDate { get; set; } = DateTime.Now.AddDays(1).ToString(new CultureInfo("uk-Ua"));
-
-        public int StartHour { get; set; } = DateTime.Now.Hour;
-
-        public int EndHour { get; set; } = DateTime.Now.Hour;
-
-        public int StartMinute { get; set; } = DateTime.Now.Minute;
-
-        public int EndMinute { get; set; } = DateTime.Now.Minute;
-
-        public List<int> Hours { get; set; }
-            = new List<int>()
-            {
-                0 , 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23
-            };
-
-        public List<int> Minutes { get; set; }
-            = new List<int>
-            {
-                00, 01,02,03,04,05,06,07,08,09,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,
-                31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59
-            };
+        public DateTime EndDate { get; set; } = DateTime.Now.AddDays(2);
 
         string selectedImage;
         public string SelectedImage
@@ -225,12 +202,8 @@ namespace Управление_заказами.ViewModels
                 MessageBox.Show("Невозможно создать заказ. Оборудование для заказа не выбрано");
                 return;
             }
-            DateTime tempdate = DateTime.Parse(StartDate, new CultureInfo("uk-UA"));
-            DateTime tempReturnDate = DateTime.Parse(EndDate, new CultureInfo("uk-UA"));
-            DateTime startDate = new DateTime(tempdate.Year, tempdate.Month, tempdate.Day, StartHour, StartMinute, 0);
-            DateTime endDate = new DateTime(tempReturnDate.Year, tempReturnDate.Month, tempReturnDate.Day, EndHour, EndMinute, 0);
-
-            if (endDate < startDate)
+          
+            if (EndDate < StartDate)
             {
                 MessageBox.Show("Дата возврата не может быть ранее даты создания");
                 return;
@@ -239,12 +212,12 @@ namespace Управление_заказами.ViewModels
             Order order = new Order()
             {
                 Adress = SelectedDeliveryTypeIndex == 1 ? this.Adress : "Самовывоз",
-                CreateDate = startDate,
+                CreateDate = StartDate.AddSeconds(-StartDate.Second),
                 CustomerName = CustomerName,
                 Manager = AppSettings.CurrentUserName,
                 MobilePhone = MobilePhone,
                 Note = Note,
-                ReturnDate = endDate,  
+                ReturnDate = EndDate.AddSeconds(-EndDate.Second),  
                 GoogleCalendarColorId = AppSettings.GoogleCalendarColorId
             };
             List<EquipmentFromOrder> equipments = new List<EquipmentFromOrder>();
@@ -255,8 +228,8 @@ namespace Управление_заказами.ViewModels
                     Category = equipment.Category,
                     Count = equipment.Count,
                     Name = equipment.Name,
-                    StartDate = startDate,
-                    EndDate = endDate
+                    StartDate = StartDate,
+                    EndDate = EndDate
                 });
             }
 
@@ -286,45 +259,5 @@ namespace Управление_заказами.ViewModels
             }
             
         }
-
-        private void DisableProgressBar()
-        {
-            IsEnabled = true;
-            IsDeterminate = false;
-        }
-
-        private void EnableProgressBar()
-        {
-            IsEnabled = false;
-            IsDeterminate = true;
-        }
-
-        #region Help Property
-
-        bool isEnabled;
-
-        public bool IsEnabled
-        {
-            get => isEnabled;
-            set
-            {
-                isEnabled = value;
-                OnePropertyChanged();
-            }
-        }
-
-        bool isDeterminate;
-
-        public bool IsDeterminate
-        {
-            get => isDeterminate;
-            set
-            {
-                isDeterminate = value;
-                OnePropertyChanged();
-            }
-        }
-
-        #endregion
     }
 }

@@ -14,8 +14,6 @@ namespace Управление_заказами.ViewModels
 {
     class SearchOrderViewModel : BaseViewModel
     {
-        bool isEnabled;
-        bool isDeterminate;
         private List<Order> _orders;
         private readonly IOrderManager OrderManager;
 
@@ -87,15 +85,11 @@ namespace Управление_заказами.ViewModels
                 {
                     SelectedEquipmentsForOrder = eqsForOrder,
                     Adress = SelectedOrder.Adress,
-                    StartDate = SelectedOrder.CreateDate.ToShortDateString(),
-                    StartHour = SelectedOrder.CreateDate.Hour,
-                    StartMinute = SelectedOrder.CreateDate.Minute,
+                    StartDate = SelectedOrder.CreateDate,
+                    EndDate = SelectedOrder.ReturnDate,
                     MobilePhone = SelectedOrder.MobilePhone,
                     Note = SelectedOrder.Note,
                     CustomerName = SelectedOrder.CustomerName,
-                    EndDate = SelectedOrder.ReturnDate.ToShortDateString(),
-                    EndHour = SelectedOrder.ReturnDate.Hour,
-                    EndMinute = SelectedOrder.ReturnDate.Minute,
                     SelectedDeliveryIndex = SelectedOrder.Adress == "Самовывоз" ? 0 : 1,
                     OldOrder = SelectedOrder,
                 }
@@ -130,29 +124,5 @@ namespace Управление_заказами.ViewModels
             }
         }
 
-        public bool IsEnabled
-        {
-            get => isEnabled;
-            set { isEnabled = value; OnePropertyChanged(); }
-        }
-
-        public bool IsDeterminate
-        {
-            get => isDeterminate;
-            set { isDeterminate = value; OnePropertyChanged(); }
-
-        }
-
-        private void DisableProgressBar()
-        {
-            IsEnabled = true;
-            IsDeterminate = false;
-        }
-
-        private void EnableProgressBar()
-        {
-            IsEnabled = false;
-            IsDeterminate = true;
-        }
     }
 }

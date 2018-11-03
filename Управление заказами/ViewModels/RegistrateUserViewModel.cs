@@ -18,7 +18,7 @@ namespace Управление_заказами.ViewModels
              UserManager = new UserManager();
              GoogleCalendarColors = AppSettings.GoogleCalendarColors;
              AddUserCommand = new Command(AddUser);
-            SeeAllUsersCommand = new Command(SeeAllUser);
+             SeeAllUsersCommand = new Command(SeeAllUser);
         }
 
         private void SeeAllUser(object obj)
@@ -74,26 +74,5 @@ namespace Управление_заказами.ViewModels
         public ICommand SeeAllUsersCommand { get; set; }
 
         public KeyValuePair<string, string> SelectedColor { get; set; }
-
-        private void DisableProgressBar()
-        {
-            IsEnabled = true;
-            IsDeterminate = false;
-        }
-
-        private void EnableProgressBar()
-        {
-            IsEnabled = false;
-            IsDeterminate = true;
-        }
-
-        #region Help Property
-        bool isEnabled=true;
-        public bool IsEnabled { get => isEnabled; set { isEnabled = value; OnePropertyChanged(); } }
-
-        bool isDeterminate;
-        public bool IsDeterminate { get => isDeterminate; set { isDeterminate = value; OnePropertyChanged(); } }
-        #endregion
-
     }
 }

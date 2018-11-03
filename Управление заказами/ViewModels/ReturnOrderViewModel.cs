@@ -9,8 +9,6 @@ namespace Управление_заказами.ViewModels
 {
     class ReturnOrderViewModel : BaseViewModel
     {
-        private bool _isDeterminate;
-        private bool _isEnabled;
         private List<Order> _returnOrders;
         private IOrderManager _orderManager;
 
@@ -86,36 +84,5 @@ namespace Управление_заказами.ViewModels
 
         public ICommand SetNoteCommand { get; set; }
 
-        private void DisableProgressBar()
-        {
-            IsEnabled = true;
-            IsDeterminate = false;
-        }
-
-        public bool IsDeterminate
-        {
-            get => _isDeterminate;
-            set
-            {
-                _isDeterminate = value;
-                OnePropertyChanged();
-            }
-        }
-
-        public bool IsEnabled
-        {
-            get => _isEnabled;
-            set
-            {
-                _isEnabled = value;
-                OnePropertyChanged();
-            }
-        }
-
-        private void EnableProgressBar()
-        {
-            IsEnabled = false;
-            IsDeterminate = true;
-        }
     }
 }

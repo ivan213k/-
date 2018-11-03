@@ -109,45 +109,11 @@ namespace Управление_заказами.ViewModels
             button.Visibility = System.Windows.Visibility.Collapsed;
         }
 
-        #region HelpMembers
-        private void DisableProgressBar()
-        {
-            IsEnabled = true;
-            IsDeterminate = false;
-        }
-
-        private void EnableProgressBar()
-        {
-            IsEnabled = false;
-            IsDeterminate = true;
-        }
-
-        bool isEnabled;
-
-        public bool IsEnabled
-        {
-            get => isEnabled;
-            set
-            {
-                isEnabled = value;
-                OnePropertyChanged();
-            }
-        }
-
-        bool isDeterminate;
+        #region HelpMembers       
         private List<string> _categories;
         private string _selectedCategory;
         private ObservableCollection<HierarchicalEquipment> _equipments;
 
-        public bool IsDeterminate
-        {
-            get => isDeterminate;
-            set
-            {
-                isDeterminate = value;
-                OnePropertyChanged();
-            }
-        }
         #endregion
     }
 }

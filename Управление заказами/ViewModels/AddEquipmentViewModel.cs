@@ -23,17 +23,6 @@ namespace Управление_заказами.ViewModels
         private string selectedCategory;
         private string _imageUrl;
 
-        private void DisableProgressBar()
-        {
-            IsEnabled = true;
-            IsDeterminate = false;
-        }
-
-        private void EnableProgressBar()
-        {
-            IsEnabled = false;
-            IsDeterminate = true;
-        }
         #endregion
 
         public AddEquipmentViewModel()
@@ -102,25 +91,6 @@ namespace Управление_заказами.ViewModels
             }
         }
 
-        public bool IsDeterminate
-        {
-            get => isDeterminate;
-            set
-            {
-                isDeterminate = value;
-                OnePropertyChanged();
-            }
-        }
-
-        public bool IsEnabled
-        {
-            get => isEnabled;
-            set
-            {
-                isEnabled = value;
-                OnePropertyChanged();
-            }
-        }
 
         public ICommand AddEquipmentCommand { get; set; }
 

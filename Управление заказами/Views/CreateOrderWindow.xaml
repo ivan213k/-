@@ -110,24 +110,12 @@
                         <TextBox TextWrapping="Wrap" Height="50" Text="{Binding Note}" Width="335"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="5 5 50 5" Text="Целевая дата">
-
-                        </TextBlock>
-                        <DatePicker Text="{Binding StartDate,Mode=TwoWay}"></DatePicker>
-                        <TextBlock Margin="25 5 10 5" Text="Время"></TextBlock>
-                        <ComboBox Margin="5"  SelectedValue="{Binding StartHour,Mode=TwoWay}" ItemsSource="{Binding Hours}" Width="55">
-
-                        </ComboBox>
-                        <TextBlock  FontSize="18" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">:</TextBlock>
-                        <ComboBox Margin="5"  SelectedValue="{Binding StartMinute,Mode=TwoWay}" ItemsSource="{Binding Minutes}" Width="55"></ComboBox>
+                        <TextBlock Margin="5 5 50 5" Text="Целевая дата:"/>
+                        <xctk:DateTimePicker Style="{StaticResource DateTimePickerTime}" Value="{Binding StartDate}" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Margin="5 10" Text="Дата возвращения"></TextBlock>
-                        <DatePicker Text="{Binding EndDate,Mode=TwoWay}" Margin="15 5"></DatePicker>
-                        <TextBlock Margin="10 10 10 0" Text="Время"></TextBlock>
-                        <ComboBox Margin="5"  ItemsSource="{Binding Hours,Mode=TwoWay}" SelectedValue="{Binding EndHour}" Width="55"></ComboBox>
-                        <TextBlock  FontSize="18" FontWeight="Bold" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center">:</TextBlock>
-                        <ComboBox Margin="5"  SelectedValue="{Binding EndMinute,Mode=TwoWay}" ItemsSource="{Binding Minutes}"  Width="55"></ComboBox>
+                        <TextBlock Margin="5 10" Text="Дата возвращения:"/>
+                        <xctk:DateTimePicker Style="{StaticResource DateTimePickerTime}" Value="{Binding EndDate}" Margin="15 5"/>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
