@@ -35,7 +35,7 @@ namespace Управление_заказами.ViewModels
             AddEquipmentCommand = new Command(AddEquipmentToCheck, CanAddEquipment);
             RemoveEquipmentCommand = new Command(RemoveEquipment);
             CheckCommand = new Command(Check);
-            GoToCreateOrderCommand = new Command(GoToCreateOrder,CanGoToCreateOrder);
+            GoToCreateOrderCommand = new Command(GoToCreateOrder, CanGoToCreateOrder);
             EquipmentInfo = new EquipmentInfo();
             LoadEquipments();
             SelectedEquipmentsForCheck.CollectionChanged += SelectedEquipmentsForCheck_CollectionChanged;
@@ -138,19 +138,17 @@ namespace Управление_заказами.ViewModels
             }
         }
 
-        private string count = "1";
-
-        public string Count
+        private int count = 1;
+        public int Count
         {
             get => count;
             set
             {
-                if(!int.TryParse(value,out int result)) return;
                 count = value;
                 OnePropertyChanged();
-                if (SelectedEquipmentForCheck!=null && SelectedEquipment == SelectedEquipmentForCheck.Name && SelectedEquipmentForCheck.Count!=int.Parse(value))
+                if (SelectedEquipmentForCheck!=null && SelectedEquipment == SelectedEquipmentForCheck.Name && SelectedEquipmentForCheck.Count!= value)
                 {
-                    SelectedEquipmentForCheck.Count = int.Parse(value);
+                    SelectedEquipmentForCheck.Count = value;
                     ICollectionView view = CollectionViewSource.GetDefaultView(SelectedEquipmentsForCheck);
                     view.Refresh();
                     Check(null);
@@ -260,7 +258,7 @@ namespace Управление_заказами.ViewModels
 
                 if (value != null)
                 {
-                    Count = value.Count.ToString();
+                    Count = value.Count;
                     SelectedCategory = value.Category;
                     SelectedEquipment = value.Name;
 
@@ -314,7 +312,7 @@ namespace Управление_заказами.ViewModels
             {
                 Name = SelectedEquipment,
                 Category = SelectedCategory,
-                Count = int.Parse(Count),
+                Count = Count,
                 ImageUrl = SelectedImage
             });
         }

@@ -99,18 +99,17 @@ namespace Управление_заказами.ViewModels
         }
 
 
-        private string count = "1";
-        public string Count
+        private int count = 1;
+        public int Count
         {
             get => count;
             set
             {
-                if (!int.TryParse(value, out int result)) return;
                 count = value;
                 OnePropertyChanged();
-                if (SelectedEquipmentForOrder != null && SelectedEquipment == SelectedEquipmentForOrder.Name && SelectedEquipmentForOrder.Count != int.Parse(value))
+                if (SelectedEquipmentForOrder != null && SelectedEquipment == SelectedEquipmentForOrder.Name && SelectedEquipmentForOrder.Count != value)
                 {
-                    SelectedEquipmentForOrder.Count = int.Parse(value);
+                    SelectedEquipmentForOrder.Count = value;
                     ICollectionView view = CollectionViewSource.GetDefaultView(SelectedEquipmentsForOrder);
                     view.Refresh();
                 }
@@ -166,7 +165,7 @@ namespace Управление_заказами.ViewModels
 
                 if (value != null)
                 {
-                    Count = value.Count.ToString();
+                    Count = value.Count;
                     SelectedCategory = value.Category;
                     SelectedEquipment = value.Name;
 
@@ -255,7 +254,7 @@ namespace Управление_заказами.ViewModels
             {
                 Category = SelectedCategory,
                 Name = SelectedEquipment,
-                Count = int.Parse(Count),
+                Count = Count,
                 ImageUrl = SelectedImage,
             });
         }

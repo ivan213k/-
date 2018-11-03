@@ -6,6 +6,7 @@
         xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         xmlns:local="clr-namespace:Управление_заказами.Views"
         xmlns:converters="clr-namespace:Управление_заказами.ViewModels.Converters"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
         mc:Ignorable="d"
         Title="Создание заказа" WindowStartupLocation="CenterScreen" Name="Window" SizeToContent="Height" ResizeMode="CanMinimize" fw:AcrylicWindow.Enabled="True" Width="852.266">
@@ -41,9 +42,7 @@
 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Height="25" VerticalAlignment="Top" Margin="5,5,23,5" Text="Количество"></TextBlock>
-                        <TextBox Height="25" VerticalAlignment="Top" x:Name="txtNum" x:FieldModifier="private" Margin="5,5,0,5" Width="50" Text="{Binding Count,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" TextChanged="txtNum_TextChanged" />
-                        <Button FontWeight="Bold" Foreground="White" Height="25" VerticalAlignment="Top" x:Name="cmdUp" x:FieldModifier="private" Margin="5,5,0,5" Content="˄" Width="20" Click="cmdUp_Click" />
-                        <Button FontWeight="Bold" Foreground="White" Height="25" VerticalAlignment="Top" x:Name="cmdDown" x:FieldModifier="private" Margin="0,5,0,5"  Content="˅" Width="20" Click="cmdDown_Click" />
+                        <xctk:IntegerUpDown Height="20" Width="70" VerticalAlignment="Top" Margin="5" Minimum="0" DisplayDefaultValueOnEmptyText="True" DefaultValue="1" TextAlignment="Left" Value="{Binding Count,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                         <Image Source="{Binding SelectedImage}" Margin="5" Width="150" Height="150"></Image>
                     </StackPanel>
                     <Button Command="{Binding AddEquipmentCommand}" Foreground="White" FontWeight="Bold" Margin="5" Content="Добавить оборудование"></Button>

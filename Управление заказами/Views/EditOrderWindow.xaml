@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Управление_заказами.Views"
         xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:converters="clr-namespace:Управление_заказами.ViewModels.Converters"
         mc:Ignorable="d"
         Title="Редактирование заказа" WindowStartupLocation="CenterScreen" Name="Window" ResizeMode="CanMinimize" fluentWpf:AcrylicWindow.Enabled="True" SizeToContent="Height" Width="814.049">
@@ -34,9 +35,7 @@
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Height="25" VerticalAlignment="Top" Margin="5,5,23,5" Text="Количество"></TextBlock>
-                            <TextBox Height="25" VerticalAlignment="Top" x:Name="txtNum" x:FieldModifier="private" Margin="5,5,0,5" Width="50" Text="{Binding Count,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
-                            <Button FontWeight="Bold" Foreground="White" Height="25" VerticalAlignment="Top" x:Name="cmdUp" Click="cmdUp_Click" x:FieldModifier="private" Margin="5,5,0,5" Content="˄" Width="20" />
-                            <Button FontWeight="Bold" Foreground="White" Height="25" VerticalAlignment="Top" x:Name="cmdDown"  Click="cmdDown_Click"  x:FieldModifier="private" Margin="0,5,0,5"  Content="˅" Width="20" />
+                            <xctk:IntegerUpDown Width="70" Height="20" VerticalAlignment="Top" Minimum="0" DefaultValue="1" DisplayDefaultValueOnEmptyText="True" TextAlignment="Left" Value="{Binding Count,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="5"/>
                             <Image Source="{Binding SelectedImage}" Margin="5" Width="150" Height="150"></Image>
                         </StackPanel>
                         <Button Command="{Binding AddEquipmentCommand}" Foreground="White" FontWeight="Bold" Margin="5" Content="Добавить оборудование"></Button>
