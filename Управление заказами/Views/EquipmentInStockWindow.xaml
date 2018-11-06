@@ -7,7 +7,7 @@
         xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
         mc:Ignorable="d"
-        Title="Оборудования на складе" WindowStartupLocation="CenterScreen" fluentWpf:AcrylicWindow.Enabled="True" Height="600" Width="1100">
+        Title="Оборудования на складе" IsEnabled="{Binding IsEnabled}"  WindowStartupLocation="CenterScreen" fluentWpf:AcrylicWindow.Enabled="True" Height="600" Width="1100">
     <Window.DataContext>
         <viewModels:EquipmentsInStockViewModel/>
     </Window.DataContext>
@@ -30,22 +30,45 @@
             <Button Command="{Binding AddEquipmentCommand}" Margin="5" Content="Добавить новое оборудование"></Button>
         </StackPanel>
         <ScrollViewer PreviewMouseWheel="UIElement_OnPreviewMouseWheel" Grid.Row="1">
-            <ListView  ItemsSource="{Binding Equipments}" Grid.Row="1">
+            <ListView SelectedValue="{Binding SelectedCategory}" Style="{StaticResource ListBoxRevealStyle}" ItemsSource="{Binding Equipments}" Grid.Row="1">
+                <ListView.InputBindings>
+                    <KeyBinding Key="Delete" Command="{Binding DeleteCategoryCommand}"> 
+
+                    </KeyBinding>
+                </ListView.InputBindings>
+                <ListView.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Удалить категорию" Command="{Binding DeleteCategoryCommand}"></MenuItem>
+                    </ContextMenu>
+                </ListView.ContextMenu>
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                     </Style>
                 </ListView.ItemContainerStyle>
+                <ListView.Resources>
+                    <Style TargetType="ListViewItem">
+                        <Style.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="IsSelected" Value="True"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListView.Resources>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Expander Foreground="DarkBlue" FontWeight="Bold" Header="{Binding Category}">
-                            <DataGrid Margin="25 0 0 0" FontWeight="Normal" CanUserDeleteRows="False" CanUserAddRows="False" Name="DataGrid" CellEditEnding="DataGrid_CellEditEnding" 
-                                  AutoGenerateColumns="False" SelectedValue="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext.SelectedEquipment}" Style="{StaticResource DatagridStyle}" ItemsSource="{Binding Path=Equipments,Mode=TwoWay}">
+                        <Expander BorderBrush="Gray" BorderThickness="2" Foreground="DarkBlue" FontWeight="Bold" Header="{Binding Category}" >
+                            <DataGrid Style="{StaticResource DatagridStyle}"  Margin="25 0 0 0" FontWeight="Normal" CanUserDeleteRows="False" CanUserAddRows="False" Name="DataGrid" CellEditEnding="DataGrid_CellEditEnding" 
+                                  AutoGenerateColumns="False" SelectedValue="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext.SelectedEquipment}" ItemsSource="{Binding Path=Equipments,Mode=TwoWay}">
+                               <DataGrid.InputBindings>
+                                   <KeyBinding Key="Delete" Command="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext.DeleteEquipmentCommand}"></KeyBinding>
+                               </DataGrid.InputBindings>
                                 <DataGrid.Resources>
                                     <ContextMenu  x:Key="RowMenu" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}">
                                         <MenuItem Header="Удалить оборудование" Command="{Binding DeleteEquipmentCommand}"/>
                                     </ContextMenu>
                                 </DataGrid.Resources>
+                               
                                 <DataGrid.RowStyle>
 
                                     <Style TargetType="DataGridRow">
@@ -55,6 +78,7 @@
                                             </Setter.Value>
                                         </Setter>
                                         <Setter Property="ContextMenu" Value="{StaticResource RowMenu}" />
+                                        
                                     </Style>
 
                                 </DataGrid.RowStyle>
@@ -70,6 +94,7 @@
                         </Expander>
                     </DataTemplate>
                 </ListView.ItemTemplate>
+                
             </ListView>
         </ScrollViewer>
        
