@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Xceed.Wpf.Toolkit;
 using Управление_заказами.Models.Core;
 using Управление_заказами.Models.Core.Abstractions;
 using Управление_заказами.Models.DataBase;
@@ -28,28 +27,7 @@ namespace Управление_заказами.ViewModels
             SaveChangesCommand = new Command(SaveChanges);
             AddEquipmentCommand = new Command(AddEquipment);
             DeleteEquipmentCommand = new Command(DeleteEquipment);
-            DeleteCategoryCommand = new Command(DeleteCategory);
             Refresh();
-        }
-
-        private async void DeleteCategory(object obj)
-        {
-            if (SelectedCategory!=null)
-            {
-                ConfirmationWindow window = new ConfirmationWindow();
-                window.ConfirmText.Text = $"Вы действительно хотите удалить категорию \"{SelectedCategory.Category}\" и все ее оборудование ? ";
-
-                if (window.ShowDialog() == true)
-                {
-                    EnableProgressBar();
-                    foreach (var equipment in SelectedCategory.Equipments)
-                    {
-                        await EquipmentInfo.DeleteEquipment(equipment);
-                    }
-                    DisableProgressBar();
-                    Refresh();
-                }
-            }
         }
 
         private async void DeleteEquipment(object obj)
@@ -107,17 +85,15 @@ namespace Управление_заказами.ViewModels
             }
         }
 
-        public EquipmentInStock SelectedEquipment { get; set; }
 
-        public HierarchicalEquipment SelectedCategory { get; set; }
+
+        public EquipmentInStock SelectedEquipment { get; set; }
 
         public ICommand SaveChangesCommand { get; set; }
 
         public ICommand AddEquipmentCommand { get; set; }
 
         public ICommand DeleteEquipmentCommand { get; set; }
-
-        public ICommand DeleteCategoryCommand { get; set; }
 
         async void SaveChanges(object parametr)
         {

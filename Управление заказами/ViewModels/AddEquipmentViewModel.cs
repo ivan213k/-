@@ -18,6 +18,8 @@ namespace Управление_заказами.ViewModels
         #region PrivateMembers
         private ICollectionView categoryes;
         private List<EquipmentInStock> equipments;
+        bool isDeterminate;
+        bool isEnabled;
         private string selectedCategory;
         private string _imageUrl;
 
