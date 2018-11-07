@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Управление_заказами.Models.Core;
@@ -35,6 +36,16 @@ namespace Управление_заказами.Views
             var user = await UserManager.AuthorizeAsync(Name.Text, Password.Password);
             if (user!=null)
             {
+                try
+                {
+                    await GoogleCalendarAuthorize();
+                }
+                catch (Exception e)
+                {
+                    MessageBox.Show("Не удалось авторизоваться в Google Calendar");
+                    return;
+                }
+               
                 AppSettings.CurrentUserName = user.Name;
                 AppSettings.GoogleCalendarColorId = user.GoogleCalendarColorId;
                 AppSettings.AccountType = user.AccountType;
@@ -82,5 +93,11 @@ namespace Управление_заказами.Views
             await Authorize();
             DisableProgressBar();
         }
+
+        private async Task GoogleCalendarAuthorize()
+        {
+            GoogleCalendar calendar = new GoogleCalendar();
+            await calendar.ReAuthorizeAsync();
+        } 
     }
 }

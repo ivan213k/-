@@ -33,6 +33,15 @@ namespace Управление_заказами.Models.Core
             }
         }
 
+        public async Task ReAuthorizeAsync()
+        {
+            string credPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+                "Управление заказами", "token_json");
+            DirectoryInfo info = new DirectoryInfo(credPath);
+            info.Delete(true);
+            await Authorize();
+        }
+
         public async Task<string> AddEvent(Order order)
         {
             CalendarService service = await GetService();
