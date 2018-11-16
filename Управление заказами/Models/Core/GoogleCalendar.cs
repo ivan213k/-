@@ -60,6 +60,15 @@ namespace Управление_заказами.Models.Core
             return (await service.Events.Insert(returnEvent, "primary").ExecuteAsync()).Id;
         }
 
+        public async Task<string> AddFullTimeEvent(Order order)
+        {
+            CalendarService service = await GetService();
+
+            Event fullTimeEvent = CreateFullTimeEvent(order, order.GoogleCalendarColorId);
+
+            return (await service.Events.Insert(fullTimeEvent, "primary").ExecuteAsync()).Id;
+        }
+
         public async Task<string> UpdateEvent(Order oldOrder, Order newOrder)
         {
             var service = await GetService();
@@ -129,6 +138,32 @@ namespace Управление_заказами.Models.Core
                     DateTime = order.ReturnDate.AddHours(2)
                 },
                 Summary = order.Adress == "Самовывоз" ? $"Возврат {order.CustomerName} {order.MobilePhone}" : $"Забрать {order.CustomerName} {order.MobilePhone}",
+                Location = order.Adress,
+                Description = $"{equipments} \n {order.CreateDate.ToShortDateString()} - {order.ReturnDate.ToShortDateString()} \n {order.Note}",
+                ColorId = colorId,
+            };
+        }
+
+        private Event CreateFullTimeEvent(Order order, string colorId)
+        {
+            StringBuilder equipments = new StringBuilder();
+
+            foreach (var equipment in order.Equipments)
+            {
+                equipments.Append($"{equipment.Name} {equipment.Count} шт. \n");
+            }
+
+            return new Event()
+            {
+                Start = new EventDateTime()
+                {
+                    DateTime = order.CreateDate
+                },
+                End = new EventDateTime()
+                {
+                    DateTime = order.ReturnDate
+                },
+                Summary = $"{order.CustomerName} {order.MobilePhone}",
                 Location = order.Adress,
                 Description = $"{equipments} \n {order.CreateDate.ToShortDateString()} - {order.ReturnDate.ToShortDateString()} \n {order.Note}",
                 ColorId = colorId,

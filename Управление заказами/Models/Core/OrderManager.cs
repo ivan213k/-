@@ -26,6 +26,7 @@ namespace Управление_заказами.Models.Core
 
                     order.EventId = await Calendar.AddEvent(order);
                     order.ReturnEventId = await Calendar.AddReturnEvent(order);
+                    await Calendar.AddFullTimeEvent(order);
                     db.OrdersHistory.Add(order);
                     db.OrdersHistory.Include(o => o.Equipments);
                     db.SaveChanges();
