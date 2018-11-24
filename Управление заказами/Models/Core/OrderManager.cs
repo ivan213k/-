@@ -9,12 +9,12 @@ using Управление_заказами.Models.DataBase;
 namespace Управление_заказами.Models.Core
 {
     class OrderManager : IOrderManager
-    {   
+    {
         private readonly GoogleCalendar Calendar = new GoogleCalendar();
 
         public async Task CreateOrderAsync(Order order)
         {
-            await Task.Factory.StartNew(async()=> 
+            await Task.Factory.StartNew(async () =>
             {
                 using (AppDbContext db = new AppDbContext())
                 {
@@ -26,7 +26,11 @@ namespace Управление_заказами.Models.Core
 
                     order.EventId = await Calendar.AddEvent(order);
                     order.ReturnEventId = await Calendar.AddReturnEvent(order);
-                    await Calendar.AddFullTimeEvent(order);
+                    if (order.IsAllDayEvent)
+                    {
+                       order.AllDayEventId = await Calendar.AddFullTimeEvent(order);
+                    }
+                   
                     db.OrdersHistory.Add(order);
                     db.OrdersHistory.Include(o => o.Equipments);
                     db.SaveChanges();
@@ -52,7 +56,7 @@ namespace Управление_заказами.Models.Core
                     db.SaveChanges();
                 }
             });
-            
+
         }
 
         public async Task CloseOrderPartiallyAsync(Order order)
@@ -68,15 +72,15 @@ namespace Управление_заказами.Models.Core
                     }
                     db.SaveChanges();
                 }
-            });  
+            });
         }
 
         private void RemoveEquipmentFromOrder(EquipmentFromOrder equipmentFromOrder, AppDbContext db)
         {
             var equipment = (from eq in db.EquipmentsFromOrder
-                where eq.Id == equipmentFromOrder.Id
-                select eq).Single();
-            if (equipment.Count== equipmentFromOrder.Count)
+                             where eq.Id == equipmentFromOrder.Id
+                             select eq).Single();
+            if (equipment.Count == equipmentFromOrder.Count)
             {
                 db.EquipmentsFromOrder.Remove(equipment);
             }
@@ -104,20 +108,20 @@ namespace Управление_заказами.Models.Core
                     db.SaveChanges();
                 }
             });
-            
+
         }
 
         private void RemoveEquipmentFromRent(EquipmentFromOrder equipment, AppDbContext db)
         {
             EquipmentInRent equipmentInRent = (from eq in db.EquipmentsInRent
-                where eq.Name == equipment.Name && eq.StartDate == equipment.StartDate &&
-                      eq.EndDate == equipment.EndDate
-                select eq).Single();
+                                               where eq.Name == equipment.Name && eq.StartDate == equipment.StartDate &&
+                                                     eq.EndDate == equipment.EndDate
+                                               select eq).Single();
 
             if (equipmentInRent.Count > equipment.Count)
             {
                 equipmentInRent.Count = equipmentInRent.Count - equipment.Count;
-                AddEquipmentToAvalible(equipment.Name,equipment.Count,db);
+                AddEquipmentToAvalible(equipment.Name, equipment.Count, db);
             }
             else
             {
@@ -130,11 +134,11 @@ namespace Управление_заказами.Models.Core
         private void AddEquipmentToAvalible(string name, int count, AppDbContext db)
         {
             var equipmentInStock = (from equipment in db.EquipmentsInStock
-                                                   where equipment.Name == name
+                                    where equipment.Name == name
                                     select equipment).SingleOrDefault();
 
-            if (equipmentInStock!=null)
-            equipmentInStock.Count += count;
+            if (equipmentInStock != null)
+                equipmentInStock.Count += count;
         }
 
         private void TakeEquipmentFromRent(string name, int needCount, DateTime startDate, DateTime endDate, AppDbContext db)
@@ -194,7 +198,7 @@ namespace Управление_заказами.Models.Core
 
         public async Task UpdateOrderAsync(int oldOrderId, Order newOrder)
         {
-            await Task.Factory.StartNew(async()=> 
+            await Task.Factory.StartNew(async () =>
             {
                 using (AppDbContext db = new AppDbContext())
                 {
@@ -214,18 +218,22 @@ namespace Управление_заказами.Models.Core
                         AddEqipmentInRent(equipment, db);
                     }
 
-                    newOrder.EventId = await Calendar.UpdateEvent(oldOrder,newOrder);
-                    newOrder.ReturnEventId = await Calendar.UpdateReturnEvent(oldOrder,newOrder);
+                    newOrder.EventId = await Calendar.UpdateEvent(oldOrder, newOrder);
+                    newOrder.ReturnEventId = await Calendar.UpdateReturnEvent(oldOrder, newOrder);
+                    if (oldOrder.IsAllDayEvent)
+                    {
+                        newOrder.AllDayEventId = await Calendar.UpdateFullTimeEvent(oldOrder, newOrder);
+                    }
                     db.OrdersHistory.Add(newOrder);
                     db.OrdersHistory.Include(o => o.Equipments);
                     db.SaveChanges();
                 }
-            });    
+            });
         }
 
         public async Task<List<Order>> GetActiveOrdersAsync()
         {
-            return await Task.Factory.StartNew(()=> 
+            return await Task.Factory.StartNew(() =>
             {
                 using (AppDbContext db = new AppDbContext())
                 {
@@ -233,7 +241,7 @@ namespace Управление_заказами.Models.Core
                             where order.Status == OrderStatus.Open
                             select order).ToList();
                 }
-            }); 
+            });
         }
 
         public async Task SetNoteAsync(int orderId, string note)
@@ -243,8 +251,8 @@ namespace Управление_заказами.Models.Core
                 using (AppDbContext db = new AppDbContext())
                 {
                     var order = (from _order in db.OrdersHistory
-                        where _order.Id == orderId
-                        select _order).Single();
+                                 where _order.Id == orderId
+                                 select _order).Single();
                     order.Note = note;
                     db.SaveChanges();
                 }

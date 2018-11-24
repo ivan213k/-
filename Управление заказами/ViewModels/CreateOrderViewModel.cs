@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -38,7 +39,7 @@ namespace Управление_заказами.ViewModels
                 equipments = value;
                 OnePropertyChanged();
                 Categoryes = (from equipment in Equipments
-                    select equipment.Category).Distinct().ToList();
+                              select equipment.Category).Distinct().ToList();
             }
         }
 
@@ -61,8 +62,8 @@ namespace Управление_заказами.ViewModels
             {
                 selectedCategory = value;
                 SelectedEquipments = (from equipments in Equipments
-                    where equipments.Category == value
-                    select equipments.Name).ToList();
+                                      where equipments.Category == value
+                                      select equipments.Name).ToList();
                 OnePropertyChanged();
             }
         }
@@ -86,8 +87,8 @@ namespace Управление_заказами.ViewModels
             {
                 selectedEquipment = value;
                 SelectedImage = (from eq in Equipments
-                    where eq.Name == value
-                    select eq.ImageUrl).FirstOrDefault();
+                                 where eq.Name == value
+                                 select eq.ImageUrl).FirstOrDefault();
                 AddEquipmentCommand.OneExecuteChaneged();
                 OnePropertyChanged();
             }
@@ -114,6 +115,8 @@ namespace Управление_заказами.ViewModels
         public DateTime StartDate { get; set; } = DateTime.Now;
 
         public DateTime EndDate { get; set; } = DateTime.Now.AddDays(2);
+
+        public bool AllDateIsChecked { get; set; }
 
         string selectedImage;
         public string SelectedImage
@@ -194,15 +197,29 @@ namespace Управление_заказами.ViewModels
             return true;
         }
 
+        private async Task CreateDayOff()
+        {
+            GoogleCalendar calendar = new GoogleCalendar();
+            if (StartDate == EndDate)
+            {
+                await calendar.AddEmployeDayOff(StartDate, CustomerName, AppSettings.GoogleCalendarColorId);
+            }
+            else
+            {
+                await calendar.AddEmployeDayOff(StartDate, EndDate, CustomerName, AppSettings.GoogleCalendarColorId);
+            }
+            MessageBox.Show("Выходной успешно создан");
+        }
+
         async void CreateOrder(object parametr)
         {
             var window = parametr as Window;
             if (SelectedEquipmentsForOrder.Count == 0)
             {
-                MessageBox.Show("Невозможно создать заказ. Оборудование для заказа не выбрано");
+                await CreateDayOff();
                 return;
             }
-          
+
             if (EndDate < StartDate)
             {
                 MessageBox.Show("Дата возврата не может быть ранее даты создания");
@@ -217,8 +234,9 @@ namespace Управление_заказами.ViewModels
                 Manager = AppSettings.CurrentUserName,
                 MobilePhone = MobilePhone,
                 Note = Note,
-                ReturnDate = EndDate.AddSeconds(-EndDate.Second),  
-                GoogleCalendarColorId = AppSettings.GoogleCalendarColorId
+                ReturnDate = EndDate.AddSeconds(-EndDate.Second),
+                GoogleCalendarColorId = AppSettings.GoogleCalendarColorId,
+                IsAllDayEvent = AllDateIsChecked
             };
             List<EquipmentFromOrder> equipments = new List<EquipmentFromOrder>();
             foreach (var equipment in SelectedEquipmentsForOrder)
@@ -245,7 +263,7 @@ namespace Управление_заказами.ViewModels
             {
                 MessageBox.Show("Не хватает оборудования. Проверьте наличие.");
             }
-            
+
             DisableProgressBar();
         }
 
@@ -257,7 +275,7 @@ namespace Управление_заказами.ViewModels
                 SelectedEquipmentsForOrder.Remove(SelectedEquipmentForOrder);
                 AddEquipmentCommand.OneExecuteChaneged();
             }
-            
+
         }
     }
 }
