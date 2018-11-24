@@ -18,7 +18,7 @@
     <StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Margin="5" Text="Ваше имя:"></TextBlock>
-            <TextBox Name="Name" Margin="20 5" Width="200"></TextBox>
+            <TextBox Name="UserName" Margin="20 5" Width="200"></TextBox>
         </StackPanel>
         <StackPanel Orientation="Horizontal">
             <TextBlock Margin="6" Text="Ваш пароль:"></TextBlock>

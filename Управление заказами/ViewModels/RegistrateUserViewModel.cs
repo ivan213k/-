@@ -53,7 +53,7 @@ namespace Управление_заказами.ViewModels
                 });
                 MessageBox.Show("Пользователь успешно зарегистрирован");
             }
-            catch (ArgumentException e)
+            catch (ArgumentException )
             {
                 MessageBox.Show("Такой пользователь уже зарегистрирован");
             }

@@ -14,28 +14,25 @@ namespace Управление_заказами.Models.Core
 
         public async Task CreateOrderAsync(Order order)
         {
-            await Task.Factory.StartNew(async () =>
+            using (AppDbContext db = new AppDbContext())
             {
-                using (AppDbContext db = new AppDbContext())
+                foreach (var equipment in order.Equipments)
                 {
-                    foreach (var equipment in order.Equipments)
-                    {
-                        TakeEquipment(equipment, db);
-                        AddEqipmentInRent(equipment, db);
-                    }
-
-                    order.EventId = await Calendar.AddEvent(order);
-                    order.ReturnEventId = await Calendar.AddReturnEvent(order);
-                    if (order.IsAllDayEvent)
-                    {
-                       order.AllDayEventId = await Calendar.AddFullTimeEvent(order);
-                    }
-                   
-                    db.OrdersHistory.Add(order);
-                    db.OrdersHistory.Include(o => o.Equipments);
-                    db.SaveChanges();
+                    await TakeEquipment(equipment, db);
+                    await AddEqipmentInRent(equipment, db);
                 }
-            });
+
+                order.EventId = await Calendar.AddEvent(order);
+                order.ReturnEventId = await Calendar.AddReturnEvent(order);
+                if (order.IsAllDayEvent)
+                {
+                    order.AllDayEventId = await Calendar.AddFullTimeEvent(order);
+                }
+
+                await db.OrdersHistory.AddAsync(order);
+                db.OrdersHistory.Include(o => o.Equipments);
+                await db.SaveChangesAsync();
+            }
         }
 
         public async Task CloseOrderAsync(int orderId)
@@ -141,11 +138,11 @@ namespace Управление_заказами.Models.Core
                 equipmentInStock.Count += count;
         }
 
-        private void TakeEquipmentFromRent(string name, int needCount, DateTime startDate, DateTime endDate, AppDbContext db)
+        private async Task TakeEquipmentFromRent(string name, int needCount, DateTime startDate, DateTime endDate, AppDbContext db)
         {
-            var equipments = (from equipment in db.EquipmentsInRent
+            var equipments = await (from equipment in db.EquipmentsInRent
                               where equipment.Name == name && (equipment.StartDate <= endDate || equipment.EndDate <= startDate)
-                              select equipment).ToList();
+                              select equipment).ToListAsync();
             foreach (var equipment in equipments)
             {
                 if (equipment.Count < needCount)
@@ -163,11 +160,11 @@ namespace Управление_заказами.Models.Core
             throw new ArgumentException("Не хватает оборудования");
         }
 
-        private void TakeEquipment(EquipmentFromOrder equipment, AppDbContext db)
+        private async Task TakeEquipment(EquipmentFromOrder equipment, AppDbContext db)
         {
-            var avalibleEquipment = (from equipmentInStock in db.EquipmentsInStock
+            var avalibleEquipment = await (from equipmentInStock in db.EquipmentsInStock
                                      where equipmentInStock.Name == equipment.Name
-                                     select equipmentInStock).Single();
+                                     select equipmentInStock).SingleAsync();
             if (avalibleEquipment.Count >= equipment.Count)
             {
                 avalibleEquipment.Count = avalibleEquipment.Count - equipment.Count;
@@ -176,23 +173,23 @@ namespace Управление_заказами.Models.Core
             {
                 int notEnoughCount = equipment.Count - avalibleEquipment.Count;
                 avalibleEquipment.Count = 0;
-                TakeEquipmentFromRent(equipment.Name, notEnoughCount, equipment.StartDate, equipment.EndDate, db);
+                await TakeEquipmentFromRent(equipment.Name, notEnoughCount, equipment.StartDate, equipment.EndDate, db);
             }
         }
 
-        private void AddEqipmentInRent(EquipmentFromOrder equipment, AppDbContext db)
+        private async Task AddEqipmentInRent(EquipmentFromOrder equipment, AppDbContext db)
         {
-            var equipmentInRent = (from eq in db.EquipmentsInRent
+            var equipmentInRent = await (from eq in db.EquipmentsInRent
                                    where eq.Name == equipment.Name &&
                                          eq.EndDate == equipment.EndDate
-                                   select eq).FirstOrDefault();
+                                   select eq).FirstOrDefaultAsync();
             if (equipmentInRent != null)
             {
                 equipmentInRent.Count += equipment.Count;
             }
             else
             {
-                db.EquipmentsInRent.Add(equipment);
+               await db.EquipmentsInRent.AddAsync(equipment);
             }
         }
 
@@ -214,8 +211,8 @@ namespace Управление_заказами.Models.Core
                     db.SaveChanges();
                     foreach (var equipment in newOrder.Equipments)
                     {
-                        TakeEquipment(equipment, db);
-                        AddEqipmentInRent(equipment, db);
+                        await TakeEquipment(equipment, db);
+                        await AddEqipmentInRent(equipment, db);
                     }
 
                     newOrder.EventId = await Calendar.UpdateEvent(oldOrder, newOrder);

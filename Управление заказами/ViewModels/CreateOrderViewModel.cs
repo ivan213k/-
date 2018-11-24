@@ -259,14 +259,13 @@ namespace Управление_заказами.ViewModels
                 window.Close();
                 MessageBox.Show("Заказ успешно создан");
             }
-            catch (ArgumentException e)
+            catch (ArgumentException )
             {
                 MessageBox.Show("Не хватает оборудования. Проверьте наличие.");
             }
 
             DisableProgressBar();
         }
-
 
         private void RevoveEquipment(object parametr)
         {
