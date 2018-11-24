@@ -134,8 +134,7 @@ namespace Управление_заказами.ViewModels
         }
 
         #region HelpMembers       
-        private List<string> _categories;
-        private string _selectedCategory;
+  
         private ObservableCollection<HierarchicalEquipment> _equipments;
 
         #endregion

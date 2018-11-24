@@ -69,6 +69,48 @@ namespace Управление_заказами.Models.Core
             return (await service.Events.Insert(fullTimeEvent, "primary").ExecuteAsync()).Id;
         }
 
+        public async Task<string> AddEmployeDayOff(DateTime date, string eventTitle, string colorId)
+        {
+            CalendarService service = await GetService();
+            
+            Event dayOffEvent = new Event()
+            {
+                Summary = eventTitle,
+                Start = new EventDateTime()
+                {
+                    Date= date.ToString("yyyy-MM-dd")
+                },
+                End = new EventDateTime()
+                {
+                    Date = date.ToString("yyyy-MM-dd")
+                },
+                ColorId = colorId
+            };
+
+           return (await service.Events.Insert(dayOffEvent, "primary").ExecuteAsync()).Id;
+        }
+
+        public async Task<string> AddEmployeDayOff(DateTime startDate, DateTime endDate, string eventTitle, string colorId)
+        {
+            CalendarService service = await GetService();
+
+            Event dayOffEvent = new Event()
+            {
+                Summary = eventTitle,
+                Start = new EventDateTime()
+                {
+                   DateTime = startDate
+                },
+                End = new EventDateTime()
+                {
+                    DateTime = endDate
+                },
+                ColorId = colorId
+            };
+
+            return (await service.Events.Insert(dayOffEvent, "primary").ExecuteAsync()).Id;
+        }
+
         public async Task<string> UpdateEvent(Order oldOrder, Order newOrder)
         {
             var service = await GetService();
@@ -77,14 +119,25 @@ namespace Управление_заказами.Models.Core
             Event startEvent = CreateEvent(newOrder, newOrder.GoogleCalendarColorId);
             return (await service.Events.Insert(startEvent, "primary").ExecuteAsync()).Id;
         }
+
         public async Task<string> UpdateReturnEvent(Order oldOrder, Order newOrder)
         {
             var service = await GetService();
 
-            service.Events.Delete("primary", oldOrder.ReturnEventId).Execute();
+            await service.Events.Delete("primary", oldOrder.ReturnEventId).ExecuteAsync();
             Event returnEvent = CreateReturnEvent(newOrder, newOrder.GoogleCalendarColorId);
             return (await service.Events.Insert(returnEvent, "primary").ExecuteAsync()).Id;
         }
+
+        public async Task<string> UpdateFullTimeEvent(Order oldOrder, Order newOrder)
+        {
+            var service = await GetService();
+
+            await service.Events.Delete("primary", oldOrder.AllDayEventId).ExecuteAsync();
+            Event fullTimeEvent = CreateFullTimeEvent(newOrder, newOrder.GoogleCalendarColorId);
+            return (await service.Events.Insert(fullTimeEvent, "primary").ExecuteAsync()).Id;
+        }
+
         private async Task<CalendarService> GetService()
         {
             return new CalendarService(new BaseClientService.Initializer()
@@ -93,6 +146,7 @@ namespace Управление_заказами.Models.Core
                 ApplicationName = ApplicationName,
             });
         }
+
         private Event CreateEvent(Order order, string colorId)
         {
             StringBuilder equipments = new StringBuilder();
@@ -152,7 +206,6 @@ namespace Управление_заказами.Models.Core
             {
                 equipments.Append($"{equipment.Name} {equipment.Count} шт. \n");
             }
-
             return new Event()
             {
                 Start = new EventDateTime()
@@ -163,11 +216,13 @@ namespace Управление_заказами.Models.Core
                 {
                     DateTime = order.ReturnDate
                 },
-                Summary = $"{order.CustomerName} {order.MobilePhone}",
+                Summary = $"{order.CustomerName}, {order.MobilePhone}",
                 Location = order.Adress,
                 Description = $"{equipments} \n {order.CreateDate.ToShortDateString()} - {order.ReturnDate.ToShortDateString()} \n {order.Note}",
                 ColorId = colorId,
             };
         }
+
+        
     }
 }

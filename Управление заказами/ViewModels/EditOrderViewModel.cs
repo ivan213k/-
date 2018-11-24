@@ -213,7 +213,7 @@ namespace Управление_заказами.ViewModels
                 (obj as Window).Close();
                 MessageBox.Show("Заказ успешно обновлено");
             }
-            catch (Exception e)
+            catch (Exception )
             {
                 MessageBox.Show("Не хватает оборудования. Проверьте наличие.");
             }

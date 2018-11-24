@@ -31,6 +31,10 @@ namespace Управление_заказами.Models.DataBase
 
         public string GoogleCalendarColorId { get; set; }
 
+        public bool IsAllDayEvent { get; set; }
+
+        public string AllDayEventId { get; set; }
+
         public List<EquipmentFromOrder> Equipments { get; set; }
 
         public override string ToString()

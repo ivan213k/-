@@ -9,7 +9,7 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
         mc:Ignorable="d"
-        Title="Создание заказа" WindowStartupLocation="CenterScreen" Name="Window" SizeToContent="Height" ResizeMode="CanMinimize" fw:AcrylicWindow.Enabled="True" Width="852.266">
+        Title="Создание заказа"  Name="Window" ResizeMode="CanMinimize" SizeToContent="Height"  fw:AcrylicWindow.Enabled="True" Width="852.266">
     <Window.Resources>
         <Style BasedOn="{StaticResource ButtonRevealStyle}" TargetType="Button">
 
@@ -19,6 +19,7 @@
         </Style>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:DeliveryTypeConverter x:Key="DeliveryToAdressVisibilityConverter"/>
+        <converters:InvertBooleanToVisibilityConverter x:Key="InvertBooleanToVisibilityConverter"/>
     </Window.Resources>
     <Window.DataContext>
         <viewModels:CreateOrderViewModel/>
@@ -110,6 +111,10 @@
                         <TextBox TextWrapping="Wrap" Height="50" Text="{Binding Note}" Width="335"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
+                        <CheckBox IsChecked="{Binding AllDateIsChecked}" Name="AllDayCheckBox"/>
+                        <TextBlock Margin="5 0" VerticalAlignment="Top"  Text="Весь день"/>
+                    </StackPanel>
+                    <StackPanel  Orientation="Horizontal">
                         <TextBlock Margin="5 5 50 5" Text="Целевая дата:"/>
                         <xctk:DateTimePicker Style="{StaticResource DateTimePickerTime}" Value="{Binding StartDate}" />
                     </StackPanel>

@@ -33,14 +33,14 @@ namespace Управление_заказами.Views
 
         private async Task Authorize()
         {
-            var user = await UserManager.AuthorizeAsync(Name.Text, Password.Password);
+            var user = await UserManager.AuthorizeAsync(UserName.Text, Password.Password);
             if (user!=null)
             {
                 try
                 {
                     await GoogleCalendarAuthorize();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     MessageBox.Show("Не удалось авторизоваться в Google Calendar");
                     return;

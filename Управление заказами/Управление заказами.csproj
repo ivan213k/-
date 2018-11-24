@@ -206,6 +206,10 @@
     <Compile Include="Migrations\20181026143453_AddedReplacmentCostProperty.designer.cs">
       <DependentUpon>20181026143453_AddedReplacmentCostProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20181124092006_AddedAllDayEventsProperty.cs" />
+    <Compile Include="Migrations\20181124092006_AddedAllDayEventsProperty.designer.cs">
+      <DependentUpon>20181124092006_AddedAllDayEventsProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
     <Compile Include="Models\Core\Abstractions\IUserManager.cs" />
     <Compile Include="Models\Core\UserManager.cs" />
@@ -216,6 +220,7 @@
     <Compile Include="ViewModels\Converters\AccountTypeConverter.cs" />
     <Compile Include="ViewModels\Converters\CloseOrderTypeConverter.cs" />
     <Compile Include="ViewModels\Converters\GCColorIdToSolidColorBrush.cs" />
+    <Compile Include="ViewModels\Converters\InvertBooleanToVisibilityConverter.cs" />
     <Compile Include="ViewModels\Converters\StringToSolidColorBrushConverter.cs" />
     <Compile Include="ViewModels\EditOrderViewModel.cs" />
     <Compile Include="ViewModels\EquipmentsInStockViewModel.cs" />
