@@ -22,6 +22,9 @@ namespace Управление_заказами.ViewModels
             AddEquipmentCommand = new Command(AddEquipmentToOrder, CanAddEquipmentToOrder);
             CreateOrderCommand = new Command(CreateOrder);
             RemoveEquipmentCommand = new Command(RevoveEquipment);
+            GoogleCalendarColors = AppSettings.GoogleCalendarColors;
+            SelectedColor = GoogleCalendarColors.Select(c => c).Where(c => c.Key == AppSettings.GoogleCalendarColorId)
+                .SingleOrDefault();
             LoadEquipments();
         }
         async void LoadEquipments()
@@ -117,6 +120,10 @@ namespace Управление_заказами.ViewModels
         public DateTime EndDate { get; set; } = DateTime.Now.AddDays(2);
 
         public bool AllDateIsChecked { get; set; }
+
+        public Dictionary<string, string> GoogleCalendarColors { get; set; }
+
+        public KeyValuePair<string, string> SelectedColor { get; set; }
 
         string selectedImage;
         public string SelectedImage
@@ -235,7 +242,7 @@ namespace Управление_заказами.ViewModels
                 MobilePhone = MobilePhone,
                 Note = Note,
                 ReturnDate = EndDate.AddSeconds(-EndDate.Second),
-                GoogleCalendarColorId = AppSettings.GoogleCalendarColorId,
+                GoogleCalendarColorId = SelectedColor.Key,
                 IsAllDayEvent = AllDateIsChecked
             };
             List<EquipmentFromOrder> equipments = new List<EquipmentFromOrder>();

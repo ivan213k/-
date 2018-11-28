@@ -20,6 +20,7 @@
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:DeliveryTypeConverter x:Key="DeliveryToAdressVisibilityConverter"/>
         <converters:InvertBooleanToVisibilityConverter x:Key="InvertBooleanToVisibilityConverter"/>
+        <converters:StringToSolidColorBrushConverter x:Key="StringToColor"/>
     </Window.Resources>
     <Window.DataContext>
         <viewModels:CreateOrderViewModel/>
@@ -121,6 +122,18 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="5 10" Text="Дата возвращения:"/>
                         <xctk:DateTimePicker Style="{StaticResource DateTimePickerTime}" Value="{Binding EndDate}" Margin="15 5"/>
+                    </StackPanel>
+                   
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="5 0" VerticalAlignment="Center" Text="Цвет заказа:"></TextBlock>
+                        <ComboBox  SelectedValue="{Binding Path=SelectedColor, Mode=TwoWay}" ItemsSource="{Binding GoogleCalendarColors}" Margin="55 5" Width="148">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Width="140" Height="15" Background="{Binding Path=Value,Converter={StaticResource StringToColor}}"></StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+
+                        </ComboBox>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>
