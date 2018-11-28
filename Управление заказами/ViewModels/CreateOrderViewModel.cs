@@ -200,7 +200,7 @@ namespace Управление_заказами.ViewModels
         private async Task CreateDayOff()
         {
             GoogleCalendar calendar = new GoogleCalendar();
-            if (StartDate == EndDate)
+            if (StartDate.Day == EndDate.Day && StartDate.Month == EndDate.Month && StartDate.Year == EndDate.Year)
             {
                 await calendar.AddEmployeDayOff(StartDate, CustomerName, AppSettings.GoogleCalendarColorId);
             }
