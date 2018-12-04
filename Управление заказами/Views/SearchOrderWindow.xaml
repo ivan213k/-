@@ -46,8 +46,9 @@
             <ListView.InputBindings>
                 <KeyBinding Key="Delete" Command="{Binding Path=CancelOrderCommand}"></KeyBinding>
             </ListView.InputBindings>
-            <ListView.Resources>
+            <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                     <Style.Triggers>
 
                         <Trigger Property="IsMouseOver" Value="True">
@@ -57,7 +58,8 @@
 
                     </Style.Triggers>
                 </Style>
-            </ListView.Resources>
+            </ListView.ItemContainerStyle>
+            
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Expander >
@@ -72,16 +74,16 @@
                         </Expander.Resources>
                         <Expander.HeaderTemplate>
                             <DataTemplate>
-                                <Grid  DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Expander},Path=DataContext}">
+                                <Grid HorizontalAlignment="{Binding HorizontalAlignment, RelativeSource={RelativeSource AncestorType=ContentPresenter}, Mode=OneWayToSource}"  DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Expander},Path=DataContext}">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="150"/>
-                                        <ColumnDefinition Width="200"/>
-                                        <ColumnDefinition Width="220"/>
-                                        <ColumnDefinition Width="150"/>
-                                        <ColumnDefinition Width="200"/>
-                                        <ColumnDefinition Width="200"/>
+                                        <ColumnDefinition Width="15*"/>
+                                        <ColumnDefinition Width="20*"/>
+                                        <ColumnDefinition Width="22*"/>
+                                        <ColumnDefinition Width="15*"/>
+                                        <ColumnDefinition Width="20*"/>
+                                        <ColumnDefinition Width="20*"/>
 
-                                        <ColumnDefinition Width="150"/>
+                                        <ColumnDefinition Width="15*"/>
 
                                     </Grid.ColumnDefinitions>
                                     <Grid.RowDefinitions>

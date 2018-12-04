@@ -28,8 +28,9 @@
             <Image Source="../Resources/parallax.bmp" Stretch="UniformToFill"/>
         </fw:ParallaxView>
         <ListView Name="list" Background="#88EEEEEE" ScrollViewer.CanContentScroll="False" SelectedValue="{Binding SelectedOrder}" Margin="5" ItemsSource="{Binding ReturnOrders}">
-            <ListView.Resources>
+            <ListView.ItemContainerStyle>
                 <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
                     <Style.Triggers>
 
                         <Trigger Property="IsMouseOver" Value="True">
@@ -39,48 +40,49 @@
 
                     </Style.Triggers>
                 </Style>
-            </ListView.Resources>
+            </ListView.ItemContainerStyle>
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Expander >
+                    <Expander>
                         <Expander.HeaderTemplate>
-                            <DataTemplate>
-                                <Grid DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Expander},Path=DataContext}">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="220"/>
-                                        <ColumnDefinition Width="220"/>
-                                        <ColumnDefinition Width="220"/>
-                                        <ColumnDefinition Width="220"/>
-                                        <ColumnDefinition Width="200"/>
-                                        <ColumnDefinition Width="150"/>
-                                        <ColumnDefinition Width="100"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <Grid.Resources>
-                                        <Style TargetType="TextBlock">
-                                            <Setter Property="Foreground" Value="White"></Setter>
-                                            <Setter Property="FontWeight" Value="DemiBold"></Setter>
-                                        </Style>
-                                    </Grid.Resources>
-                                    <TextBlock TextAlignment="Center" Text="ВОЗВРАТ" ></TextBlock>
+                            <DataTemplate >
+                                    <Grid HorizontalAlignment="{Binding HorizontalAlignment, RelativeSource={RelativeSource AncestorType=ContentPresenter}, Mode=OneWayToSource}"  DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Expander},Path=DataContext}">
+                                        <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="22*"/>
+                                        <ColumnDefinition Width="22*"/>
+                                        <ColumnDefinition Width="22*"/>
+                                        <ColumnDefinition Width="22*"/>
+                                        <ColumnDefinition Width="20*"/>
+                                        <ColumnDefinition Width="15*"/>
+                                        <ColumnDefinition Width="10*"/>
+                                          
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition/>
+                                            <RowDefinition/>
+                                        </Grid.RowDefinitions>
+                                        <Grid.Resources>
+                                            <Style TargetType="TextBlock">
+                                                <Setter Property="Foreground" Value="White"></Setter>
+                                                <Setter Property="FontWeight" Value="DemiBold"></Setter>
+                                            </Style>
+                                        </Grid.Resources>
+                                        <TextBlock TextAlignment="Center" Text="ВОЗВРАТ" ></TextBlock>
 
-                                    <TextBlock Grid.Column="1" TextAlignment="Center" Text="Менеджер:"></TextBlock>
-                                    <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center" Text="{Binding Manager}"></TextBlock>
-                                    <TextBlock Grid.Column="2" TextAlignment="Center" Text="Адресс:"></TextBlock>
-                                    <TextBlock Grid.Column="2" TextAlignment="Center" Grid.Row="1" Text="{Binding Adress}"></TextBlock>
-                                    <TextBlock Grid.Column="3" TextAlignment="Center" Text="Мобильный телефон:"></TextBlock>
-                                    <TextBlock Grid.Column="3"  TextAlignment="Center" Grid.Row="1" Text="{Binding MobilePhone}"></TextBlock>
+                                        <TextBlock Grid.Column="1" TextAlignment="Center" Text="Менеджер:"></TextBlock>
+                                        <TextBlock Grid.Row="1" Grid.Column="1" TextAlignment="Center" Text="{Binding Manager}"></TextBlock>
+                                        <TextBlock Grid.Column="2" TextAlignment="Center" Text="Адресс:"></TextBlock>
+                                        <TextBlock Grid.Column="2" TextAlignment="Center" Grid.Row="1" Text="{Binding Adress}"></TextBlock>
+                                        <TextBlock Grid.Column="3" TextAlignment="Center" Text="Мобильный телефон:"></TextBlock>
+                                        <TextBlock Grid.Column="3"  TextAlignment="Center" Grid.Row="1" Text="{Binding MobilePhone}"></TextBlock>
 
-                                    <TextBlock Grid.Column="4" TextAlignment="Center" Text="Имя:"></TextBlock>
-                                    <TextBlock Grid.Column="4"  TextAlignment="Center" Grid.Row="1" Text="{Binding CustomerName}"></TextBlock>
+                                        <TextBlock Grid.Column="4" TextAlignment="Center" Text="Имя:"></TextBlock>
+                                        <TextBlock Grid.Column="4"  TextAlignment="Center" Grid.Row="1" Text="{Binding CustomerName}"></TextBlock>
 
-                                    <TextBlock Grid.Column="5" TextAlignment="Center" Text="Время возврата:"></TextBlock>
-                                    <TextBlock Grid.Column="5" TextAlignment="Center" Grid.Row="1" Text="{Binding ReturnDate}"></TextBlock>
-                                    <TextBlock Grid.Column="6" TextAlignment="Center" TextWrapping="Wrap" Text="{Binding Note}"></TextBlock>
-                                </Grid>
+                                        <TextBlock Grid.Column="5" TextAlignment="Center" Text="Время возврата:"></TextBlock>
+                                        <TextBlock Grid.Column="5" TextAlignment="Center" Grid.Row="1" Text="{Binding ReturnDate}"></TextBlock>
+                                        <TextBlock Grid.Column="6" TextAlignment="Center" TextWrapping="Wrap" Text="{Binding Note}"></TextBlock>
+                                    </Grid>
                             </DataTemplate>
                         </Expander.HeaderTemplate>
                         <Grid fw:PointerTracker.Enabled="True">
