@@ -246,9 +246,6 @@
     <Compile Include="Views\EquipmentInStockWindow.xaml.cs">
       <DependentUpon>EquipmentInStockWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\OrdersHistoryWindow.xaml.cs">
-      <DependentUpon>OrdersHistoryWindow.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\RegistrateUserWindow.xaml.cs">
       <DependentUpon>RegistrateUserWindow.xaml</DependentUpon>
     </Compile>
@@ -328,10 +325,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\OrdersHistoryWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\RegistrateUserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

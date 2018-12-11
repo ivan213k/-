@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Windows;
 using Управление_заказами.Models.DataBase;
 using Управление_заказами.Views;
 
@@ -40,8 +42,7 @@ namespace Управление_заказами
 
         private void HistoryButton_OnClick(object sender, RoutedEventArgs e)
         {
-            OrdersHistoryWindow window = new OrdersHistoryWindow();
-            window.Show();
+           Process.Start("https://calendar.google.com");
         }
 
         private void AvalibleEquipmentButton_OnClick(object sender, RoutedEventArgs e)

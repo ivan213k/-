@@ -83,6 +83,11 @@
                                 <MenuItem  Header="Удалить" Command="{Binding RemoveEquipmentCommand}"></MenuItem>
                             </ContextMenu>
                         </ListView.ContextMenu>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="ListViewItem">
+                                <Setter Property="HorizontalContentAlignment" Value="Stretch"></Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                
@@ -96,8 +101,8 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Margin="5" Text="{Binding Name}"></TextBlock>
-                                    <TextBlock Grid.Column="1" Margin="10 5 5 5"  HorizontalAlignment="Center"  Text="{Binding StringFormat=Количество {0} шт., Path=Count}"></TextBlock>
+                                    <TextBlock Margin="5" HorizontalAlignment="Left" Text="{Binding Name}"></TextBlock>
+                                    <TextBlock Margin="5" Grid.Column="1"   HorizontalAlignment="Left"  Text="{Binding StringFormat=Количество {0} шт., Path=Count}"></TextBlock>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>

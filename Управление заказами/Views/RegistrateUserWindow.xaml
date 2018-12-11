@@ -30,7 +30,7 @@
             </ContextMenu.Items>
         </ContextMenu>
     </Window.ContextMenu>
-    <StackPanel IsEnabled="{Binding IsEnabled}" fluentWpf:PointerTracker.Enabled="True" Margin="0,0,0,3">
+    <StackPanel fluentWpf:PointerTracker.Enabled="True" Margin="0,0,0,3">
         <StackPanel Orientation="Horizontal">
             <TextBlock Margin="5 0 0 0" VerticalAlignment="Center" Text="Имя:"></TextBlock>
             <TextBox Text="{Binding Name}" Margin="75 5" Width="275"></TextBox>

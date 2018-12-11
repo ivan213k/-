@@ -133,6 +133,6 @@
         <Setter Property="Width" Value="150"></Setter>
         <Setter Property="Height" Value="20"></Setter>
         <Setter Property="Format" Value="Custom"></Setter>
-        <Setter Property="FormatString" Value="dd/MM/yyyy hh:mm"></Setter>
+        <Setter Property="FormatString" Value="dd/MM/yyyy HH:mm"></Setter>
     </Style>
 </ResourceDictionary>
