@@ -215,15 +215,18 @@
     <Compile Include="Models\Core\UserManager.cs" />
     <Compile Include="Models\DataBase\User.cs" />
     <Compile Include="Models\DataBase\UserType.cs" />
+    <Compile Include="Models\MissingEquipment.cs" />
     <Compile Include="ViewModels\AddEquipmentViewModel.cs" />
     <Compile Include="ViewModels\CloseOrderViewModel.cs" />
     <Compile Include="ViewModels\Converters\AccountTypeConverter.cs" />
     <Compile Include="ViewModels\Converters\CloseOrderTypeConverter.cs" />
+    <Compile Include="ViewModels\Converters\DateTimeToStringConverter.cs" />
     <Compile Include="ViewModels\Converters\GCColorIdToSolidColorBrush.cs" />
     <Compile Include="ViewModels\Converters\InvertBooleanToVisibilityConverter.cs" />
     <Compile Include="ViewModels\Converters\StringToSolidColorBrushConverter.cs" />
     <Compile Include="ViewModels\EditOrderViewModel.cs" />
     <Compile Include="ViewModels\EquipmentsInStockViewModel.cs" />
+    <Compile Include="ViewModels\MissingEquipmentViewModel.cs" />
     <Compile Include="ViewModels\RegistrateUserViewModel.cs" />
     <Compile Include="ViewModels\ReturnOrderViewModel.cs" />
     <Compile Include="ViewModels\SearchOrderViewModel.cs" />
@@ -245,6 +248,9 @@
     </Compile>
     <Compile Include="Views\EquipmentInStockWindow.xaml.cs">
       <DependentUpon>EquipmentInStockWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\MissingEquipmentWindow.xaml.cs">
+      <DependentUpon>MissingEquipmentWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\RegistrateUserWindow.xaml.cs">
       <DependentUpon>RegistrateUserWindow.xaml</DependentUpon>
@@ -325,6 +331,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\MissingEquipmentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\RegistrateUserWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

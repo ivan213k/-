@@ -6,6 +6,7 @@
         xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         xmlns:local="clr-namespace:Управление_заказами.Views"
         xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
+        xmlns:converters="clr-namespace:Управление_заказами.ViewModels.Converters"
         mc:Ignorable="d"
         Title="Список возвращенного оборудования" WindowStartupLocation="CenterScreen" Height="450" Width="1400" fw:AcrylicWindow.Enabled="True">
     <Window.Resources>
@@ -13,6 +14,7 @@
 
         </Style>
         <BooleanToVisibilityConverter x:Key="BoleanToVisibilityConverter"/>
+        <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
     </Window.Resources>
 <Window.DataContext>
     <viewModels:ReturnOrderViewModel/>
@@ -80,8 +82,8 @@
                                         <TextBlock Grid.Column="4"  TextAlignment="Center" Grid.Row="1" Text="{Binding CustomerName}"></TextBlock>
 
                                         <TextBlock Grid.Column="5" TextAlignment="Center" Text="Время возврата:"></TextBlock>
-                                        <TextBlock Grid.Column="5" TextAlignment="Center" Grid.Row="1" Text="{Binding ReturnDate}"></TextBlock>
-                                        <TextBlock Grid.Column="6" TextAlignment="Center" TextWrapping="Wrap" Text="{Binding Note}"></TextBlock>
+                                        <TextBlock Grid.Column="5" TextAlignment="Center" Grid.Row="1" Text="{Binding ReturnDate,Converter={StaticResource DateTimeToStringConverter}}"></TextBlock>
+                                        <TextBlock MaxWidth="300" Grid.Column="6" TextAlignment="Center" TextWrapping="Wrap" Text="{Binding Note}"></TextBlock>
                                     </Grid>
                             </DataTemplate>
                         </Expander.HeaderTemplate>
@@ -100,12 +102,16 @@
                                 </DataGrid.Columns>
                             </DataGrid>
                             <GroupBox Foreground="White" Header="Примечание"  Margin="5 0" fw:PointerTracker.Enabled="True" Grid.Column="1">
-                                <StackPanel  >
-                                    <TextBox Style="{StaticResource TextBoxRevealStyle}"  Text="{Binding Note,Mode=TwoWay,BindsDirectlyToSource=True, UpdateSourceTrigger=PropertyChanged}" Width="270" TextWrapping="Wrap" Margin="5" Height="50">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition/>
+                                        <RowDefinition Height="auto"/>
+                                    </Grid.RowDefinitions>
+                                    <TextBox Style="{StaticResource TextBoxRevealStyle}"  Text="{Binding Note,Mode=TwoWay,BindsDirectlyToSource=True, UpdateSourceTrigger=PropertyChanged}" Width="270" TextWrapping="Wrap" MinHeight="50" Margin="5" >
 
                                     </TextBox>
-                                    <Button DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}" Command="{Binding SetNoteCommand}" Foreground="White" >Сохранить примечание</Button>
-                                </StackPanel>
+                                    <Button Grid.Row="1" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}" Command="{Binding SetNoteCommand}" Foreground="White" >Сохранить примечание</Button>
+                                </Grid>
 
                             </GroupBox>
                             <Button Style="{StaticResource ButtonRevealStyle}" FontWeight="Bold" Foreground="White" DataContext="{Binding  RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}"  Command="{Binding CloseOrderCommand}" Margin="5" Grid.Column="2" Content="Закрыть заказ" Height="30" Width="100"></Button>
