@@ -6,10 +6,13 @@
         xmlns:local="clr-namespace:Управление_заказами.Views"
         xmlns:fluentWpf="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
         xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
+        xmlns:converters="clr-namespace:Управление_заказами.ViewModels.Converters"
         mc:Ignorable="d"
         Title="Выбор заказа"  Name="Window" WindowStartupLocation="CenterScreen" fluentWpf:PointerTracker.Enabled="True" fluentWpf:AcrylicWindow.Enabled="True" Height="450" Width="1327.647">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BoleanToVisibilityConverter" />
+        <converters:DateTimeToStringConverter x:Key="DateTimeToStringConverter"/>
+        
     </Window.Resources>
     <Window.DataContext>
         <viewModels:SearchOrderViewModel/>
@@ -107,10 +110,10 @@
                                     <TextBlock Grid.Column="3"  TextAlignment="Center" Grid.Row="1" Text="{Binding CustomerName}"></TextBlock>
 
                                     <TextBlock Grid.Column="4" TextAlignment="Center" Text="Время создания"></TextBlock>
-                                    <TextBlock Grid.Column="4" Grid.Row="1" TextAlignment="Center" Text="{Binding CreateDate}"></TextBlock>
+                                    <TextBlock Grid.Column="4" Grid.Row="1" TextAlignment="Center" Text="{Binding CreateDate, Converter={StaticResource DateTimeToStringConverter}}"></TextBlock>
 
                                     <TextBlock Grid.Column="5" TextAlignment="Center" Text="Время возврата:"></TextBlock>
-                                    <TextBlock Grid.Column="5" TextAlignment="Center" Grid.Row="1" Text="{Binding ReturnDate}"></TextBlock>
+                                    <TextBlock Grid.Column="5" TextAlignment="Center" Grid.Row="1" Text="{Binding ReturnDate, Converter={StaticResource DateTimeToStringConverter}}"></TextBlock>
                                     <Button Command="{Binding Path=EditOrderCommand}" CommandParameter="{Binding ElementName=Window}" DataContext="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType=Window},Path=DataContext}" Grid.Column="6" Style="{StaticResource ButtonRevealStyle}" FontWeight="Bold" Foreground="White" Content="Редактировать заказ"></Button>
 
                                 </Grid>

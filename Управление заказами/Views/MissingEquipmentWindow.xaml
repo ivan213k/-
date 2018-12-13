@@ -1,0 +1,30 @@
+﻿<Window x:Class="Управление_заказами.Views.MissingEquipmentWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:fw="clr-namespace:SourceChord.FluentWPF;assembly=FluentWPF"
+        xmlns:local="clr-namespace:Управление_заказами.Views"
+        xmlns:viewmodels="clr-namespace:Управление_заказами.ViewModels"
+        mc:Ignorable="d"
+        Title="Невозможно создать заказ. Не хватает оборудования." Height="258.511" Width="788.83" fw:AcrylicWindow.Enabled="True" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+    <Window.DataContext>
+        <viewmodels:MissingEquipmentViewModel/>
+    </Window.DataContext>
+    <Grid fw:PointerTracker.Enabled="True">
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <DataGrid ItemsSource="{Binding Path=Equioments}"  Style="{StaticResource DatagridStyle}" IsReadOnly="True" AutoGenerateColumns="False" >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название оборудования" Binding="{Binding  Name}"/>
+                <DataGridTextColumn Header="Необходимое количество" Binding="{Binding NeedCount}" />
+                <DataGridTextColumn Header="Остаток на складе" Binding="{Binding Balance}"/>
+                <DataGridTextColumn Header="Доступно в диапазоне указанных дат" Binding="{Binding AvalibleInSelectedDateRange}"/>
+                <DataGridTextColumn Header="Не хватает" Binding="{Binding NotEnough}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Style="{StaticResource ButtonRevealStyle}" Foreground="White" FontWeight="Bold" Grid.Row="1" Content="OK" Margin="5" Click="ButtonBase_OnClick"/>
+    </Grid>
+</Window>

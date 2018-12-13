@@ -7,9 +7,11 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
+using Управление_заказами.Models;
 using Управление_заказами.Models.Core;
 using Управление_заказами.Models.Core.Abstractions;
 using Управление_заказами.Models.DataBase;
+using Управление_заказами.Views;
 
 namespace Управление_заказами.ViewModels
 {
@@ -268,7 +270,14 @@ namespace Управление_заказами.ViewModels
             }
             catch (ArgumentException )
             {
-                MessageBox.Show("Не хватает оборудования. Проверьте наличие.");
+                var missingEquiomentWindow = new MissingEquipmentWindow()
+                {
+                    DataContext = new MissingEquipmentViewModel()
+                    {
+                        Equioments = await CheckAvailabilityEquipment()
+                    }
+                };
+                missingEquiomentWindow.ShowDialog();
             }
 
             DisableProgressBar();
@@ -282,6 +291,34 @@ namespace Управление_заказами.ViewModels
                 AddEquipmentCommand.OneExecuteChaneged();
             }
 
+        }
+        async Task<List<MissingEquipment>> CheckAvailabilityEquipment()
+        {
+            var checkResult = new List<MissingEquipment>();
+
+            foreach (var equipment in SelectedEquipmentsForOrder)
+            {
+                int balance = await EquipmentInfo.GetAvalibleCountAsync(equipment.Name);
+                int avalibleInRange = await EquipmentInfo.GetAvalibleCountAsync(equipment.Name, StartDate.AddSeconds(-StartDate.Second), EndDate.AddSeconds(-EndDate.Second));
+                checkResult.Add(new MissingEquipment()
+                {
+                    Name = equipment.Name,
+                    NeedCount = equipment.Count,
+                    Balance = balance,
+                    AvalibleInSelectedDateRange = avalibleInRange,
+                });
+               
+            }
+
+            var enoughEquipments = (from _enoughEquipment in checkResult
+                where _enoughEquipment.NotEnough <= 0
+                select _enoughEquipment).ToList();
+
+            foreach (var enoughEquipment in enoughEquipments)
+            {
+                checkResult.Remove(enoughEquipment);
+            }
+            return checkResult;
         }
     }
 }
