@@ -38,7 +38,10 @@ namespace Управление_заказами.Models.Core
             string credPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "Управление заказами", "token_json");
             DirectoryInfo info = new DirectoryInfo(credPath);
-            info.Delete(true);
+            if (Directory.Exists(credPath))
+            {
+                info.Delete(true);
+            }   
             await Authorize();
         }
 

@@ -40,9 +40,9 @@ namespace Управление_заказами.Views
                 {
                     await GoogleCalendarAuthorize();
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
-                    MessageBox.Show("Не удалось авторизоваться в Google Calendar");
+                    MessageBox.Show("Не удалось авторизоваться в Google Calendar"+e.Message);
                     return;
                 }
                
