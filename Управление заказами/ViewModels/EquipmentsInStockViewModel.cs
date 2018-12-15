@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Xceed.Wpf.Toolkit;
@@ -8,6 +10,7 @@ using Управление_заказами.Models.Core;
 using Управление_заказами.Models.Core.Abstractions;
 using Управление_заказами.Models.DataBase;
 using Управление_заказами.Views;
+using WindowState = System.Windows.WindowState;
 
 namespace Управление_заказами.ViewModels
 {
@@ -31,6 +34,7 @@ namespace Управление_заказами.ViewModels
             DeleteCategoryCommand = new Command(DeleteCategory);
             Refresh();
         }
+
 
         private async void DeleteCategory(object obj)
         {
@@ -120,6 +124,20 @@ namespace Управление_заказами.ViewModels
         public ICommand DeleteCategoryCommand { get; set; }
 
         async void SaveChanges(object parametr)
+        {
+            Button button = parametr as Button;
+            EnableProgressBar();
+            List<EquipmentInStock> equipmentsInStocks = new List<EquipmentInStock>();
+            foreach (var hierarchicalEquipment in Equipments)
+            {
+                equipmentsInStocks.AddRange(hierarchicalEquipment.Equipments);
+            }
+            await EquipmentInfo.UpdateEquipmentsRange(equipmentsInStocks);
+            DisableProgressBar();
+            button.Visibility = System.Windows.Visibility.Collapsed;
+        }
+
+        public async Task SaveChangesOnClosingWindow(object parametr)
         {
             Button button = parametr as Button;
             EnableProgressBar();

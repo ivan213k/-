@@ -8,7 +8,7 @@
         xmlns:viewModels="clr-namespace:Управление_заказами.ViewModels"
         xmlns:converters="clr-namespace:Управление_заказами.ViewModels.Converters"
         mc:Ignorable="d"
-        Title="Список возвращенного оборудования" WindowStartupLocation="CenterScreen" Height="450" Width="1400" fw:AcrylicWindow.Enabled="True">
+        Title="Список возвращенного оборудования" WindowStartupLocation="CenterScreen" Height="450" Width="1200" fw:AcrylicWindow.Enabled="True">
     <Window.Resources>
         <Style BasedOn="{StaticResource ButtonRevealStyle}" TargetType="Button">
 
