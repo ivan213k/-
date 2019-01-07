@@ -195,7 +195,7 @@ namespace Управление_заказами.Models.Core
 
         public async Task UpdateOrderAsync(int oldOrderId, Order newOrder)
         {
-            await Task.Factory.StartNew(async () =>
+            await Task.Run(async () =>
             {
                 using (AppDbContext db = new AppDbContext())
                 {

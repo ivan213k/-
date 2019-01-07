@@ -85,7 +85,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </GroupBox>
-            <GroupBox Margin="5" Header="Информация о заказе">
+            <GroupBox Margin="5" Header="Информация о заказе" Width="823">
                 <StackPanel>
 
                     <StackPanel Margin="0 5" Orientation="Horizontal">

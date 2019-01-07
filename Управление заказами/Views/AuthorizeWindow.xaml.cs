@@ -42,7 +42,7 @@ namespace Управление_заказами.Views
                 }
                 catch (Exception e)
                 {
-                    MessageBox.Show("Не удалось авторизоваться в Google Calendar"+e.Message);
+                    MessageBox.Show("Не удалось авторизоваться в Google Calendar"+e.Message, "", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
                
@@ -73,7 +73,7 @@ namespace Управление_заказами.Views
             }
             else
             {
-                MessageBox.Show("Логин или пароль введен неверно");
+                MessageBox.Show("Логин или пароль введен неверно", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 

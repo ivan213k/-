@@ -217,7 +217,7 @@ namespace Управление_заказами.ViewModels
             {
                 await calendar.AddEmployeDayOff(StartDate, EndDate, CustomerName, AppSettings.GoogleCalendarColorId);
             }
-            MessageBox.Show("Выходной успешно создан");
+            MessageBox.Show("Выходной успешно создан","",MessageBoxButton.OK,MessageBoxImage.Information);
         }
 
         async void CreateOrder(object parametr)
@@ -231,7 +231,8 @@ namespace Управление_заказами.ViewModels
 
             if (EndDate < StartDate)
             {
-                MessageBox.Show("Дата возврата не может быть ранее даты создания");
+                MessageBox.Show("Дата возврата не может быть ранее даты создания","",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -266,7 +267,7 @@ namespace Управление_заказами.ViewModels
                 EnableProgressBar();
                 await OrderManager.CreateOrderAsync(order);
                 window.Close();
-                MessageBox.Show("Заказ успешно создан");
+                MessageBox.Show("Заказ успешно создан","",MessageBoxButton.OK,MessageBoxImage.Information);
             }
             catch (ArgumentException )
             {
@@ -274,7 +275,8 @@ namespace Управление_заказами.ViewModels
                 {
                     DataContext = new MissingEquipmentViewModel()
                     {
-                        Equioments = await CheckAvailabilityEquipment()
+                        Equioments = await EquipmentInfo.GetMissingEquipments(SelectedEquipmentsForOrder.ToList(), 
+                            StartDate.AddSeconds(-StartDate.Second), EndDate.AddSeconds(-EndDate.Second))
                     }
                 };
                 missingEquiomentWindow.ShowDialog();
@@ -291,34 +293,6 @@ namespace Управление_заказами.ViewModels
                 AddEquipmentCommand.OneExecuteChaneged();
             }
 
-        }
-        async Task<List<MissingEquipment>> CheckAvailabilityEquipment()
-        {
-            var checkResult = new List<MissingEquipment>();
-
-            foreach (var equipment in SelectedEquipmentsForOrder)
-            {
-                int balance = await EquipmentInfo.GetAvalibleCountAsync(equipment.Name);
-                int avalibleInRange = await EquipmentInfo.GetAvalibleCountAsync(equipment.Name, StartDate.AddSeconds(-StartDate.Second), EndDate.AddSeconds(-EndDate.Second));
-                checkResult.Add(new MissingEquipment()
-                {
-                    Name = equipment.Name,
-                    NeedCount = equipment.Count,
-                    Balance = balance,
-                    AvalibleInSelectedDateRange = avalibleInRange,
-                });
-               
-            }
-
-            var enoughEquipments = (from _enoughEquipment in checkResult
-                where _enoughEquipment.NotEnough <= 0
-                select _enoughEquipment).ToList();
-
-            foreach (var enoughEquipment in enoughEquipments)
-            {
-                checkResult.Remove(enoughEquipment);
-            }
-            return checkResult;
         }
     }
 }

@@ -127,5 +127,28 @@ namespace Управление_заказами.Models.Core
                 }
             });
         }
+
+        public async Task<List<MissingEquipment>> GetMissingEquipments(List<EquipmentInStock> equipmentsForCheck, DateTime startDate, DateTime endDate)
+        {
+            var checkResult = new List<MissingEquipment>();
+
+            foreach (var equipment in equipmentsForCheck)
+            {
+                int needCount = equipment.Count;
+                int balance = await GetAvalibleCountAsync(equipment.Name);
+                int avalibleInRange = await GetAvalibleCountAsync(equipment.Name, startDate, endDate);
+                if ((needCount - balance+avalibleInRange)>0)
+                {
+                    checkResult.Add(new MissingEquipment()
+                    {
+                        Name = equipment.Name,
+                        NeedCount = equipment.Count,
+                        Balance = balance,
+                        AvalibleInSelectedDateRange = avalibleInRange,
+                    });
+                }
+            }
+            return checkResult;
+        }
     }
 }

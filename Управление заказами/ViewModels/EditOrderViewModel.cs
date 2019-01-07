@@ -10,6 +10,7 @@ using System.Windows.Input;
 using Управление_заказами.Models.Core;
 using Управление_заказами.Models.Core.Abstractions;
 using Управление_заказами.Models.DataBase;
+using Управление_заказами.Views;
 
 namespace Управление_заказами.ViewModels
 {
@@ -178,7 +179,7 @@ namespace Управление_заказами.ViewModels
         {
             if (EndDate < StartDate)
             {
-                MessageBox.Show("Дата возврата не может быть ранее даты создания");
+                MessageBox.Show("Дата возврата не может быть ранее даты создания", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -195,7 +196,10 @@ namespace Управление_заказами.ViewModels
                 });
             }
             EnableProgressBar();
-            try
+            var missingEquipments = await EquipmentInfo.GetMissingEquipments(SelectedEquipmentsForOrder.ToList(),
+                StartDate.AddSeconds(-StartDate.Second),
+                EndDate.AddSeconds(-EndDate.Second));
+            if (missingEquipments.Count==0)
             {
                 await OrderManager.UpdateOrderAsync(OldOrder.Id, new Order()
                 {
@@ -211,11 +215,19 @@ namespace Управление_заказами.ViewModels
                     GoogleCalendarColorId = AppSettings.GoogleCalendarColorId
                 });
                 (obj as Window).Close();
-                MessageBox.Show("Заказ успешно обновлено");
+                MessageBox.Show("Заказ успешно обновлено", "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            catch (Exception )
+            else
             {
-                MessageBox.Show("Не хватает оборудования. Проверьте наличие.");
+                var missingEquiomentWindow = new MissingEquipmentWindow()
+                {
+                    DataContext = new MissingEquipmentViewModel()
+                    {
+                        Equioments = missingEquipments,
+                    },
+                    Title = "Невозможно отредактировать заказ. Не хватает оборудования."
+                };
+                missingEquiomentWindow.ShowDialog();
             }
            
             DisableProgressBar();

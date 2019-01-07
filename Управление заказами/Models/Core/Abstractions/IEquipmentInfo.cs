@@ -18,5 +18,8 @@ namespace Управление_заказами.Models.Core.Abstractions
         Task AddEquipment(EquipmentInStock equipment);
 
         Task DeleteEquipment(EquipmentInStock equipment);
+
+        Task<List<MissingEquipment>> GetMissingEquipments(List<EquipmentInStock> equipmentsForCheck, DateTime startDate,
+            DateTime endDate);
     }
 }

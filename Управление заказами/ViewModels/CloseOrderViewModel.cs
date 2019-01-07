@@ -88,7 +88,7 @@ namespace Управление_заказами.ViewModels
                 await orderManager.CloseOrderAsync(Order.Id);
                 DisableProgressBar();
                 (obj as Window).Close();
-                MessageBox.Show("Заказ успешно закрыт");
+                MessageBox.Show("Заказ успешно закрыт","",MessageBoxButton.OK,MessageBoxImage.Information);
             }
             else
             {
@@ -110,7 +110,7 @@ namespace Управление_заказами.ViewModels
                 await orderManager.CloseOrderPartiallyAsync(Order);
                 DisableProgressBar();
                 (obj as Window).Close();
-                MessageBox.Show("Часть заказа успешно закрыто");
+                MessageBox.Show("Часть заказа успешно закрыто","",MessageBoxButton.OK,MessageBoxImage.Information);
             }
         }
 
