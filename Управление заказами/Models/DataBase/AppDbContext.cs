@@ -33,7 +33,12 @@ namespace Управление_заказами.Models.DataBase
             var builder = new ConfigurationBuilder();
             builder.AddJsonFile("appsettings.json");
             var config = builder.Build();
+             #if DEBUG
             optionsBuilder.UseSqlServer(config.GetConnectionString("LocalConnection"));
+            #else
+            optionsBuilder.UseSqlServer(config.GetConnectionString("RemoteConnection"));
+            #endif
+
         }
     }
 }
