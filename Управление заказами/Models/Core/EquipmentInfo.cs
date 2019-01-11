@@ -9,6 +9,41 @@ namespace Управление_заказами.Models.Core
 {
     class EquipmentInfo : IEquipmentInfo
     {
+        private void UpdateEquipmensNameInRent(List<EquipmentInStock> newEquipments)
+        {
+            using (AppDbContext db = new AppDbContext())
+            {
+                var oldEquipments = db.EquipmentsInStock.ToList();
+                foreach (var newEquipment in newEquipments)
+                {
+                    string oldEquipmentName = oldEquipments.Select(eq => eq).
+                        Where(eq => eq.Id == newEquipment.Id).Single().Name;
+                    UpdateEquipmentName(oldEquipmentName, newEquipment.Name, db);
+                }
+
+                db.SaveChanges();
+            }
+        }
+
+        private void UpdateEquipmentName(string oldName, string newName, AppDbContext db)
+        {
+            foreach (var equipmentInRent in db.EquipmentsInRent)
+            {
+                if (equipmentInRent.Name == oldName)
+                {
+                    equipmentInRent.Name = newName;
+                }
+            }
+
+            foreach (var equipmentFromOrder in db.EquipmentsFromOrder)
+            {
+                if (equipmentFromOrder.Name == oldName)
+                {
+                    equipmentFromOrder.Name = newName;
+                }
+            }
+        }
+
         public async Task<List<EquipmentInStock>> GetEquipmentsAsync()
         {
             return await Task.Factory.StartNew(() =>
@@ -53,6 +88,7 @@ namespace Управление_заказами.Models.Core
             {
                 using (AppDbContext db = new AppDbContext())
                 {
+                    UpdateEquipmensNameInRent(equipments);
                     db.EquipmentsInStock.UpdateRange(equipments);
                     db.SaveChanges();
                 }
@@ -90,6 +126,29 @@ namespace Управление_заказами.Models.Core
                     db.SaveChanges();
                 }
             });
+        }
+
+        public async Task<List<MissingEquipment>> GetMissingEquipments(List<EquipmentInStock> equipmentsForCheck, DateTime startDate, DateTime endDate)
+        {
+            var checkResult = new List<MissingEquipment>();
+
+            foreach (var equipment in equipmentsForCheck)
+            {
+                int needCount = equipment.Count;
+                int balance = await GetAvalibleCountAsync(equipment.Name);
+                int avalibleInRange = await GetAvalibleCountAsync(equipment.Name, startDate, endDate);
+                if ((needCount - balance+avalibleInRange)>0)
+                {
+                    checkResult.Add(new MissingEquipment()
+                    {
+                        Name = equipment.Name,
+                        NeedCount = equipment.Count,
+                        Balance = balance,
+                        AvalibleInSelectedDateRange = avalibleInRange,
+                    });
+                }
+            }
+            return checkResult;
         }
     }
 }

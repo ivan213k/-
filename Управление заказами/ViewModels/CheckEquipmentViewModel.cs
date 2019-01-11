@@ -316,7 +316,6 @@ namespace Управление_заказами.ViewModels
                 SelectedEquipmentsForCheck.Remove(SelectedEquipmentForCheck);
                 AddEquipmentCommand.OneExecuteChaneged();
             }
-
         }
     }
 }

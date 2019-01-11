@@ -96,13 +96,13 @@ namespace Управление_заказами.ViewModels
         {
             if (string.IsNullOrWhiteSpace(SelectedCategory))
             {
-                MessageBox.Show("Категорию не введено");
+                MessageBox.Show("Категорию не введено", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
             if (string.IsNullOrWhiteSpace(EquipmentName))
             {
-                MessageBox.Show("Название оборудования не введено");
+                MessageBox.Show("Название оборудования не введено", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -120,11 +120,11 @@ namespace Управление_заказами.ViewModels
             {
                 EnableProgressBar();
                 await EquipmentInfo.AddEquipment(equipment);
-                MessageBox.Show("Оборудование успешно добавлено");
+                MessageBox.Show("Оборудование успешно добавлено","",MessageBoxButton.OK,MessageBoxImage.Information);
             }
             catch(ArgumentException)
             {
-                MessageBox.Show("Оборудование с таким именем уже существует в базе данных");
+                MessageBox.Show("Оборудование с таким именем уже существует в базе данных", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {

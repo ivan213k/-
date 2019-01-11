@@ -32,12 +32,12 @@ namespace Управление_заказами.ViewModels
             PasswordBox passwordBox = obj as PasswordBox;
             if (string.IsNullOrWhiteSpace(Name))
             {
-                MessageBox.Show("Имя не введено");
+                MessageBox.Show("Имя не введено","",MessageBoxButton.OK,MessageBoxImage.Error);
                 return;
             }
             if (passwordBox.Password.Length < 4)
             {
-                MessageBox.Show("Пароль не может быть менее 4 символов");
+                MessageBox.Show("Пароль не может быть менее 4 символов", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -51,11 +51,11 @@ namespace Управление_заказами.ViewModels
                     GoogleCalendarColorId = SelectedColor.Key,
                     AccountType = (AccountType) SelectedAccountType,
                 });
-                MessageBox.Show("Пользователь успешно зарегистрирован");
+                MessageBox.Show("Пользователь успешно зарегистрирован", "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             catch (ArgumentException )
             {
-                MessageBox.Show("Такой пользователь уже зарегистрирован");
+                MessageBox.Show("Такой пользователь уже зарегистрирован", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             finally
             {
