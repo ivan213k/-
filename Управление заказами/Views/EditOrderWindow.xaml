@@ -100,7 +100,7 @@
                     </StackPanel>
                     <StackPanel Margin="0 5" Orientation="Horizontal">
                         <TextBlock Margin="5 5 18 5" Text="Примечание:"></TextBlock>
-                        <TextBox TextWrapping="Wrap" Height="50" Text="{Binding Note}" Width="335"></TextBox>
+                        <TextBox AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" Height="50" Text="{Binding Note}" Width="335"></TextBox>
                     </StackPanel>
                     <StackPanel   Orientation="Horizontal">
                         <TextBlock Margin="5 5 50 5" Text="Целевая дата:"/>
