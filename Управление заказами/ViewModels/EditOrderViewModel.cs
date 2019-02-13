@@ -23,7 +23,7 @@ namespace Управление_заказами.ViewModels
 
         public EditOrderViewModel()
         {
-            AddEquipmentCommand = new Command(AddEquipmentToOrder,CanAddEquipmentToOrder);
+            AddEquipmentCommand = new Command(AddEquipmentToOrder, CanAddEquipmentToOrder);
             EditOrderCommand = new Command(UpdateOrder);
             RemoveEquipmentCommand = new Command(RevoveEquipment);
             LoadEquipments();
@@ -117,9 +117,9 @@ namespace Управление_заказами.ViewModels
             }
         }
 
-        public DateTime StartDate { get; set; } 
+        public DateTime StartDate { get; set; }
 
-        public DateTime EndDate { get; set; } 
+        public DateTime EndDate { get; set; }
 
         string selectedImage;
         public string SelectedImage
@@ -132,10 +132,10 @@ namespace Управление_заказами.ViewModels
             }
         }
 
-        public ObservableCollection<EquipmentInStock> SelectedEquipmentsForOrder { get; set; } = new ObservableCollection<EquipmentInStock>();
+        public ObservableCollection<EquipmentFromOrder> SelectedEquipmentsForOrder { get; set; } = new ObservableCollection<EquipmentFromOrder>();
 
-        private EquipmentInStock selectedEquipmentForOrder;
-        public EquipmentInStock SelectedEquipmentForOrder
+        private EquipmentFromOrder selectedEquipmentForOrder;
+        public EquipmentFromOrder SelectedEquipmentForOrder
         {
             get => selectedEquipmentForOrder;
             set
@@ -192,55 +192,40 @@ namespace Управление_заказами.ViewModels
                     Count = equipmentInStock.Count,
                     Name = equipmentInStock.Name,
                     StartDate = StartDate.AddSeconds(-StartDate.Second),
-                    EndDate = EndDate.AddSeconds(-EndDate.Second)
+                    EndDate = EndDate.AddSeconds(-EndDate.Second),
+                    IsPartnerEquipment = equipmentInStock.IsPartnerEquipment,
+                    PartnerName = equipmentInStock.PartnerName,
+                    ReplacmentCost = equipmentInStock.ReplacmentCost
                 });
             }
             EnableProgressBar();
-            var missingEquipments = await EquipmentInfo.GetMissingEquipments(SelectedEquipmentsForOrder.ToList(),
-                StartDate.AddSeconds(-StartDate.Second),
-                EndDate.AddSeconds(-EndDate.Second));
-            if (missingEquipments.Count==0)
+
+            await OrderManager.UpdateOrderAsync(OldOrder.Id, new Order()
             {
-                await OrderManager.UpdateOrderAsync(OldOrder.Id, new Order()
-                {
-                    Adress = SelectetDeliveryType.Contains("Указать адрес") ? this.Adress : "Самовывоз",
-                    CustomerName = CustomerName,
-                    MobilePhone = MobilePhone,
-                    Manager = AppSettings.CurrentUserName,
-                    CreateDate = StartDate.AddSeconds(-StartDate.Second),
-                    ReturnDate = EndDate.AddSeconds(-EndDate.Second),
-                    Note = Note,
-                    Status = OrderStatus.Open,
-                    Equipments = equipmentsForOrder,
-                    GoogleCalendarColorId = AppSettings.GoogleCalendarColorId
-                });
-                (obj as Window).Close();
-                MessageBox.Show("Заказ успешно обновлено", "", MessageBoxButton.OK, MessageBoxImage.Information);
-            }
-            else
-            {
-                var missingEquiomentWindow = new MissingEquipmentWindow()
-                {
-                    DataContext = new MissingEquipmentViewModel()
-                    {
-                        Equioments = missingEquipments,
-                    },
-                    Title = "Невозможно отредактировать заказ. Не хватает оборудования."
-                };
-                missingEquiomentWindow.ShowDialog();
-            }
-           
+                Adress = SelectetDeliveryType.Contains("Указать адрес") ? this.Adress : "Самовывоз",
+                CustomerName = CustomerName,
+                MobilePhone = MobilePhone,
+                Manager = AppSettings.CurrentUserName,
+                CreateDate = StartDate.AddSeconds(-StartDate.Second),
+                ReturnDate = EndDate.AddSeconds(-EndDate.Second),
+                Note = Note,
+                Status = OrderStatus.Open,
+                Equipments = equipmentsForOrder,
+                GoogleCalendarColorId = AppSettings.GoogleCalendarColorId
+            });
+            (obj as Window).Close();
+            MessageBox.Show("Заказ успешно обновлено", "", MessageBoxButton.OK, MessageBoxImage.Information);
+
             DisableProgressBar();
         }
 
         private void AddEquipmentToOrder(object obj)
         {
-            SelectedEquipmentsForOrder.Add(new EquipmentInStock()
+            SelectedEquipmentsForOrder.Add(new EquipmentFromOrder()
             {
                 Category = SelectedCategory,
                 Name = SelectedEquipment,
                 Count = Count,
-                ImageUrl = SelectedImage,
             });
         }
 

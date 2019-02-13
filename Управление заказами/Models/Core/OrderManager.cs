@@ -110,6 +110,7 @@ namespace Управление_заказами.Models.Core
 
         private void RemoveEquipmentFromRent(EquipmentFromOrder equipment, AppDbContext db)
         {
+            if(equipment.IsPartnerEquipment) return;
             EquipmentInRent equipmentInRent = (from eq in db.EquipmentsInRent
                                                where eq.Name == equipment.Name && eq.StartDate == equipment.StartDate &&
                                                      eq.EndDate == equipment.EndDate
@@ -162,6 +163,8 @@ namespace Управление_заказами.Models.Core
 
         private async Task TakeEquipment(EquipmentFromOrder equipment, AppDbContext db)
         {
+            if (equipment.IsPartnerEquipment) return;
+           
             var avalibleEquipment = await (from equipmentInStock in db.EquipmentsInStock
                                      where equipmentInStock.Name == equipment.Name
                                      select equipmentInStock).SingleAsync();
@@ -179,6 +182,7 @@ namespace Управление_заказами.Models.Core
 
         private async Task AddEqipmentInRent(EquipmentFromOrder equipment, AppDbContext db)
         {
+            if(equipment.IsPartnerEquipment) return;
             var equipmentInRent = await (from eq in db.EquipmentsInRent
                                    where eq.Name == equipment.Name &&
                                          eq.EndDate == equipment.EndDate

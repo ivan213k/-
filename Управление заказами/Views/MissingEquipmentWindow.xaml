@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Управление_заказами.Views"
         xmlns:viewmodels="clr-namespace:Управление_заказами.ViewModels"
         mc:Ignorable="d"
-        Title="Невозможно создать заказ. Не хватает оборудования." Height="258.511" Width="788.83" fw:AcrylicWindow.Enabled="True" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
+        Title="Невозможно создать заказ. Не хватает оборудования." Name="MissingEqWindow" Height="258.511" Width="1019.83" fw:AcrylicWindow.Enabled="True" WindowStartupLocation="CenterScreen" ResizeMode="CanMinimize">
     <Window.DataContext>
         <viewmodels:MissingEquipmentViewModel/>
     </Window.DataContext>
@@ -16,15 +16,26 @@
             <RowDefinition/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <DataGrid ItemsSource="{Binding Path=Equioments}"  Style="{StaticResource DatagridStyle}" IsReadOnly="True" AutoGenerateColumns="False" >
+        <DataGrid CanUserAddRows="False" CanUserDeleteRows="False" ItemsSource="{Binding Path=Equioments,Mode=TwoWay}"  Style="{StaticResource DatagridStyle}" IsReadOnly="False" AutoGenerateColumns="False" >
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Название оборудования" Binding="{Binding  Name}"/>
-                <DataGridTextColumn Header="Необходимое количество" Binding="{Binding NeedCount}" />
-                <DataGridTextColumn Header="Остаток на складе" Binding="{Binding Balance}"/>
-                <DataGridTextColumn Header="Доступно в диапазоне указанных дат" Binding="{Binding AvalibleInSelectedDateRange}"/>
-                <DataGridTextColumn Header="Не хватает" Binding="{Binding NotEnough}" />
+                <DataGridTextColumn IsReadOnly="True" Header="Название оборудования" Binding="{Binding  Name}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Необходимое количество" Binding="{Binding NeedCount}" />
+                <DataGridTextColumn IsReadOnly="True" Header="Остаток на складе" Binding="{Binding Balance}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Доступно в диапазоне указанных дат" Binding="{Binding AvalibleInSelectedDateRange}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Не хватает" Binding="{Binding NotEnough}" />
+                <DataGridCheckBoxColumn IsReadOnly="False" Header="Есть у партнеров?" Binding="{Binding IsPartnerHave,Mode=TwoWay}" >
+                  
+                </DataGridCheckBoxColumn>
+                <DataGridTextColumn Width="210" IsReadOnly="False" Header="Имя партнера" Binding="{Binding PartnerName,Mode=TwoWay}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Style="{StaticResource ButtonRevealStyle}" Foreground="White" FontWeight="Bold" Grid.Row="1" Content="OK" Margin="5" Click="ButtonBase_OnClick"/>
+        <Grid Grid.Row="1">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+            <Button Style="{StaticResource ButtonRevealStyle}" Foreground="White" FontWeight="Bold" Grid.Column="0" Content="Создать заказ" Margin="5" Command="{Binding CreateOrderCommand}" CommandParameter="{Binding ElementName=MissingEqWindow}"/>
+            <Button Style="{StaticResource ButtonRevealStyle}" Foreground="White" FontWeight="Bold" Grid.Column="1" Content="Назад" Margin="5" Click="ButtonBase_OnClick"/>
+        </Grid>
     </Grid>
 </Window>

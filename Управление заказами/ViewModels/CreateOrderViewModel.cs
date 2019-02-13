@@ -271,15 +271,59 @@ namespace Управление_заказами.ViewModels
             }
             catch (ArgumentException )
             {
+                List<EquipmentFromOrder> eqsForOrder = new List<EquipmentFromOrder>();
+                foreach (var equipment in SelectedEquipmentsForOrder)
+                {
+                    eqsForOrder.Add(new EquipmentFromOrder()
+                    {
+                        Name = equipment.Name,
+                        Category =  equipment.Category,
+                        Count = equipment.Count,
+                        ReplacmentCost = equipment.ReplacmentCost,
+                        StartDate = StartDate,
+                        EndDate = EndDate
+                    });
+                }
                 var missingEquiomentWindow = new MissingEquipmentWindow()
                 {
                     DataContext = new MissingEquipmentViewModel()
                     {
-                        Equioments = await EquipmentInfo.GetMissingEquipments(SelectedEquipmentsForOrder.ToList(), 
+                        Equioments = await EquipmentInfo.GetMissingEquipments(eqsForOrder, 
                             StartDate.AddSeconds(-StartDate.Second), EndDate.AddSeconds(-EndDate.Second))
                     }
                 };
                 missingEquiomentWindow.ShowDialog();
+                if (missingEquiomentWindow.DialogResult == true)
+                {
+                    MissingEquipmentViewModel viewModel =
+                        missingEquiomentWindow.DataContext as MissingEquipmentViewModel;
+                    foreach (var missingEquipment in viewModel.Equioments)
+                    {
+                        var equipment = order.Equipments.Select(e => e).Where(e => e.Name == missingEquipment.Name)
+                            .SingleOrDefault();
+                        if (equipment.Count == missingEquipment.NotEnough)
+                        {
+                            order.Equipments.Remove(equipment);
+                        }
+                        else
+                        {
+                            equipment.Count -= missingEquipment.NotEnough;
+                        }
+                        order.Equipments.Add(new EquipmentFromOrder()
+                        {
+                             Name = $"{missingEquipment.Name} (партнера - {missingEquipment.PartnerName})",
+                             Category = equipment.Category,
+                             Count = missingEquipment.NotEnough,
+                             IsPartnerEquipment = true,
+                             PartnerName = missingEquipment.PartnerName,
+                             StartDate = equipment.StartDate,
+                             EndDate = equipment.EndDate,
+                        });
+                    }
+                    await OrderManager.CreateOrderAsync(order);
+                    window.Close();
+                    MessageBox.Show("Заказ успешно создан", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                }
             }
 
             DisableProgressBar();

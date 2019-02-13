@@ -10,6 +10,10 @@
 
         public int AvalibleInSelectedDateRange { get; set; }
 
+        public bool IsPartnerHave { get; set; }
+
+        public string PartnerName { get; set; }
+
         public int NotEnough
         {
             get { return NeedCount - Balance + AvalibleInSelectedDateRange; }

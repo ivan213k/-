@@ -74,7 +74,7 @@ namespace Управление_заказами.ViewModels
 
         private void EditOrder(object obj)
         {
-            ObservableCollection<EquipmentInStock> eqsForOrder = new ObservableCollection<EquipmentInStock>();
+            ObservableCollection<EquipmentFromOrder> eqsForOrder = new ObservableCollection<EquipmentFromOrder>();
             foreach (var equipment in SelectedOrder.Equipments)
             {
                 eqsForOrder.Add(equipment);

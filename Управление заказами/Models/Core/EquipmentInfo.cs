@@ -128,12 +128,14 @@ namespace Управление_заказами.Models.Core
             });
         }
 
-        public async Task<List<MissingEquipment>> GetMissingEquipments(List<EquipmentInStock> equipmentsForCheck, DateTime startDate, DateTime endDate)
+        public async Task<List<MissingEquipment>> GetMissingEquipments(List<EquipmentFromOrder> equipmentsForCheck, DateTime startDate, DateTime endDate)
         {
             var checkResult = new List<MissingEquipment>();
 
             foreach (var equipment in equipmentsForCheck)
             {
+                if (equipment.IsPartnerEquipment) continue;
+      
                 int needCount = equipment.Count;
                 int balance = await GetAvalibleCountAsync(equipment.Name);
                 int avalibleInRange = await GetAvalibleCountAsync(equipment.Name, startDate, endDate);

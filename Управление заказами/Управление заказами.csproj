@@ -210,6 +210,10 @@
     <Compile Include="Migrations\20181124092006_AddedAllDayEventsProperty.designer.cs">
       <DependentUpon>20181124092006_AddedAllDayEventsProperty.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\20190208135048_AddedPartnerNameProperty.cs" />
+    <Compile Include="Migrations\20190208135048_AddedPartnerNameProperty.designer.cs">
+      <DependentUpon>20190208135048_AddedPartnerNameProperty.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
     <Compile Include="Models\Core\Abstractions\IUserManager.cs" />
     <Compile Include="Models\Core\UserManager.cs" />
