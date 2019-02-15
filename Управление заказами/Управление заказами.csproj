@@ -219,6 +219,7 @@
     <Compile Include="Models\Core\UserManager.cs" />
     <Compile Include="Models\DataBase\User.cs" />
     <Compile Include="Models\DataBase\UserType.cs" />
+    <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\MissingEquipment.cs" />
     <Compile Include="ViewModels\AddEquipmentViewModel.cs" />
     <Compile Include="ViewModels\CloseOrderViewModel.cs" />
