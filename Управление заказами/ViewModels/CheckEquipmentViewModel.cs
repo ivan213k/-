@@ -24,6 +24,15 @@ namespace Управление_заказами.ViewModels
             public string Result { get; set; }
             public int TotalCount { get; set; }
             public string ImageUrl { get; set; }
+
+            public int NotEnough
+            {
+                get
+                {
+                   int notEnough = NeedCount - (Balance + AvalibleInSelectedDateRange);
+                   return notEnough > 0 ? notEnough : 0;
+                }
+            }
         }
 
         private IEquipmentInfo EquipmentInfo;
