@@ -33,6 +33,20 @@ namespace Управление_заказами.ViewModels
                    return notEnough > 0 ? notEnough : 0;
                 }
             }
+
+            public int TotalAvalibleCount
+            {
+                get { return Balance + AvalibleInSelectedDateRange; }
+            }
+
+            public int WillRemainInStock
+            {
+                get
+                {
+                    int remainCount = (Balance+AvalibleInSelectedDateRange) - NeedCount;
+                    return remainCount > 0 ? remainCount : 0;
+                }
+            }
         }
 
         private IEquipmentInfo EquipmentInfo;

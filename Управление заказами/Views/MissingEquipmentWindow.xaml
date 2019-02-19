@@ -20,8 +20,8 @@
             <DataGrid.Columns>
                 <DataGridTextColumn IsReadOnly="True" Header="Название оборудования" Binding="{Binding  Name}"/>
                 <DataGridTextColumn IsReadOnly="True" Header="Необходимое количество" Binding="{Binding NeedCount}" />
-                <DataGridTextColumn IsReadOnly="True" Header="Остаток на складе" Binding="{Binding Balance}"/>
-                <DataGridTextColumn IsReadOnly="True" Header="Доступно в диапазоне указанных дат" Binding="{Binding AvalibleInSelectedDateRange}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Останется на складе" Binding="{Binding WillRemainInStock}"/>
+                <DataGridTextColumn IsReadOnly="True" Header="Доступно в диапазоне указанных дат" Binding="{Binding TotalAvalibleCount}"/>
                 <DataGridTextColumn IsReadOnly="True" Header="Не хватает" Binding="{Binding NotEnough}" />
                 <DataGridCheckBoxColumn IsReadOnly="False" Header="Есть у партнеров?" Binding="{Binding IsPartnerHave,Mode=TwoWay}" >
                   

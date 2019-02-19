@@ -148,13 +148,13 @@
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="Название оборудования" Binding="{Binding  Name}"/>
                     <DataGridTextColumn Header="Необходимое количество" Binding="{Binding NeedCount}" />
-                    <DataGridTextColumn Header="Остаток на складе" Binding="{Binding Balance}"/>
-                    <DataGridTextColumn Header="Доступно в диапазоне указанных дат" Binding="{Binding AvalibleInSelectedDateRange}">
+                    <DataGridTextColumn Header="Останется на складе" Binding="{Binding WillRemainInStock}"/>
+                    <DataGridTextColumn Header="Доступно в диапазоне указанных дат" Binding="{Binding TotalAvalibleCount}">
 
                     </DataGridTextColumn>
                     <DataGridTextColumn Visibility="Collapsed" Header="Результат" Binding="{Binding Result}"/>
                     <DataGridTextColumn Header="Не хватает" Binding="{Binding NotEnough}"/>
-                    <DataGridTextColumn Header="Общее количество" Binding="{Binding TotalCount}"/>
+                    <DataGridTextColumn Header="Общее количество на складе(согласно инвенаризации)" Binding="{Binding TotalCount}"/>
                 </DataGrid.Columns>
             </DataGrid>
             <Button Command="{Binding GoToCreateOrderCommand}" Grid.Row="1"  Grid.Column="1" Margin="5" Foreground="White" Content="Перейти к созданию заказа" ></Button>
