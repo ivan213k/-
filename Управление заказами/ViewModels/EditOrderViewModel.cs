@@ -21,11 +21,15 @@ namespace Управление_заказами.ViewModels
 
         public Order OldOrder { get; set; }
 
-        public EditOrderViewModel()
+        public EditOrderViewModel(Order oldOrder)
         {
+            OldOrder = oldOrder;
             AddEquipmentCommand = new Command(AddEquipmentToOrder, CanAddEquipmentToOrder);
             EditOrderCommand = new Command(UpdateOrder);
             RemoveEquipmentCommand = new Command(RevoveEquipment);
+            GoogleCalendarColors = AppSettings.GoogleCalendarColors;
+            SelectedColor = GoogleCalendarColors.Select(c => c).Where(c => c.Key == OldOrder.GoogleCalendarColorId)
+                .SingleOrDefault();
             LoadEquipments();
         }
 
@@ -165,6 +169,9 @@ namespace Управление_заказами.ViewModels
 
         public int SelectedDeliveryIndex { get; set; }
 
+        public Dictionary<string, string> GoogleCalendarColors { get; set; }
+
+        public KeyValuePair<string, string> SelectedColor { get; set; }
 
         private void RevoveEquipment(object obj)
         {
@@ -183,24 +190,8 @@ namespace Управление_заказами.ViewModels
                 return;
             }
 
-            var equipmentsForOrder = new List<EquipmentFromOrder>();
-            foreach (var equipmentInStock in SelectedEquipmentsForOrder)
-            {
-                equipmentsForOrder.Add(new EquipmentFromOrder()
-                {
-                    Category = equipmentInStock.Category,
-                    Count = equipmentInStock.Count,
-                    Name = equipmentInStock.Name,
-                    StartDate = StartDate.AddSeconds(-StartDate.Second),
-                    EndDate = EndDate.AddSeconds(-EndDate.Second),
-                    IsPartnerEquipment = equipmentInStock.IsPartnerEquipment,
-                    PartnerName = equipmentInStock.PartnerName,
-                    ReplacmentCost = equipmentInStock.ReplacmentCost
-                });
-            }
-            EnableProgressBar();
-
-            await OrderManager.UpdateOrderAsync(OldOrder.Id, new Order()
+            var equipmentsForOrder = SelectedEquipmentsForOrder.ToList();
+            var newOrder = new Order()
             {
                 Adress = SelectetDeliveryType.Contains("Указать адрес") ? this.Adress : "Самовывоз",
                 CustomerName = CustomerName,
@@ -211,10 +202,25 @@ namespace Управление_заказами.ViewModels
                 Note = Note,
                 Status = OrderStatus.Open,
                 Equipments = equipmentsForOrder,
-                GoogleCalendarColorId = AppSettings.GoogleCalendarColorId
-            });
-            (obj as Window).Close();
-            MessageBox.Show("Заказ успешно обновлено", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                GoogleCalendarColorId = SelectedColor.Key
+            };
+            try
+            {
+                EnableProgressBar();
+                await OrderManager.UpdateOrderAsync(OldOrder.Id, newOrder);
+                (obj as Window).Close();
+                MessageBox.Show("Заказ успешно обновлено", "", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            catch (ArgumentException)
+            {
+                MessageBox.Show("Невозможно отредактировать заказ. Не хватает оборудования.", "", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message+e.StackTrace, "", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
 
             DisableProgressBar();
         }

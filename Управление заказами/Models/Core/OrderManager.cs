@@ -142,8 +142,10 @@ namespace Управление_заказами.Models.Core
         private async Task TakeEquipmentFromRent(string name, int needCount, DateTime startDate, DateTime endDate, AppDbContext db)
         {
             var equipments = await (from equipment in db.EquipmentsInRent
-                              where equipment.Name == name && (equipment.StartDate <= endDate || equipment.EndDate <= startDate)
-                              select equipment).ToListAsync();
+                                    where equipment.Name == name &&
+                                          (startDate >= equipment.EndDate || endDate <= equipment.StartDate)
+                                    select equipment).ToListAsync();
+
             foreach (var equipment in equipments)
             {
                 if (equipment.Count < needCount)
@@ -212,7 +214,7 @@ namespace Управление_заказами.Models.Core
                         RemoveEquipmentFromRent(equipment, db);
                     }
 
-                    db.SaveChanges();
+                    //db.SaveChanges();
                     foreach (var equipment in newOrder.Equipments)
                     {
                         await TakeEquipment(equipment, db);

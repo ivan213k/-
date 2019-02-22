@@ -34,7 +34,7 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-            <Button Style="{StaticResource ButtonRevealStyle}" Foreground="White" FontWeight="Bold" Grid.Column="0" Content="Создать заказ" Margin="5" Command="{Binding CreateOrderCommand}" CommandParameter="{Binding ElementName=MissingEqWindow}"/>
+            <Button Name="CreateOrderButton" Style="{StaticResource ButtonRevealStyle}" Foreground="White" FontWeight="Bold" Grid.Column="0" Content="Создать заказ" Margin="5" Command="{Binding CreateOrderCommand}" CommandParameter="{Binding ElementName=MissingEqWindow}"/>
             <Button Style="{StaticResource ButtonRevealStyle}" Foreground="White" FontWeight="Bold" Grid.Column="1" Content="Назад" Margin="5" Click="ButtonBase_OnClick"/>
         </Grid>
     </Grid>

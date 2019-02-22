@@ -166,7 +166,7 @@ namespace Управление_заказами.Models.Core
                 },
                 End = new EventDateTime()
                 {
-                    DateTime = order.CreateDate.AddHours(2)
+                    DateTime = order.CreateDate.AddHours(1)
                 },
                 Summary = $"Заказ {order.CustomerName} {order.MobilePhone}",
                 Location = order.Adress,
@@ -192,7 +192,7 @@ namespace Управление_заказами.Models.Core
                 },
                 End = new EventDateTime()
                 {
-                    DateTime = order.ReturnDate.AddHours(2)
+                    DateTime = order.ReturnDate.AddHours(1)
                 },
                 Summary = order.Adress == "Самовывоз" ? $"Возврат {order.CustomerName} {order.MobilePhone}" : $"Забрать {order.CustomerName} {order.MobilePhone}",
                 Location = order.Adress,
