@@ -55,14 +55,14 @@ namespace Управление_заказами.Models.Core
             });    
         }
 
-        public async Task<int> GetAvalibleCountAsync(string equiomentName)
+        public async Task<int> GetAvalibleCountAsync(string equipmentName)
         {
             return await Task.Factory.StartNew(()=> 
             {
                 using (AppDbContext db = new AppDbContext())
                 {
                     return (from equipment in db.EquipmentsInStock
-                            where equipment.Name == equiomentName
+                            where equipment.Name == equipmentName
                             select equipment.Count).Single();
                 }
             });

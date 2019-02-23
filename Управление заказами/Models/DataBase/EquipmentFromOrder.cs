@@ -18,6 +18,8 @@ namespace Управление_заказами.Models.DataBase
 
         public string PartnerName { get; set; }
 
+        public string Amount { get; set; }
+
         public static implicit operator EquipmentInRent(EquipmentFromOrder equipment)
         {
             return new EquipmentInRent()

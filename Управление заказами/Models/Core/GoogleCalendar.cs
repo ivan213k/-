@@ -152,12 +152,8 @@ namespace Управление_заказами.Models.Core
 
         private Event CreateEvent(Order order, string colorId)
         {
-            StringBuilder equipments = new StringBuilder();
+            StringBuilder equipments = CreateEquipmentsText(order);
 
-            foreach (var equipment in order.Equipments)
-            {
-                equipments.Append($"{equipment.Name} {equipment.Count} шт. \n");
-            }
             return new Event
             {
                 Start = new EventDateTime()
@@ -178,12 +174,8 @@ namespace Управление_заказами.Models.Core
 
         private Event CreateReturnEvent(Order order, string colorId)
         {
-            StringBuilder equipments = new StringBuilder();
+            StringBuilder equipments = CreateEquipmentsText(order);
 
-            foreach (var equipment in order.Equipments)
-            {
-                equipments.Append($"{equipment.Name} {equipment.Count} шт. \n");
-            }
             return new Event()
             {
                 Start = new EventDateTime()
@@ -203,12 +195,7 @@ namespace Управление_заказами.Models.Core
 
         private Event CreateFullTimeEvent(Order order, string colorId)
         {
-            StringBuilder equipments = new StringBuilder();
-
-            foreach (var equipment in order.Equipments)
-            {
-                equipments.Append($"{equipment.Name} {equipment.Count} шт. \n");
-            }
+            StringBuilder equipments = CreateEquipmentsText(order);
             return new Event()
             {
                 Start = new EventDateTime()
@@ -226,6 +213,24 @@ namespace Управление_заказами.Models.Core
             };
         }
 
-        
+        private static StringBuilder CreateEquipmentsText(Order order)
+        {
+            StringBuilder equipments = new StringBuilder();
+
+            foreach (var equipment in order.Equipments)
+            {
+                if (!string.IsNullOrWhiteSpace(equipment.Amount))
+                {
+                    equipments.Append($"{equipment.Name} {equipment.Count} шт. - {equipment.Amount} \n");
+                }
+                else
+                {
+                    equipments.Append($"{equipment.Name} {equipment.Count} шт. \n");
+                }     
+            }
+
+            return equipments;
+        }
+
     }
 }

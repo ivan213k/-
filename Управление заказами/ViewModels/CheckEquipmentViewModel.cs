@@ -297,11 +297,21 @@ namespace Управление_заказами.ViewModels
 
         void GoToCreateOrder(object parametr)
         {
+            var equipmentsForOrder = new ObservableCollection<EquipmentFromOrder>();
+            foreach (var equipment in SelectedEquipmentsForCheck)
+            {
+                equipmentsForOrder.Add(new EquipmentFromOrder()
+                {
+                    Category = equipment.Category,
+                    Name = equipment.Name,
+                    Count = equipment.Count
+                });
+            }
             CreateOrderWindow window = new CreateOrderWindow()
             {
                 DataContext = new CreateOrderViewModel()
                 {
-                    SelectedEquipmentsForOrder = SelectedEquipmentsForCheck,
+                    SelectedEquipmentsForOrder = equipmentsForOrder,
                     Categoryes = this.Categoryes,
                     Count = this.Count,
                     Equipments = this.Equipments,

@@ -138,8 +138,8 @@ namespace Управление_заказами.ViewModels
             }
         }
 
-        private EquipmentInStock selectedEquipmentForOrder;
-        public EquipmentInStock SelectedEquipmentForOrder
+        private EquipmentFromOrder selectedEquipmentForOrder;
+        public EquipmentFromOrder SelectedEquipmentForOrder
         {
             get => selectedEquipmentForOrder;
             set
@@ -157,7 +157,7 @@ namespace Управление_заказами.ViewModels
             }
         }
 
-        public ObservableCollection<EquipmentInStock> SelectedEquipmentsForOrder { get; set; } = new ObservableCollection<EquipmentInStock>();
+        public ObservableCollection<EquipmentFromOrder> SelectedEquipmentsForOrder { get; set; } = new ObservableCollection<EquipmentFromOrder>();
 
         public string Adress { get; set; }
 
@@ -180,12 +180,11 @@ namespace Управление_заказами.ViewModels
 
         void AddEquipmentToOrder(object parametr)
         {
-            SelectedEquipmentsForOrder.Add(new EquipmentInStock()
+            SelectedEquipmentsForOrder.Add(new EquipmentFromOrder()
             {
                 Category = SelectedCategory,
                 Name = SelectedEquipment,
                 Count = Count,
-                ImageUrl = SelectedImage
             });
         }
 
@@ -257,7 +256,8 @@ namespace Управление_заказами.ViewModels
                     Count = equipment.Count,
                     Name = equipment.Name,
                     StartDate = StartDate,
-                    EndDate = EndDate
+                    EndDate = EndDate,
+                    Amount = equipment.Amount
                 });
             }
 

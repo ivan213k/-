@@ -190,7 +190,20 @@ namespace Управление_заказами.ViewModels
                 return;
             }
 
-            var equipmentsForOrder = SelectedEquipmentsForOrder.ToList();
+            var equipmentsForOrder = new List<EquipmentFromOrder>();
+            foreach (var equipment in SelectedEquipmentsForOrder)
+            {
+                equipmentsForOrder.Add(new EquipmentFromOrder()
+                {
+                    Category = equipment.Category,
+                    Count = equipment.Count,
+                    Name = equipment.Name,
+                    StartDate = StartDate,
+                    EndDate = EndDate,
+                    Amount = equipment.Amount,
+                    
+                });
+            }
             var newOrder = new Order()
             {
                 Adress = SelectetDeliveryType.Contains("Указать адрес") ? this.Adress : "Самовывоз",
@@ -218,7 +231,7 @@ namespace Управление_заказами.ViewModels
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message+e.StackTrace, "", MessageBoxButton.OK,
+                MessageBox.Show(e.Message + e.StackTrace, "", MessageBoxButton.OK,
                     MessageBoxImage.Error);
             }
 
