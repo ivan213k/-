@@ -139,7 +139,7 @@ namespace Управление_заказами.Models.Core
                 int needCount = equipment.Count;
                 int balance = await GetAvalibleCountAsync(equipment.Name);
                 int avalibleInRange = await GetAvalibleCountAsync(equipment.Name, startDate, endDate);
-                if ((needCount - balance+avalibleInRange)>0)
+                if ((needCount > (balance+avalibleInRange)))
                 {
                     checkResult.Add(new MissingEquipment()
                     {

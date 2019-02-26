@@ -32,7 +32,16 @@ namespace Управление_заказами.ViewModels
         async void LoadEquipments()
         {
             EnableProgressBar();
-            Equipments = await EquipmentInfo.GetEquipmentsAsync();
+            try
+            {
+                Equipments = await EquipmentInfo.GetEquipmentsAsync();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + e.StackTrace,"",MessageBoxButton.OK,MessageBoxImage.Error);
+                throw;
+            }
+           
             DisableProgressBar();
         }
         List<EquipmentInStock> equipments;
