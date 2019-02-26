@@ -14,6 +14,12 @@ namespace Управление_заказами.Models.DataBase
         [ForeignKey("EquipmentFromOrderKey")]
         public Order Order { get; set; }
 
+        public bool IsPartnerEquipment { get; set; }
+
+        public string PartnerName { get; set; }
+
+        public string Amount { get; set; }
+
         public static implicit operator EquipmentInRent(EquipmentFromOrder equipment)
         {
             return new EquipmentInRent()

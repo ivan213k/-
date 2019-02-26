@@ -110,6 +110,7 @@ namespace Управление_заказами.Models.Core
 
         private void RemoveEquipmentFromRent(EquipmentFromOrder equipment, AppDbContext db)
         {
+            if(equipment.IsPartnerEquipment) return;
             EquipmentInRent equipmentInRent = (from eq in db.EquipmentsInRent
                                                where eq.Name == equipment.Name && eq.StartDate == equipment.StartDate &&
                                                      eq.EndDate == equipment.EndDate
@@ -141,8 +142,10 @@ namespace Управление_заказами.Models.Core
         private async Task TakeEquipmentFromRent(string name, int needCount, DateTime startDate, DateTime endDate, AppDbContext db)
         {
             var equipments = await (from equipment in db.EquipmentsInRent
-                              where equipment.Name == name && (equipment.StartDate <= endDate || equipment.EndDate <= startDate)
-                              select equipment).ToListAsync();
+                                    where equipment.Name == name &&
+                                          (startDate >= equipment.EndDate || endDate <= equipment.StartDate)
+                                    select equipment).ToListAsync();
+
             foreach (var equipment in equipments)
             {
                 if (equipment.Count < needCount)
@@ -162,6 +165,8 @@ namespace Управление_заказами.Models.Core
 
         private async Task TakeEquipment(EquipmentFromOrder equipment, AppDbContext db)
         {
+            if (equipment.IsPartnerEquipment) return;
+           
             var avalibleEquipment = await (from equipmentInStock in db.EquipmentsInStock
                                      where equipmentInStock.Name == equipment.Name
                                      select equipmentInStock).SingleAsync();
@@ -179,6 +184,7 @@ namespace Управление_заказами.Models.Core
 
         private async Task AddEqipmentInRent(EquipmentFromOrder equipment, AppDbContext db)
         {
+            if(equipment.IsPartnerEquipment) return;
             var equipmentInRent = await (from eq in db.EquipmentsInRent
                                    where eq.Name == equipment.Name &&
                                          eq.EndDate == equipment.EndDate
@@ -208,7 +214,7 @@ namespace Управление_заказами.Models.Core
                         RemoveEquipmentFromRent(equipment, db);
                     }
 
-                    db.SaveChanges();
+                    //db.SaveChanges();
                     foreach (var equipment in newOrder.Equipments)
                     {
                         await TakeEquipment(equipment, db);

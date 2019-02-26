@@ -21,11 +21,15 @@ namespace Управление_заказами.ViewModels
 
         public Order OldOrder { get; set; }
 
-        public EditOrderViewModel()
+        public EditOrderViewModel(Order oldOrder)
         {
-            AddEquipmentCommand = new Command(AddEquipmentToOrder,CanAddEquipmentToOrder);
+            OldOrder = oldOrder;
+            AddEquipmentCommand = new Command(AddEquipmentToOrder, CanAddEquipmentToOrder);
             EditOrderCommand = new Command(UpdateOrder);
             RemoveEquipmentCommand = new Command(RevoveEquipment);
+            GoogleCalendarColors = AppSettings.GoogleCalendarColors;
+            SelectedColor = GoogleCalendarColors.Select(c => c).Where(c => c.Key == OldOrder.GoogleCalendarColorId)
+                .SingleOrDefault();
             LoadEquipments();
         }
 
@@ -117,9 +121,9 @@ namespace Управление_заказами.ViewModels
             }
         }
 
-        public DateTime StartDate { get; set; } 
+        public DateTime StartDate { get; set; }
 
-        public DateTime EndDate { get; set; } 
+        public DateTime EndDate { get; set; }
 
         string selectedImage;
         public string SelectedImage
@@ -132,10 +136,10 @@ namespace Управление_заказами.ViewModels
             }
         }
 
-        public ObservableCollection<EquipmentInStock> SelectedEquipmentsForOrder { get; set; } = new ObservableCollection<EquipmentInStock>();
+        public ObservableCollection<EquipmentFromOrder> SelectedEquipmentsForOrder { get; set; } = new ObservableCollection<EquipmentFromOrder>();
 
-        private EquipmentInStock selectedEquipmentForOrder;
-        public EquipmentInStock SelectedEquipmentForOrder
+        private EquipmentFromOrder selectedEquipmentForOrder;
+        public EquipmentFromOrder SelectedEquipmentForOrder
         {
             get => selectedEquipmentForOrder;
             set
@@ -165,6 +169,9 @@ namespace Управление_заказами.ViewModels
 
         public int SelectedDeliveryIndex { get; set; }
 
+        public Dictionary<string, string> GoogleCalendarColors { get; set; }
+
+        public KeyValuePair<string, string> SelectedColor { get; set; }
 
         private void RevoveEquipment(object obj)
         {
@@ -184,63 +191,60 @@ namespace Управление_заказами.ViewModels
             }
 
             var equipmentsForOrder = new List<EquipmentFromOrder>();
-            foreach (var equipmentInStock in SelectedEquipmentsForOrder)
+            foreach (var equipment in SelectedEquipmentsForOrder)
             {
                 equipmentsForOrder.Add(new EquipmentFromOrder()
                 {
-                    Category = equipmentInStock.Category,
-                    Count = equipmentInStock.Count,
-                    Name = equipmentInStock.Name,
-                    StartDate = StartDate.AddSeconds(-StartDate.Second),
-                    EndDate = EndDate.AddSeconds(-EndDate.Second)
+                    Category = equipment.Category,
+                    Count = equipment.Count,
+                    Name = equipment.Name,
+                    StartDate = StartDate,
+                    EndDate = EndDate,
+                    Amount = equipment.Amount,
+                    
                 });
             }
-            EnableProgressBar();
-            var missingEquipments = await EquipmentInfo.GetMissingEquipments(SelectedEquipmentsForOrder.ToList(),
-                StartDate.AddSeconds(-StartDate.Second),
-                EndDate.AddSeconds(-EndDate.Second));
-            if (missingEquipments.Count==0)
+            var newOrder = new Order()
             {
-                await OrderManager.UpdateOrderAsync(OldOrder.Id, new Order()
-                {
-                    Adress = SelectetDeliveryType.Contains("Указать адрес") ? this.Adress : "Самовывоз",
-                    CustomerName = CustomerName,
-                    MobilePhone = MobilePhone,
-                    Manager = AppSettings.CurrentUserName,
-                    CreateDate = StartDate.AddSeconds(-StartDate.Second),
-                    ReturnDate = EndDate.AddSeconds(-EndDate.Second),
-                    Note = Note,
-                    Status = OrderStatus.Open,
-                    Equipments = equipmentsForOrder,
-                    GoogleCalendarColorId = AppSettings.GoogleCalendarColorId
-                });
+                Adress = SelectetDeliveryType.Contains("Указать адрес") ? this.Adress : "Самовывоз",
+                CustomerName = CustomerName,
+                MobilePhone = MobilePhone,
+                Manager = AppSettings.CurrentUserName,
+                CreateDate = StartDate.AddSeconds(-StartDate.Second),
+                ReturnDate = EndDate.AddSeconds(-EndDate.Second),
+                Note = Note,
+                Status = OrderStatus.Open,
+                Equipments = equipmentsForOrder,
+                GoogleCalendarColorId = SelectedColor.Key
+            };
+            try
+            {
+                EnableProgressBar();
+                await OrderManager.UpdateOrderAsync(OldOrder.Id, newOrder);
                 (obj as Window).Close();
                 MessageBox.Show("Заказ успешно обновлено", "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            else
+            catch (ArgumentException)
             {
-                var missingEquiomentWindow = new MissingEquipmentWindow()
-                {
-                    DataContext = new MissingEquipmentViewModel()
-                    {
-                        Equioments = missingEquipments,
-                    },
-                    Title = "Невозможно отредактировать заказ. Не хватает оборудования."
-                };
-                missingEquiomentWindow.ShowDialog();
+                MessageBox.Show("Невозможно отредактировать заказ. Не хватает оборудования.", "", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
             }
-           
+            catch (Exception e)
+            {
+                MessageBox.Show(e.Message + e.StackTrace, "", MessageBoxButton.OK,
+                    MessageBoxImage.Error);
+            }
+
             DisableProgressBar();
         }
 
         private void AddEquipmentToOrder(object obj)
         {
-            SelectedEquipmentsForOrder.Add(new EquipmentInStock()
+            SelectedEquipmentsForOrder.Add(new EquipmentFromOrder()
             {
                 Category = SelectedCategory,
                 Name = SelectedEquipment,
                 Count = Count,
-                ImageUrl = SelectedImage,
             });
         }
 

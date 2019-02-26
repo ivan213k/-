@@ -18,6 +18,7 @@
         </Style>
         <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
         <converters:DeliveryTypeConverter x:Key="DeliveryToAdressVisibilityConverter"/>
+        <converters:StringToSolidColorBrushConverter x:Key="StringToColor"/>
     </Window.Resources>
     <Grid IsEnabled="{Binding IsEnabled}" fluentWpf:PointerTracker.Enabled="True">
         <StackPanel>
@@ -61,9 +62,14 @@
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition/>
                                         <ColumnDefinition/>
+                                        <ColumnDefinition/>
                                     </Grid.ColumnDefinitions>
                                     <TextBlock HorizontalAlignment="Left" Margin="5" Text="{Binding Name}"></TextBlock>
                                     <TextBlock Grid.Column="1" Margin="5"  HorizontalAlignment="Left"  Text="{Binding StringFormat=Количество {0} шт., Path=Count}"></TextBlock>
+                                    <StackPanel Orientation="Horizontal" Grid.Column="2">
+                                        <TextBlock  Margin="5" Text="Cумма:"/>
+                                        <TextBox Width="95" Text="{Binding Amount,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                    </StackPanel>
                                 </Grid>
                             </DataTemplate>
                         </ListView.ItemTemplate>
@@ -100,7 +106,7 @@
                     </StackPanel>
                     <StackPanel Margin="0 5" Orientation="Horizontal">
                         <TextBlock Margin="5 5 18 5" Text="Примечание:"></TextBlock>
-                        <TextBox TextWrapping="Wrap" Height="50" Text="{Binding Note}" Width="335"></TextBox>
+                        <TextBox AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" Height="50" Text="{Binding Note}" Width="335"></TextBox>
                     </StackPanel>
                     <StackPanel   Orientation="Horizontal">
                         <TextBlock Margin="5 5 50 5" Text="Целевая дата:"/>
@@ -109,6 +115,17 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Margin="5 10" Text="Дата возвращения"></TextBlock>
                         <xctk:DateTimePicker Value="{Binding EndDate,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" Margin="17 5" Style="{StaticResource DateTimePickerTime}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="5 0" VerticalAlignment="Center" Text="Цвет заказа:"></TextBlock>
+                        <ComboBox  SelectedValue="{Binding Path=SelectedColor, Mode=TwoWay}" ItemsSource="{Binding GoogleCalendarColors}" Margin="55 5" Width="148">
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Width="140" Height="15" Background="{Binding Path=Value,Converter={StaticResource StringToColor}}"></StackPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+
+                        </ComboBox>
                     </StackPanel>
                 </StackPanel>
             </GroupBox>

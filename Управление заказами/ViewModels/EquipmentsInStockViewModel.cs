@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Xceed.Wpf.Toolkit;
+using Управление_заказами.Models;
 using Управление_заказами.Models.Core;
 using Управление_заказами.Models.Core.Abstractions;
 using Управление_заказами.Models.DataBase;
@@ -20,7 +21,7 @@ namespace Управление_заказами.ViewModels
         {
             public string Category { get; set; }
 
-            public List<EquipmentInStock> Equipments { get; set; }
+            public ObservableCollection<EquipmentInStock> Equipments { get; set; }
         }
 
         private readonly IEquipmentInfo EquipmentInfo;
@@ -68,7 +69,10 @@ namespace Управление_заказами.ViewModels
                     EnableProgressBar();
                     await EquipmentInfo.DeleteEquipment(SelectedEquipment);
                     DisableProgressBar();
-                    Refresh();
+                    var selectedCategory =
+                        Equipments.Select(e => e).Where(e => e.Category == SelectedEquipment.Category).SingleOrDefault();
+                    if (selectedCategory!=null)
+                    selectedCategory.Equipments.Remove(SelectedEquipment);
                 }
             }
         }
@@ -95,7 +99,7 @@ namespace Управление_заказами.ViewModels
                     Category = category,
                     Equipments = (from equipmentInStock in equipments
                                  where equipmentInStock.Category == category
-                                       select equipmentInStock).ToList(),
+                                       select equipmentInStock).ToList().ToObservableCollection(),
                 });
             }
             DisableProgressBar();

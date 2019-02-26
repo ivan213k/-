@@ -55,14 +55,14 @@ namespace Управление_заказами.Models.Core
             });    
         }
 
-        public async Task<int> GetAvalibleCountAsync(string equiomentName)
+        public async Task<int> GetAvalibleCountAsync(string equipmentName)
         {
             return await Task.Factory.StartNew(()=> 
             {
                 using (AppDbContext db = new AppDbContext())
                 {
                     return (from equipment in db.EquipmentsInStock
-                            where equipment.Name == equiomentName
+                            where equipment.Name == equipmentName
                             select equipment.Count).Single();
                 }
             });
@@ -128,16 +128,18 @@ namespace Управление_заказами.Models.Core
             });
         }
 
-        public async Task<List<MissingEquipment>> GetMissingEquipments(List<EquipmentInStock> equipmentsForCheck, DateTime startDate, DateTime endDate)
+        public async Task<List<MissingEquipment>> GetMissingEquipments(List<EquipmentFromOrder> equipmentsForCheck, DateTime startDate, DateTime endDate)
         {
             var checkResult = new List<MissingEquipment>();
 
             foreach (var equipment in equipmentsForCheck)
             {
+                if (equipment.IsPartnerEquipment) continue;
+      
                 int needCount = equipment.Count;
                 int balance = await GetAvalibleCountAsync(equipment.Name);
                 int avalibleInRange = await GetAvalibleCountAsync(equipment.Name, startDate, endDate);
-                if ((needCount - balance+avalibleInRange)>0)
+                if ((needCount > (balance+avalibleInRange)))
                 {
                     checkResult.Add(new MissingEquipment()
                     {

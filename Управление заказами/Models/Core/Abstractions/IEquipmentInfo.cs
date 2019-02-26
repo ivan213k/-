@@ -19,7 +19,7 @@ namespace Управление_заказами.Models.Core.Abstractions
 
         Task DeleteEquipment(EquipmentInStock equipment);
 
-        Task<List<MissingEquipment>> GetMissingEquipments(List<EquipmentInStock> equipmentsForCheck, DateTime startDate,
+        Task<List<MissingEquipment>> GetMissingEquipments(List<EquipmentFromOrder> equipmentsForCheck, DateTime startDate,
             DateTime endDate);
     }
 }

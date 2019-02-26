@@ -77,9 +77,15 @@
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition/>
                                     <ColumnDefinition/>
+                                    <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock HorizontalAlignment="Left" Margin="5" Text="{Binding Name}"></TextBlock>
                                 <TextBlock Grid.Column="1" Margin="5"  HorizontalAlignment="Left"  Text="{Binding StringFormat=Количество {0} шт., Path=Count}"></TextBlock>
+                                <StackPanel Orientation="Horizontal" Grid.Column="2">
+                                    <TextBlock  Margin="5" Text="Cумма:"/>
+                                    <TextBox Width="95" Text="{Binding Amount,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" />
+                                </StackPanel>
+                                
                             </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -114,7 +120,7 @@
                     </StackPanel>
                     <StackPanel Margin="0 5" Orientation="Horizontal">
                         <TextBlock Margin="5 5 18 5" Text="Примечание:"></TextBlock>
-                        <TextBox TextWrapping="Wrap" Height="50" Text="{Binding Note}" Width="335"></TextBox>
+                        <TextBox AcceptsReturn="True" AcceptsTab="True" TextWrapping="Wrap" Height="50" Text="{Binding Note}" Width="335"></TextBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <CheckBox IsChecked="{Binding AllDateIsChecked}" Name="AllDayCheckBox"/>

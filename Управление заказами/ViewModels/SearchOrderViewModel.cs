@@ -74,14 +74,14 @@ namespace Управление_заказами.ViewModels
 
         private void EditOrder(object obj)
         {
-            ObservableCollection<EquipmentInStock> eqsForOrder = new ObservableCollection<EquipmentInStock>();
+            ObservableCollection<EquipmentFromOrder> eqsForOrder = new ObservableCollection<EquipmentFromOrder>();
             foreach (var equipment in SelectedOrder.Equipments)
             {
                 eqsForOrder.Add(equipment);
             }
             EditOrderWindow window = new EditOrderWindow()
             {
-                DataContext = new EditOrderViewModel()
+                DataContext = new EditOrderViewModel(SelectedOrder)
                 {
                     SelectedEquipmentsForOrder = eqsForOrder,
                     Adress = SelectedOrder.Adress,
@@ -91,7 +91,6 @@ namespace Управление_заказами.ViewModels
                     Note = SelectedOrder.Note,
                     CustomerName = SelectedOrder.CustomerName,
                     SelectedDeliveryIndex = SelectedOrder.Adress == "Самовывоз" ? 0 : 1,
-                    OldOrder = SelectedOrder,
                 }
             };
             window.ShowDialog();
