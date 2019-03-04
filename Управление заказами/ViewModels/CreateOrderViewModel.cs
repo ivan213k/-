@@ -24,11 +24,31 @@ namespace Управление_заказами.ViewModels
             AddEquipmentCommand = new Command(AddEquipmentToOrder, CanAddEquipmentToOrder);
             CreateOrderCommand = new Command(CreateOrder);
             RemoveEquipmentCommand = new Command(RevoveEquipment);
+            CheckEquipmentAvailabilityCommand = new Command(CheckAvailabilityOfEquipment);
             GoogleCalendarColors = AppSettings.GoogleCalendarColors;
             SelectedColor = GoogleCalendarColors.Select(c => c).Where(c => c.Key == AppSettings.GoogleCalendarColorId)
                 .SingleOrDefault();
             LoadEquipments();
         }
+
+        private void CheckAvailabilityOfEquipment(object obj)
+        {
+            var window = new CheckAvailabilityOfEquipmentWindow()
+            {
+                DataContext = new CheckAvailabilityOfEquipmentViewModel()
+                {
+                    Categoryes = Categoryes,
+                    Equipments= Equipments,
+                    SelectedCategory = SelectedCategory,
+                    SelectedEquipment = SelectedEquipment,
+                    Count = Count,
+                    StartDate =StartDate,
+                    EndDate = EndDate,
+                }
+            };
+            window.Show();
+        }
+
         async void LoadEquipments()
         {
             EnableProgressBar();
@@ -38,10 +58,10 @@ namespace Управление_заказами.ViewModels
             }
             catch (Exception e)
             {
-                MessageBox.Show(e.Message + e.StackTrace,"",MessageBoxButton.OK,MessageBoxImage.Error);
+                MessageBox.Show(e.Message + e.StackTrace, "", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw;
             }
-           
+
             DisableProgressBar();
         }
         List<EquipmentInStock> equipments;
@@ -185,6 +205,7 @@ namespace Управление_заказами.ViewModels
 
         public ICommand RemoveEquipmentCommand { get; set; }
 
+        public ICommand CheckEquipmentAvailabilityCommand { get; set; }
         #endregion
 
         void AddEquipmentToOrder(object parametr)
@@ -225,22 +246,21 @@ namespace Управление_заказами.ViewModels
             {
                 await calendar.AddEmployeDayOff(StartDate, EndDate, CustomerName, AppSettings.GoogleCalendarColorId);
             }
-            MessageBox.Show("Выходной успешно создан","",MessageBoxButton.OK,MessageBoxImage.Information);
+            MessageBox.Show("Выходной успешно создан", "", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
         async void CreateOrder(object parametr)
         {
             var window = parametr as Window;
+            if (EndDate < StartDate)
+            {
+                MessageBox.Show("Дата возврата не может быть ранее даты создания", "",
+                    MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             if (SelectedEquipmentsForOrder.Count == 0)
             {
                 await CreateDayOff();
-                return;
-            }
-
-            if (EndDate < StartDate)
-            {
-                MessageBox.Show("Дата возврата не может быть ранее даты создания","",
-                    MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
@@ -276,9 +296,9 @@ namespace Управление_заказами.ViewModels
                 EnableProgressBar();
                 await OrderManager.CreateOrderAsync(order);
                 window.Close();
-                MessageBox.Show("Заказ успешно создан","",MessageBoxButton.OK,MessageBoxImage.Information);
+                MessageBox.Show("Заказ успешно создан", "", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            catch (ArgumentException )
+            catch (ArgumentException)
             {
                 List<EquipmentFromOrder> eqsForOrder = new List<EquipmentFromOrder>();
                 foreach (var equipment in SelectedEquipmentsForOrder)
@@ -286,7 +306,7 @@ namespace Управление_заказами.ViewModels
                     eqsForOrder.Add(new EquipmentFromOrder()
                     {
                         Name = equipment.Name,
-                        Category =  equipment.Category,
+                        Category = equipment.Category,
                         Count = equipment.Count,
                         ReplacmentCost = equipment.ReplacmentCost,
                         StartDate = StartDate,
@@ -297,7 +317,7 @@ namespace Управление_заказами.ViewModels
                 {
                     DataContext = new MissingEquipmentViewModel()
                     {
-                        Equioments = await EquipmentInfo.GetMissingEquipments(eqsForOrder, 
+                        Equioments = await EquipmentInfo.GetMissingEquipments(eqsForOrder,
                             StartDate.AddSeconds(-StartDate.Second), EndDate.AddSeconds(-EndDate.Second))
                     }
                 };
@@ -320,13 +340,13 @@ namespace Управление_заказами.ViewModels
                         }
                         order.Equipments.Add(new EquipmentFromOrder()
                         {
-                             Name = $"{missingEquipment.Name} (партнера - {missingEquipment.PartnerName})",
-                             Category = equipment.Category,
-                             Count = missingEquipment.NotEnough,
-                             IsPartnerEquipment = true,
-                             PartnerName = missingEquipment.PartnerName,
-                             StartDate = equipment.StartDate,
-                             EndDate = equipment.EndDate,
+                            Name = $"{missingEquipment.Name} (партнера - {missingEquipment.PartnerName})",
+                            Category = equipment.Category,
+                            Count = missingEquipment.NotEnough,
+                            IsPartnerEquipment = true,
+                            PartnerName = missingEquipment.PartnerName,
+                            StartDate = equipment.StartDate,
+                            EndDate = equipment.EndDate,
                         });
                     }
                     await OrderManager.CreateOrderAsync(order);

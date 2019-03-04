@@ -219,6 +219,7 @@
       <DependentUpon>20190222135601_AddedAmountProperty.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\AppDbContextModelSnapshot.cs" />
+    <Compile Include="Models\AvailabilityEquipment.cs" />
     <Compile Include="Models\Core\Abstractions\IUserManager.cs" />
     <Compile Include="Models\Core\UserManager.cs" />
     <Compile Include="Models\DataBase\User.cs" />
@@ -226,6 +227,7 @@
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\MissingEquipment.cs" />
     <Compile Include="ViewModels\AddEquipmentViewModel.cs" />
+    <Compile Include="ViewModels\CheckAvailabilityOfEquipmentViewModel.cs" />
     <Compile Include="ViewModels\CloseOrderViewModel.cs" />
     <Compile Include="ViewModels\Converters\AccountTypeConverter.cs" />
     <Compile Include="ViewModels\Converters\CloseOrderTypeConverter.cs" />
@@ -245,6 +247,9 @@
     </Compile>
     <Compile Include="Views\AuthorizeWindow.xaml.cs">
       <DependentUpon>AuthorizeWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CheckAvailabilityOfEquipmentWindow.xaml.cs">
+      <DependentUpon>CheckAvailabilityOfEquipmentWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\CloseOrderWindow.xaml.cs">
       <DependentUpon>CloseOrderWindow.xaml</DependentUpon>
@@ -278,6 +283,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\AuthorizeWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CheckAvailabilityOfEquipmentWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

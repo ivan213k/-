@@ -130,9 +130,9 @@
     </Style>
     
     <Style x:Key="DateTimePickerTime" TargetType="xctk:DateTimePicker">
-        <Setter Property="Width" Value="150"></Setter>
-        <Setter Property="Height" Value="20"></Setter>
-        <Setter Property="Format" Value="Custom"></Setter>
-        <Setter Property="FormatString" Value="dd/MM/yyyy HH:mm"></Setter>
+        <Setter Property="Width" Value="150"/>
+        <Setter Property="Height" Value="20"/>
+        <Setter Property="Format" Value="Custom"/>
+        <Setter Property="FormatString" Value="dd/MM/yyyy HH:mm"/>
     </Style>
 </ResourceDictionary>

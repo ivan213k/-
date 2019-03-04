@@ -47,6 +47,7 @@
                         <xctk:IntegerUpDown Height="20" Width="70" VerticalAlignment="Top" Margin="5" Minimum="0" DisplayDefaultValueOnEmptyText="True" DefaultValue="1" TextAlignment="Left" Value="{Binding Count,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                         <Image Source="{Binding SelectedImage}" Margin="5" Width="150" Height="150"></Image>
                     </StackPanel>
+                    <Button Command="{Binding CheckEquipmentAvailabilityCommand}" Margin="5" Background="Blue" Content="Проверить на указанную дату" Foreground="White" FontWeight="Bold"/>
                     <Button Command="{Binding AddEquipmentCommand}" Foreground="White" FontWeight="Bold" Margin="5" Content="Добавить оборудование"></Button>
                 </StackPanel>
             </GroupBox>

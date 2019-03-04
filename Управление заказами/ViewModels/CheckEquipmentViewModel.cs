@@ -9,46 +9,12 @@ using Управление_заказами.Views;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Windows.Data;
+using Управление_заказами.Models;
 
 namespace Управление_заказами.ViewModels
 {
     class CheckEquipmentViewModel : BaseViewModel
     {
-        public class AvailabilityEquipment
-        {
-            public string Name { get; set; }
-            public int NeedCount { get; set; }
-            public int Balance { get; set; }
-            public int AvalibleInSelectedDateRange { get; set; }
-            public bool IsEnough { get; set; }
-            public string Result { get; set; }
-            public int TotalCount { get; set; }
-            public string ImageUrl { get; set; }
-
-            public int NotEnough
-            {
-                get
-                {
-                   int notEnough = NeedCount - (Balance + AvalibleInSelectedDateRange);
-                   return notEnough > 0 ? notEnough : 0;
-                }
-            }
-
-            public int TotalAvalibleCount
-            {
-                get { return Balance + AvalibleInSelectedDateRange; }
-            }
-
-            public int WillRemainInStock
-            {
-                get
-                {
-                    int remainCount = (Balance+AvalibleInSelectedDateRange) - NeedCount;
-                    return remainCount > 0 ? remainCount : 0;
-                }
-            }
-        }
-
         private IEquipmentInfo EquipmentInfo;
 
         public CheckEquipmentViewModel()
